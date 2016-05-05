@@ -8,11 +8,15 @@
 #include "../../include/reduced/ReducedHeuristicWrapper.h"
 #include "../../include/reduced/ReducedModel.h"
 
+
+using namespace mlcore;
+
+
 namespace mlreduced
 {
 
-std::list<mlcore::Successor>
-ReducedModel::transition(mlcore::State* s, mlcore::Action *a)
+std::list<Successor>
+ReducedModel::transition(State* s, Action *a)
 {
     ReducedState* rs = static_cast<ReducedState*>(s);
     std::vector<bool> primaryIndicators;
@@ -20,13 +24,13 @@ ReducedModel::transition(mlcore::State* s, mlcore::Action *a)
         reducedTransition_->
             setPrimary(rs->originalState(), a, primaryIndicators);
 
-    std::list<mlcore::Successor> successors;
-    std::list<mlcore::Successor> originalSuccessors =
+    std::list<Successor> successors;
+    std::list<Successor> originalSuccessors =
         originalProblem_->transition(rs->originalState(), a);
     double totalProbability = 0.0;
     int i = 0;
-    for (mlcore::Successor const & origSucc : originalSuccessors) {
-        mlcore::State* next = nullptr;
+    for (Successor const & origSucc : originalSuccessors) {
+        State* next = nullptr;
         bool isPrimaryOutcome = useFullTransition_ || primaryIndicators[i];
         if (useContPlanEvaluationTransition_) {
             int add = isPrimaryOutcome && rs->exceptionCount() != k_ ? 0 : 1;
@@ -46,12 +50,12 @@ ReducedModel::transition(mlcore::State* s, mlcore::Action *a)
             }
         }
         if (next != nullptr) {
-            successors.push_back(mlcore::Successor(next, origSucc.su_prob));
+            successors.push_back(Successor(next, origSucc.su_prob));
             totalProbability += origSucc.su_prob;
         }
         i++;
     }
-    for (mlcore::Successor & successor : successors) {
+    for (Successor & successor : successors) {
         successor.su_prob /= totalProbability;
     }
     return successors;
@@ -71,10 +75,10 @@ double ReducedModel::evaluateMarkovChain(ReducedModel* reducedModel)
 
     // Then we create copies of all these states for j=1,...,k and add
     // them to the Markov Chain.
-    std::list<mlcore::State*> statesFullModel(markovChain->states().begin(),
+    std::list<State*> statesFullModel(markovChain->states().begin(),
                                               markovChain->states().end());
     for (int j = 0; j <= reducedModel->k_; j++) {
-        for (mlcore::State* s : statesFullModel) {
+        for (State* s : statesFullModel) {
             ReducedState* rs = static_cast<ReducedState*>(s);
             if (j > 0) {
                 markovChain->addState(
@@ -82,7 +86,7 @@ double ReducedModel::evaluateMarkovChain(ReducedModel* reducedModel)
             }
             // We need to add a copy also in the reduced model, because some
             // of these states might be unreachable from its initial state.
-            mlcore::State* aux = reducedModel->addState(
+            State* aux = reducedModel->addState(
                 new ReducedState(rs->originalState(), j, reducedModel));
         }
     }
@@ -99,13 +103,13 @@ double ReducedModel::evaluateMarkovChain(ReducedModel* reducedModel)
     double maxResidual = mdplib::dead_end_cost;
     while (maxResidual > 1.0e-3) {
         maxResidual = 0.0;
-        for (mlcore::State* s : markovChain->states()) {
+        for (State* s : markovChain->states()) {
             if (markovChain->goal(s))
                 continue;
             ReducedState* markovChainState = static_cast<ReducedState*>(s);
             // currentState is the state that markovChainState represents in
             // the reduced model.
-            mlcore::State* currentState =
+            State* currentState =
                 reducedModel->addState(
                     new ReducedState(markovChainState->originalState(),
                                      markovChainState->exceptionCount(),
@@ -119,10 +123,10 @@ double ReducedModel::evaluateMarkovChain(ReducedModel* reducedModel)
             }
 
             assert(currentState->bestAction() != nullptr);
-            mlcore::Action *a = currentState->bestAction();
+            Action *a = currentState->bestAction();
             double previousCost = s->cost();
             double currentCost = 0.0;
-            for (mlcore::Successor successor : markovChain->transition(s, a)) {
+            for (Successor successor : markovChain->transition(s, a)) {
                 currentCost += successor.su_prob * successor.su_state->cost();
             }
             currentCost *= markovChain->gamma();
@@ -140,7 +144,7 @@ double ReducedModel::evaluateMarkovChain(ReducedModel* reducedModel)
 
 
 ReducedTransition* ReducedModel::getBestReduction(
-    mlcore::Problem *originalProblem,
+    Problem *originalProblem,
     std::list<ReducedTransition*> reducedTransitions,
     int k,
     ReducedHeuristicWrapper* heuristic)
@@ -155,7 +159,7 @@ ReducedTransition* ReducedModel::getBestReduction(
             bestCost = expectedCostReduction;
             bestReduction = reducedTransition;
         }
-        for (mlcore::State* s : reducedModel.states())
+        for (State* s : reducedModel.states())
             s->reset();     // make sure stored values are cleared.
         reducedModel.cleanup();
     }
@@ -180,6 +184,8 @@ double ReducedModel::evaluateMonteCarlo(int numTrials)
 std::pair<double, double> ReducedModel::trial(
     mlsolvers::Solver & solver, WrapperProblem* wrapperProblem)
 {
+                                                                                static int countGoals = 0;
+                                                                                mdplib_debug = false;
     assert(wrapperProblem->problem() == this);
 
     double cost = 0.0;
@@ -198,9 +204,19 @@ std::pair<double, double> ReducedModel::trial(
 
     bool resetExceptionCounter = false;
     while (true) {
-        mlcore::Action* bestAction = currentState->bestAction();
+        Action* bestAction = currentState->bestAction();
         cost += this->cost(currentState, bestAction);
         int exceptionCount = currentState->exceptionCount();
+
+                                                                                
+//                                                                                 mdplib_debug = true;
+                                                                                dprint1(currentState);
+                                                                                if (currentState->bestAction() != nullptr)
+                                                                                    dprint1(currentState->bestAction());
+//                                                                                 mdplib_debug = false;
+
+        if (cost >= mdplib::dead_end_cost)
+            break;
 
         // Simulating the action execution using the full model.
         // Since we want to use the full transition function for this,
@@ -238,11 +254,16 @@ std::pair<double, double> ReducedModel::trial(
             break;
         }
         if (nextState != nullptr && this->goal(nextState)) {
+                                                                                countGoals++;
+                                                                                mdplib_debug = true;
+                                                                                dprint2("count goals", countGoals);
+                                                                                mdplib_debug = false;
             break;
         }
 
         // Re-planning
         // Checking if the state has already been considered during planning.
+
         if (nextState == nullptr || nextState->bestAction() == nullptr) {
             // State wasn't considered before.
             assert(this->k_ == 0);  // Only determinization should reach here.
@@ -272,10 +293,11 @@ double ReducedModel::triggerReplan(mlsolvers::Solver& solver,
                                     bool proactive,
                                     WrapperProblem* wrapperProblem)
 {
+                                                                                dprint2("TRIGGER", nextState);
     if (this->goal(nextState))
         return 0.0;
     if (proactive) {
-        mlcore::Action* bestAction = nextState->bestAction();
+        Action* bestAction = nextState->bestAction();
         // This action can't be null because we are planning pro-actively.
         assert(bestAction != nullptr);
 
@@ -283,10 +305,10 @@ double ReducedModel::triggerReplan(mlsolvers::Solver& solver,
         // model. The -1 is used to get the full model transition (see comment
         // above in the trial function).
         ReducedState tmp(nextState->originalState(), -1, this);
-        std::list<mlcore::Successor> successorsFullModel =
+        std::list<Successor> successorsFullModel =
             this->transition(&tmp, bestAction);
-        std::list<mlcore::Successor> dummySuccessors;
-        for (mlcore::Successor const & sccr : successorsFullModel) {
+        std::list<Successor> dummySuccessors;
+        for (Successor const & sccr : successorsFullModel) {
             ReducedState* reducedSccrState =
                 static_cast<ReducedState*>(
                     this->addState(new ReducedState(
@@ -294,8 +316,9 @@ double ReducedModel::triggerReplan(mlsolvers::Solver& solver,
                             originalState(),
                         0,
                         this)));
+                                                                                dprint2("ADDING", reducedSccrState);
             dummySuccessors.push_back(
-                mlcore::Successor(reducedSccrState, sccr.su_prob));
+                Successor(reducedSccrState, sccr.su_prob));
         }
         wrapperProblem->setDummyAction(bestAction);
         wrapperProblem->dummyState()->setSuccessors(dummySuccessors);

@@ -39,7 +39,7 @@ weightedQvalue(mlcore::Problem* problem, mlcore::State* s, mlcore::Action* a)
 
 
 std::pair<double, mlcore::Action*> bellmanBackup(mlcore::Problem* problem,
-                                                 mlcore::State* s)
+                                                  mlcore::State* s)
 {
     double bestQ = problem->goal(s) ? 0.0 : mdplib::dead_end_cost;
     bool hasAction = false;
@@ -76,6 +76,8 @@ double bellmanUpdate(mlcore::Problem* problem, mlcore::State* s)
 
 double bellmanUpdate(mlcore::Problem* problem, mlcore::State* s, double weight)
 {
+    if (weight == 1.0)
+        return bellmanUpdate(problem, s);
     double bestQ = problem->goal(s) ? 0.0 : mdplib::dead_end_cost;
     double bestG = bestQ, bestH = bestQ;
     bool hasAction = false;
@@ -114,7 +116,8 @@ double bellmanUpdate(mlcore::Problem* problem, mlcore::State* s, double weight)
 
 mlcore::State* randomSuccessor(mlcore::Problem* problem,
                                mlcore::State* s,
-                               mlcore::Action* a)
+                               mlcore::Action* a,
+                               double* prob)
 {
     double pick = dis(gen);
 
@@ -124,10 +127,14 @@ mlcore::State* randomSuccessor(mlcore::Problem* problem,
     double acc = 0.0;
     for (mlcore::Successor sccr : problem->transition(s, a)) {
         acc += sccr.su_prob;
-        if (acc >= pick)
+        if (acc >= pick) {
+            if (prob != nullptr)
+                *prob = sccr.su_prob;
             return sccr.su_state;
+        }
     }
-
+    if (prob != nullptr)
+        *prob = 1.0;
     return s;
 }
 
@@ -204,22 +211,28 @@ double sampleTrial(mlcore::Problem* problem, mlcore::State* s)
 
 
 bool getReachableStates(mlcore::Problem* problem,
-                        mlcore::State* initialState,
-                        int horizon,
                         mlcore::StateSet& reachableStates,
-                        mlcore::StateSet& tipStates)
+                        mlcore::StateSet& tipStates,
+                        int horizon)
 {
     bool containsGoal = false;
     std::list< std::pair<mlcore::State *, int> > stateDepthQueue;
-    stateDepthQueue.push_front(std::make_pair(initialState, 0));
+    if (reachableStates.empty()) {
+        stateDepthQueue.push_front(std::make_pair(problem->initialState(), 0));
+        reachableStates.insert(problem->initialState());
+    } else {
+        for (auto const & state : reachableStates)
+            stateDepthQueue.push_front(std::make_pair(state, 0));
+    }
+    bool goalSeen = false;
+    tipStates.clear();
     while (!stateDepthQueue.empty()) {
         auto stateDepthPair = stateDepthQueue.back();
         stateDepthQueue.pop_back();
         mlcore::State* state = stateDepthPair.first;
         int depth = stateDepthPair.second;
-        if (!reachableStates.insert(state).second)
-            continue;
         if (problem->goal(state)) {
+            tipStates.insert(state);
             containsGoal = true;
             continue;
         }
@@ -231,12 +244,13 @@ bool getReachableStates(mlcore::Problem* problem,
             if (!problem->applicable(state, a))
                 continue;
             for (mlcore::Successor sccr : problem->transition(state, a)) {
-                stateDepthQueue.
-                push_front(std::make_pair(sccr.su_state, depth + 1));
+                if (reachableStates.insert(sccr.su_state).second)
+                    stateDepthQueue.
+                        push_front(std::make_pair(sccr.su_state, depth + 1));
             }
         }
     }
-    return containsGoal;
+    return goalSeen;
 }
 
 
@@ -260,5 +274,6 @@ void getBestPartialSolutionGraph(mlcore::Problem* problem,
         }
     }
 }
+
 
 } // mlsolvers

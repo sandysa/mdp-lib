@@ -11,12 +11,17 @@
 #include "../Problem.h"
 #include "../State.h"
 
+#include "ReducedHeuristicWrapper.h"
 #include "ReducedState.h"
 #include "ReducedTransition.h"
 
 namespace mlreduced
 {
 
+/**
+ * This class implements the reduced model framework described in
+ * http://anytime.cs.umass.edu/shlomo/papers/PZicaps14.pdf.
+ */
 class ReducedModel : public mlcore::Problem
 {
 private:
@@ -41,9 +46,9 @@ private:
      *
      */
     double triggerReplan(mlsolvers::Solver& solver,
-                                        ReducedState* nextState,
-                                        bool proactive,
-                                        WrapperProblem* wrapperProblem);
+                         ReducedState* nextState,
+                         bool proactive,
+                         WrapperProblem* wrapperProblem);
 
     /*
      * If true, then the destructor can be called safely.
@@ -107,19 +112,39 @@ public:
         assert(clean_);
     }
 
+    /**
+     * Cleans up any data that may affect the original model when
+     * the reduced model is destroyed. For example, the reference to
+     * the actions in the original model is released, so that
+     * destroying the actions in this model does not destroy the
+     * original ones.
+     */
     void cleanup()
     {
         actions_ = std::list<mlcore::Action*> ();
         clean_ = true;
     }
 
+    /**
+     * Sets the maximum number of exceptions before considering only
+     * primary outcomes in the transition function.
+     */
     void k(int value) { k_ = value; }
+
+    /**
+     * Returns the maximum number of exceptions before considering only
+     * primary outcomes in the transition function.
+     */
+    int k() { return k_; }
 
     void useFullTransition(bool value)
     {
         useFullTransition_ = value | (reducedTransition_ == nullptr);
     }
 
+    /**
+     * Sets whether the full transition model should be used or not.
+     */
     void useContPlanEvaluationTransition(bool value)
     {
         useContPlanEvaluationTransition_ = value;
@@ -194,7 +219,7 @@ public:
      */
     virtual bool goal(mlcore::State* s) const
     {
-        ReducedState* rs = (ReducedState* ) s;
+        ReducedState* rs = static_cast<ReducedState*> (s);
         return originalProblem_->goal(rs->originalState());
     }
 
@@ -203,7 +228,7 @@ public:
      */
     virtual double cost(mlcore::State* s, mlcore::Action* a) const
     {
-        ReducedState* rs = (ReducedState* ) s;
+        ReducedState* rs = static_cast<ReducedState*> (s);
         return originalProblem_->cost(rs->originalState(), a);
     }
 
@@ -212,7 +237,7 @@ public:
      */
     virtual bool applicable(mlcore::State* s, mlcore::Action* a) const
     {
-        ReducedState* rs = (ReducedState* ) s;
+        ReducedState* rs = static_cast<ReducedState*> (s);
         return originalProblem_->applicable(rs->originalState(), a);
     }
 };

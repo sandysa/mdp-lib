@@ -1,0 +1,3 @@
+./testReducedFF.out --det_problem=slip-robot-1-det.pddl --det_descriptor=data/ppddl/ippc2008/slipperry-robot/slip-robot-1-det-desc --k=0 --problem=data/ppddl/ippc2008/slipperry-robot/slip-robot-1.pddl:slip-robot-1 --dir=FF-v2.3-goldman &>log.txt
+
+

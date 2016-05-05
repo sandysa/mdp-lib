@@ -77,7 +77,7 @@ ALL_H = $(I_H) $(SOLV_H) $(MOSOLV_H) $(DOM_H) $(UTIL_H)
 ALL_CPP = $(DOM_CPP) $(SOLV_CPP) $(MOSOLV_CPP) $(UTIL_CPP)
 
 # Libraries
-LIBS = lib/libmdp.a -Llib
+LIBS = lib/libmdp.a lib/libmdp_domains.a -Llib
 LIBS_GUROBI = $(LIBS) -lgurobi60 -Llib
 
 #########################################################################
@@ -203,7 +203,7 @@ gw: $(GW_CPP) $(SOLV_CPP) $(UTIL_CPP) $(I_H) $(SOLV_H) $(GW_H) libmdp
 	$(CC) $(CFLAGS) -I$(ID_GW) -I$(ID) -I$(ID_SOLV) -c $(GW_CPP)
 	mkdir -p test
 	mv *.o test/
-	$(CC) $(CFLAGS) -I$(ID_GW) $(INCLUDE_CORE) -o testgw.out $(TD)/testGridWorld.cpp $(TD)/*.o $(LIBS)
+	$(CC) $(CFLAGS) -I$(ID_GW) $(INCLUDE_CORE) -o testgw.out $(TD)/testGridWorld.cpp $(SD_DOMAINS)/*.cpp $(TD)/*.o $(LIBS)
 	rm test/*.o
 
 # Compiles a test program for a simple binary tree domain  #
@@ -214,12 +214,15 @@ b2t: $(BT_CPP) $(SOLV_CPP) $(UTIL_CPP) $(I_H) $(SOLV_H) $(BT_H) libmdp
 	$(CC) $(CFLAGS) -I$(ID_BT) $(INCLUDE_CORE) -o testb2t.out $(TD)/testB2T.cpp $(TD)/*.o $(LIBS)
 	rm test/*.o
 
-domains: $(OD_DOMAINS)/libmdp_domains.a
-$(OD_DOMAINS)/libmdp_domains.a: lib/libmdp.a $(DOM_H) $(DOM_CPP)
+domains: lib/libmdp_domains.a
+lib/libmdp_domains.a: lib/libmdp.a $(DOM_H) $(DOM_CPP)
 	$(CC) $(CFLAGS) $(INCLUDE) -c $(DOM_CPP)
 	mkdir -p $(OD_DOMAINS)
 	mv *.o $(OD_DOMAINS)
-	ar rvs $(OD_DOMAINS)/libmdp_domains.a $(OD_DOMAINS)/*.o
+	ar rvs lib/libmdp_domains.a $(OD_DOMAINS)/*.o
+
+testsolver.out: lib/libmdp.a domains
+	$(CC) $(CFLAGS) $(INCLUDE) -o testsolver.out $(TD)/testSolver.cpp $(LIBS)
 
 # Compiles the mini-gpt library
 minigpt: lib/libminigpt.a
@@ -245,8 +248,24 @@ lib/libmdp_reduced.a: lib/libmdp.a domains ppddl $(SD_REDUCED)/*.cpp $(ID_REDUCE
 	ar rvs lib/libmdp_reduced.a *.o
 	mkdir -p $(OD_REDUCED)
 	mv *.o $(OD_REDUCED)
+#	$(CC) $(CFLAGS) -I$(ID_REDUCED) $(INCLUDE_CORE) $(INCLUDE_PPDDL) \
+#    -o testreduced.out $(TD)/reduced/testReduced.cpp $(OD_DOMAINS)/*.o \
+#    $(ID_PPDDL)/mini-gpt/heuristics.cc \
+#    $(LIBS) lib/libminigpt.a lib/libmdp_reduced.a lib/libmdp_ppddl.a
+#	$(CC) $(CFLAGS) -I$(ID_REDUCED) $(INCLUDE_CORE) $(INCLUDE_PPDDL) \
+#    -o testFF.out $(TD)/reduced/testFF.cpp $(OD_DOMAINS)/*.o \
+#    $(ID_PPDDL)/mini-gpt/heuristics.cc \
+#    $(LIBS) lib/libminigpt.a lib/libmdp_reduced.a lib/libmdp_ppddl.a
 	$(CC) $(CFLAGS) -I$(ID_REDUCED) $(INCLUDE_CORE) $(INCLUDE_PPDDL) \
-	-o testreduced.out $(TD)/reduced/testReduced.cpp $(OD_DOMAINS)/*.o \
+    -o testReducedFF.out $(TD)/reduced/testReducedFF.cpp $(OD_DOMAINS)/*.o \
+    $(SD_SOLV)/LAOStarSolver.cpp \
+    $(SD)/Action.cpp \
+    $(ID_PPDDL)/mini-gpt/heuristics.cc \
+    $(LIBS) lib/libminigpt.a lib/libmdp_reduced.a lib/libmdp_ppddl.a
+
+patilla: lib/libmdp.a lib/libmdp_reduced.a domains ppddl $(SD_REDUCED)/*.cpp $(ID_REDUCED)/*.h 
+	$(CC) $(CFLAGS) -I$(ID_REDUCED) $(INCLUDE_CORE) $(INCLUDE_PPDDL) \
+	-o patilla.out $(TD)/reduced/genBlockworld.cpp $(OD_DOMAINS)/*.o \
 	$(ID_PPDDL)/mini-gpt/heuristics.cc \
 	$(LIBS) lib/libminigpt.a lib/libmdp_reduced.a lib/libmdp_ppddl.a
 
