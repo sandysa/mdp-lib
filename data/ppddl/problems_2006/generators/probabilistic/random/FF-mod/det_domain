@@ -1,0 +1,269 @@
+(define (domain det_domain) 
+ (:requirements :strips) 
+ (:predicates 
+	 (PO ?X ?Y ) 
+	 (HN ?X ) 
+	 (JL ?X ?Y ) 
+	 (QA ?X ) 
+	 (LB ?X ?Y ) 
+	 (ID ?X ) 
+	 (BR ?X ?Y ) 
+	 (NE ?X ?Y ) 
+	 (WK ?X ?Y ) 
+	 (KV ?X ?Y ) 
+	 (bogus-goal)
+ )
+(:action UKN0
+ :parameters (?X ?Y ?Z )
+ :precondition (and 
+		 (JL ?Y ?Y) 		  
+		 (WK ?X ?Y) 		  
+  )
+ :effect (and (not (JL ?Y ?Y)) (KV ?Z ?Y)           )
+ )
+(:action UKN1
+ :parameters (?X ?Y ?Z )
+ :precondition (and 
+		 (JL ?Y ?Y) 		  
+		 (WK ?X ?Y) 		  
+  )
+ :effect (and (not (JL ?Y ?Y))           )
+ )
+(:action UKN2
+ :parameters (?X ?Y ?Z )
+ :precondition (and 
+		 (JL ?Y ?Y) 		  
+		 (WK ?X ?Y) 		  
+  )
+ :effect (and (not (WK ?X ?Y)) (NE ?Y ?Y)           )
+ )
+(:action QXG0
+ :parameters (?X ?Y )
+ :precondition (and 
+		 (QA ?Y) 		  
+		 (NE ?X ?X) 		  
+  )
+ :effect (and (WK ?X ?X) (not (QA ?Y))           )
+ )
+(:action ZZL0
+ :parameters (?X )
+ :precondition (and 
+		 (WK ?X ?X) 		  
+		 (not (PO ?X ?X)) 		  
+  )
+ :effect (and (HN ?X)           )
+ )
+(:action SLK0
+ :parameters (?X ?Y )
+ :precondition (and 
+		 (PO ?X ?X) 		  
+		 (QA ?X) 		  
+  )
+ :effect (and (HN ?X) (PO ?Y ?Y) (LB ?X ?Y)           )
+ )
+(:action QTZ0
+ :parameters (?X ?Y )
+ :precondition (and 
+		 (not (WK ?Y ?Y)) 		  
+		 (NE ?Y ?Y) 		  
+		 (LB ?Y ?X) 		  
+		 (HN ?X) 		  
+  )
+ :effect (and (not (HN ?X)) (BR ?X ?X)           )
+ )
+(:action QTZ1
+ :parameters (?X ?Y )
+ :precondition (and 
+		 (not (WK ?Y ?Y)) 		  
+		 (NE ?Y ?Y) 		  
+		 (LB ?Y ?X) 		  
+		 (HN ?X) 		  
+  )
+ :effect (and (not (LB ?Y ?X))           )
+ )
+(:action VYI0
+ :parameters (?X ?Y ?Z )
+ :precondition (and 
+		 (HN ?Z) 		  
+		 (not (NE ?Y ?Z)) 		  
+  )
+ :effect (and (not (HN ?Z)) (KV ?Z ?X) (WK ?Y ?Z)           )
+ )
+(:action LEX0
+ :parameters (?X ?Y ?Z )
+ :precondition (and 
+		 (PO ?Z ?Z) 		  
+		 (ID ?X) 		  
+  )
+ :effect (and (not (ID ?X)) (BR ?Y ?X)           )
+ )
+(:action LEX1
+ :parameters (?X ?Y ?Z )
+ :precondition (and 
+		 (PO ?Z ?Z) 		  
+		 (ID ?X) 		  
+  )
+ :effect (and (not (PO ?Z ?Z))           )
+ )
+(:action MKS0
+ :parameters (?X ?Y ?Z )
+ :precondition (and 
+		 (LB ?Y ?Z) 		  
+		 (BR ?X ?Y) 		  
+		 (not (QA ?X)) 		  
+		 (PO ?Y ?Y) 		  
+  )
+ :effect (and (not (BR ?X ?Y)) (JL ?Y ?Z)           )
+ )
+(:action XBO0
+ :parameters (?X )
+ :precondition (and 
+		 (not (LB ?X ?X)) 		  
+		 (HN ?X) 		  
+  )
+ :effect (and (not (HN ?X))           )
+ )
+(:action IJU0
+ :parameters (?X )
+ :precondition (and 
+		 (PO ?X ?X) 		  
+  )
+ :effect (and (KV ?X ?X) (not (PO ?X ?X))           )
+ )
+(:action IJU1
+ :parameters (?X )
+ :precondition (and 
+		 (PO ?X ?X) 		  
+  )
+ :effect (and (not (PO ?X ?X))           )
+ )
+(:action SQD0
+ :parameters (?X ?Y )
+ :precondition (and 
+		 (PO ?Y ?Y) 		  
+		 (KV ?X ?X) 		  
+  )
+ :effect (and (not (PO ?Y ?Y)) (not (KV ?X ?X))           )
+ )
+(:action SQD1
+ :parameters (?X ?Y )
+ :precondition (and 
+		 (PO ?Y ?Y) 		  
+		 (KV ?X ?X) 		  
+  )
+ :effect (and (NE ?X ?Y)           )
+ )
+(:action SQD2
+ :parameters (?X ?Y )
+ :precondition (and 
+		 (PO ?Y ?Y) 		  
+		 (KV ?X ?X) 		  
+  )
+ :effect (and (LB ?Y ?Y) (not (KV ?X ?X))           )
+ )
+(:action LQF0
+ :parameters (?X )
+ :precondition (and 
+		 (BR ?X ?X) 		  
+		 (WK ?X ?X) 		  
+		 (ID ?X) 		  
+  )
+ :effect (and (KV ?X ?X) (LB ?X ?X)           )
+ )
+(:action TMQ0
+ :parameters (?X )
+ :precondition (and 
+		 (JL ?X ?X) 		  
+		 (KV ?X ?X) 		  
+		 (PO ?X ?X) 		  
+  )
+ :effect (and (not (JL ?X ?X)) (not (KV ?X ?X))           )
+ )
+(:action LJU0
+ :parameters (?X ?Y ?Z )
+ :precondition (and 
+		 (PO ?X ?Y) 		  
+		 (LB ?X ?Y) 		  
+		 (HN ?Z) 		  
+  )
+ :effect (and (not (PO ?X ?Y))           )
+ )
+(:action LJU1
+ :parameters (?X ?Y ?Z )
+ :precondition (and 
+		 (PO ?X ?Y) 		  
+		 (LB ?X ?Y) 		  
+		 (HN ?Z) 		  
+  )
+ :effect (and (not (PO ?X ?Y)) (not (HN ?Z))           )
+ )
+(:action JCR0
+ :parameters (?X ?Y ?Z )
+ :precondition (and 
+		 (KV ?X ?X) 		  
+		 (PO ?Z ?Z) 		  
+		 (not (JL ?Z ?Y)) 		  
+		 (not (ID ?Y)) 		  
+  )
+ :effect (and (ID ?Z)           )
+ )
+(:action IQO0
+ :parameters (?X ?Y ?Z )
+ :precondition (and 
+		 (not (ID ?Y)) 		  
+		 (PO ?Z ?X) 		  
+		 (KV ?Y ?Y) 		  
+  )
+ :effect (and (not (PO ?Z ?X)) (LB ?Z ?Y) (not (KV ?Y ?Y))           )
+ )
+(:action QOH0
+ :parameters (?X ?Y )
+ :precondition (and 
+		 (KV ?Y ?X) 		  
+		 (JL ?X ?X) 		  
+		 (BR ?Y ?X) 		  
+		 (BR ?X ?X) 		  
+  )
+ :effect (and (BR ?Y ?X)           )
+ )
+(:action EWS0
+ :parameters (?X )
+ :precondition (and 
+		 (KV ?X ?X) 		  
+		 (QA ?X) 		  
+		 (BR ?X ?X) 		  
+  )
+ :effect (and (WK ?X ?X) (not (KV ?X ?X))           )
+ )
+(:action ZUU0
+ :parameters (?X )
+ :precondition (and 
+		 (HN ?X) 		  
+		 (KV ?X ?X) 		  
+		 (not (BR ?X ?X)) 		  
+		 (not (PO ?X ?X)) 		  
+  )
+ :effect (and (not (KV ?X ?X))           )
+ )
+(:action FNY0
+ :parameters (?X ?Y ?Z )
+ :precondition (and 
+		 (not (QA ?X)) 		  
+		 (WK ?Y ?X) 		  
+		 (JL ?Z ?X) 		  
+  )
+ :effect (and (not (WK ?Y ?X))           )
+ )
+(:action FPQ0
+ :parameters (?X )
+ :precondition (and 
+		 (NE ?X ?X) 		  
+		 (QA ?X) 		  
+		 (KV ?X ?X) 		  
+		 (PO ?X ?X) 		  
+  )
+ :effect (and (not (PO ?X ?X))           )
+ )
+(:action bogus 
+ :effect (bogus-goal))
+)

@@ -1,0 +1,18 @@
+0,[ 0:(vehicle-at l-1-3) ],0,(move-car-umbrella l-1-1 l-1-2),0.0,true,0.0,0.0,0.0
+1,[ 14:(vehicle-at l-2-3) ],77,(pickumbrella-and-move-with-umbrella l-2-3 l-2-2),2.7499999999999947,false,4.624999999999995,9.0,1.875
+2,[ 18:(vehicle-at l-3-3) ],85,(pickumbrella-and-move-with-umbrella l-3-3 l-2-2),2.7499999999999947,false,4.624999999999995,9.0,1.875
+3,[ 4:(has-umbrella) 14:(vehicle-at l-2-3) ],19,(move-car-umbrella l-2-3 l-2-2),1.8749999999999973,false,3.7499999999999973,9.0,1.875
+4,[ 4:(has-umbrella) 18:(vehicle-at l-3-3) ],27,(move-car-umbrella l-3-3 l-2-2),1.8749999999999973,false,3.7499999999999973,9.0,1.875
+5,[ 2:(vehicle-at l-1-1) ],30,(move-car-without-umbrella l-1-1 l-1-2),0.0,false,1.0E-6,5.0,1.0E-6
+6,[ 8:(vehicle-at l-2-1) ],67,(pickumbrella-and-move-with-umbrella l-2-1 l-1-2),2.7499999999999947,false,4.624999999999995,14.0,1.875
+7,[ 6:(vehicle-at l-1-2) ],33,(move-car-without-umbrella l-1-2 l-1-3),0.0,false,1.0E-6,7.0,1.0E-6
+8,[ 0:(vehicle-at l-1-3) 4:(has-umbrella) ],0,(move-car-umbrella l-1-1 l-1-2),0.0,true,0.0,0.0,0.0
+9,[ 4:(has-umbrella) 10:(vehicle-at l-2-2) ],13,(move-car-umbrella l-2-2 l-1-3),1.875,false,1.875,8.0,0.0
+10,[ 10:(vehicle-at l-2-2) ],43,(move-car-without-umbrella l-2-2 l-1-3),0.0,false,1.0E-6,10.0,1.0E-6
+11,[ 12:(vehicle-at l-3-1) ],80,(pickumbrella-and-move-with-umbrella l-3-1 l-2-2),2.749999999999999,false,4.624999999999999,9.0,1.875
+12,[ 16:(vehicle-at l-3-2) ],82,(pickumbrella-and-move-with-umbrella l-3-2 l-2-2),2.7499999999999982,false,4.624999999999998,9.0,1.875
+13,[ 4:(has-umbrella) 8:(vehicle-at l-2-1) ],9,(move-car-umbrella l-2-1 l-1-2),1.8749999999999973,false,3.7499999999999973,14.0,1.875
+14,[ 4:(has-umbrella) 6:(vehicle-at l-1-2) ],3,(move-car-umbrella l-1-2 l-1-3),1.875,false,1.875,8.0,0.0
+15,[ 4:(has-umbrella) 16:(vehicle-at l-3-2) ],24,(move-car-umbrella l-3-2 l-2-2),1.8749999999999991,false,3.749999999999999,9.0,1.875
+16,[ 2:(vehicle-at l-1-1) 4:(has-umbrella) ],0,(move-car-umbrella l-1-1 l-1-2),1.8749999999999996,false,3.7499999999999996,14.0,1.875
+17,[ 4:(has-umbrella) 12:(vehicle-at l-3-1) ],22,(move-car-umbrella l-3-1 l-2-2),1.8749999999999996,false,3.7499999999999996,9.0,1.875

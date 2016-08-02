@@ -1,0 +1,16 @@
+(define (problem tproblem)
+ (:domain random_domain)
+ (:objects a b c d e f g h i j k)
+ (:init 
+   	 (ZQ a b) 
+	 (QT b c) 
+	 (DV c d) 
+	 (OI d e) 
+	 (LK e f) 
+	 (QF f g) 
+	 (WL i h) 
+	 (DX j i) 
+	 (WS g j) 
+	 (BY h k))
+ (:goal 
+         (goal-achieved)))

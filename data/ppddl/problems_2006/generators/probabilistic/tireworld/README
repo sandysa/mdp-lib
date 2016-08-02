@@ -1,0 +1,6 @@
+Tireworld generator.
+Author: Blai Bonet upon a domain from Michael Littman and David Weissman
+
+make
+usage: tire [--seed <seed>] [--edges <m>] [--nodes <n>] [--prob <tire-prob>]
+

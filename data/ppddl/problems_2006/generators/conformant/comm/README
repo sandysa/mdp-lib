@@ -1,0 +1,5 @@
+Coins (elevators) generator.
+Author: Blai Bonet
+
+make
+usage: comm --stages <n> --packets <m>

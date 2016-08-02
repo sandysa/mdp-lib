@@ -206,6 +206,7 @@ int main(int argc, char* args[])
                                 ffExec,
                                 directory + "/" + detProblem,
                                 directory + "/ff-template.pddl",
+                                directory + "/p01.pddl",
                                 k,
                                 1.0e-3,
                                 useFF);

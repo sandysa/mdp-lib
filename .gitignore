@@ -39,3 +39,5 @@ mdp-lib.layout
 testclient
 planserv
 *.pyc
+FF-v2*
+*~

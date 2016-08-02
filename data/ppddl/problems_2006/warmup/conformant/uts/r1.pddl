@@ -1,0 +1,8 @@
+(define (problem r1)
+  (:domain uts)
+  (:objects n1 - node)
+  (:init (and (oneof (at n1))
+         )
+  )
+  (:goal (and (visited n1)))
+)

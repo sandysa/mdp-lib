@@ -1,0 +1,250 @@
+(define (domain prob_domain) 
+ (:requirements :probabilistic-effects) 
+ (:predicates 
+	 (FI ?x ?y) 
+	 (NS ?x ?y) 
+	 (AT ?x ?y) 
+	 (JH ?x ?y) 
+	 (GV ?x ?y) 
+ )
+(:action ILG
+ :parameters (?X ?Y ?Z )
+ :precondition (and 
+		 (GV ?Z ?X) 
+		 (FI ?X ?Z) 
+		 (AT ?Y ?X) 
+  )
+ :effect (probabilistic 
+		 0.940000 (and (JH ?X ?Y) (not (GV ?Z ?X)) ) 
+		 0.060000 (and (JH ?Y ?X) (not (FI ?X ?Z)) ) 
+          )
+ )
+(:action RZN
+ :parameters (?X ?Y ?Z )
+ :precondition (and 
+		 (NS ?X ?Y) 
+		 (AT ?Y ?X) 
+		 (GV ?Y ?X) 
+  )
+ :effect (probabilistic 
+		 0.580000 (and (JH ?Z ?X) (not (NS ?X ?Y)) ) 
+		 0.420000 (and (GV ?Z ?X) (not (GV ?Y ?X)) ) 
+          )
+ )
+(:action AQM
+ :parameters (?X ?Y ?Z )
+ :precondition (and 
+		 (AT ?Y ?X) 
+		 (FI ?X ?Y) 
+		 (FI ?X ?Z) 
+  )
+ :effect (probabilistic 
+		 0.290000 (and (AT ?X ?Z) (not (AT ?Y ?X)) ) 
+		 0.710000 (and (FI ?X ?Z) (not (FI ?X ?Y)) ) 
+          )
+ )
+(:action TYR
+ :parameters (?X ?Y ?Z )
+ :precondition (and 
+		 (NS ?Z ?X) 
+		 (GV ?Z ?X) 
+		 (AT ?Y ?X) 
+  )
+ :effect (probabilistic 
+		 0.450000 (and (AT ?X ?Z) (not (NS ?Z ?X)) ) 
+		 0.550000 (and (FI ?Y ?Z) (not (AT ?Y ?X)) ) 
+          )
+ )
+(:action GJT
+ :parameters (?X ?Y ?Z )
+ :precondition (and 
+		 (GV ?X ?Z) 
+		 (FI ?Z ?Y) 
+		 (GV ?Y ?X) 
+  )
+ :effect (probabilistic 
+		 0.280000 (and (AT ?Z ?Y) (not (GV ?Y ?X)) ) 
+		 0.720000 (and (AT ?Z ?X) (not (GV ?X ?Z)) ) 
+          )
+ )
+(:action QOT
+ :parameters (?X ?Y ?Z )
+ :precondition (and 
+		 (NS ?Z ?Y) 
+		 (FI ?Z ?X) 
+		 (JH ?Y ?Z) 
+  )
+ :effect (probabilistic 
+		 0.290000 (and (NS ?Y ?Z) (not (NS ?Z ?Y)) ) 
+		 0.710000 (and (JH ?X ?Z) (not (FI ?Z ?X)) ) 
+          )
+ )
+(:action UWN
+ :parameters (?X ?Y ?Z )
+ :precondition (and 
+		 (FI ?Y ?Z) 
+		 (JH ?X ?Y) 
+		 (GV ?Y ?Z) 
+  )
+ :effect (probabilistic 
+		 0.880000 (and (AT ?Y ?X) (not (JH ?X ?Y)) ) 
+		 0.120000 (and (AT ?X ?Y) (not (FI ?Y ?Z)) ) 
+          )
+ )
+(:action TZG
+ :parameters (?X ?Y ?Z )
+ :precondition (and 
+		 (JH ?Y ?Z) 
+		 (AT ?Z ?Y) 
+		 (FI ?X ?Y) 
+  )
+ :effect (probabilistic 
+		 0.180000 (and (FI ?Y ?Z) (not (JH ?Y ?Z)) ) 
+		 0.820000 (and (FI ?Y ?X) (not (AT ?Z ?Y)) ) 
+          )
+ )
+(:action EAC
+ :parameters (?X ?Y ?Z )
+ :precondition (and 
+		 (FI ?X ?Y) 
+		 (AT ?Y ?X) 
+		 (JH ?Y ?X) 
+  )
+ :effect (probabilistic 
+		 0.830000 (and (GV ?Y ?Z) (not (FI ?X ?Y)) ) 
+		 0.170000 (and (JH ?Z ?Y) (not (JH ?Y ?X)) ) 
+          )
+ )
+(:action GWH
+ :parameters (?X ?Y ?Z )
+ :precondition (and 
+		 (AT ?X ?Y) 
+		 (FI ?Y ?X) 
+		 (NS ?Y ?Z) 
+  )
+ :effect (probabilistic 
+		 0.570000 (and (JH ?X ?Y) (not (FI ?Y ?X)) ) 
+		 0.430000 (and (NS ?Z ?X) (not (AT ?X ?Y)) ) 
+          )
+ )
+(:action RSF
+ :parameters (?X ?Y ?Z )
+ :precondition (and 
+		 (AT ?X ?Z) 
+		 (GV ?Y ?X) 
+		 (GV ?X ?Y) 
+  )
+ :effect (probabilistic 
+		 0.700000 (and (NS ?Y ?X) (not (AT ?X ?Z)) ) 
+		 0.300000 (and (NS ?Y ?X) (not (GV ?Y ?X)) ) 
+          )
+ )
+(:action OPC
+ :parameters (?X ?Y ?Z )
+ :precondition (and 
+		 (JH ?X ?Y) 
+		 (GV ?Y ?X) 
+		 (NS ?Z ?X) 
+  )
+ :effect (probabilistic 
+		 0.540000 (and (JH ?Y ?X) (not (JH ?X ?Y)) ) 
+		 0.460000 (and (FI ?X ?Y) (not (JH ?X ?Y)) ) 
+          )
+ )
+(:action VUD
+ :parameters (?X ?Y ?Z )
+ :precondition (and 
+		 (AT ?Y ?Z) 
+		 (NS ?X ?Y) 
+		 (NS ?Z ?Y) 
+  )
+ :effect (probabilistic 
+		 0.070000 (and (GV ?X ?Z) (not (AT ?Y ?Z)) ) 
+		 0.930000 (and (FI ?Y ?X) (not (AT ?Y ?Z)) ) 
+          )
+ )
+(:action TXB
+ :parameters (?X ?Y ?Z )
+ :precondition (and 
+		 (GV ?Z ?Y) 
+		 (GV ?Y ?X) 
+		 (FI ?X ?Y) 
+  )
+ :effect (probabilistic 
+		 0.140000 (and (AT ?Y ?X) (not (GV ?Y ?X)) ) 
+		 0.860000 (and (NS ?Y ?X) (not (GV ?Z ?Y)) ) 
+          )
+ )
+(:action QLY
+ :parameters (?X ?Y ?Z )
+ :precondition (and 
+		 (AT ?Y ?X) 
+		 (AT ?Z ?Y) 
+		 (NS ?Y ?X) 
+  )
+ :effect (probabilistic 
+		 0.380000 (and (JH ?Z ?Y) (not (AT ?Y ?X)) ) 
+		 0.620000 (and (GV ?Z ?Y) (not (AT ?Y ?X)) ) 
+          )
+ )
+(:action LEF
+ :parameters (?X ?Y ?Z )
+ :precondition (and 
+		 (NS ?Z ?Y) 
+		 (GV ?X ?Y) 
+		 (JH ?X ?Z) 
+  )
+ :effect (probabilistic 
+		 0.910000 (and (NS ?Z ?X) (not (NS ?Z ?Y)) ) 
+		 0.090000 (and (GV ?Y ?X) (not (JH ?X ?Z)) ) 
+          )
+ )
+(:action MFX
+ :parameters (?X ?Y ?Z )
+ :precondition (and 
+		 (AT ?X ?Z) 
+		 (JH ?Y ?X) 
+		 (GV ?Y ?Z) 
+  )
+ :effect (probabilistic 
+		 0.280000 (and (FI ?Z ?Y) (not (JH ?Y ?X)) ) 
+		 0.720000 (and (FI ?X ?Z) (not (JH ?Y ?X)) ) 
+          )
+ )
+(:action AYF
+ :parameters (?X ?Y ?Z )
+ :precondition (and 
+		 (AT ?Y ?Z) 
+		 (GV ?Z ?Y) 
+		 (NS ?Z ?X) 
+  )
+ :effect (probabilistic 
+		 0.410000 (and (GV ?X ?Y) (not (GV ?Z ?Y)) ) 
+		 0.590000 (and (JH ?Z ?X) (not (AT ?Y ?Z)) ) 
+          )
+ )
+(:action DPX
+ :parameters (?X ?Y ?Z )
+ :precondition (and 
+		 (GV ?Z ?Y) 
+		 (GV ?X ?Z) 
+		 (JH ?X ?Z) 
+  )
+ :effect (probabilistic 
+		 0.440000 (and (GV ?Y ?Z) (not (GV ?Z ?Y)) ) 
+		 0.560000 (and (AT ?X ?Z) (not (GV ?Z ?Y)) ) 
+          )
+ )
+(:action ZQR
+ :parameters (?X ?Y ?Z )
+ :precondition (and 
+		 (GV ?Y ?X) 
+		 (NS ?Y ?X) 
+		 (AT ?X ?Z) 
+  )
+ :effect (probabilistic 
+		 0.730000 (and (AT ?Z ?Y) (not (AT ?X ?Z)) ) 
+		 0.270000 (and (JH ?X ?Y) (not (NS ?Y ?X)) ) 
+          )
+ )
+)

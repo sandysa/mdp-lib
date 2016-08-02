@@ -207,8 +207,12 @@ gw: $(GW_CPP) $(SOLV_CPP) $(UTIL_CPP) $(I_H) $(SOLV_H) $(GW_H) libmdp
 	$(CC) $(CFLAGS) -I$(ID_GW) -I$(ID) -I$(ID_SOLV) -c $(GW_CPP)
 	mkdir -p test
 	mv *.o test/
+<<<<<<< HEAD
 	$(CC) $(CFLAGS) -I$(ID_GW) $(INCLUDE_CORE) -o testgw.out \
 	  $(TD)/testGridWorld.cpp $(SD_DOMAINS)/*.cpp $(TD)/*.o $(LIBS)
+=======
+	$(CC) $(CFLAGS) -I$(ID_GW) $(INCLUDE_CORE) -o testgw.out $(TD)/testGridWorld.cpp $(SD_DOMAINS)/*.cpp $(TD)/*.o $(LIBS)
+>>>>>>> master
 	rm test/*.o
 
 # Compiles a test program for a simple binary tree domain  #
@@ -263,7 +267,24 @@ lib/libmdp_reduced.a: lib/libmdp.a domains ppddl $(SD_REDUCED)/*.cpp $(ID_REDUCE
 	ar rvs lib/libmdp_reduced.a *.o
 	mkdir -p $(OD_REDUCED)
 	mv *.o $(OD_REDUCED)
+#	$(CC) $(CFLAGS) -I$(ID_REDUCED) $(INCLUDE_CORE) $(INCLUDE_PPDDL) \
+#    -o testreduced.out $(TD)/reduced/testReduced.cpp $(OD_DOMAINS)/*.o \
+#    $(ID_PPDDL)/mini-gpt/heuristics.cc \
+#    $(LIBS) lib/libminigpt.a lib/libmdp_reduced.a lib/libmdp_ppddl.a
+#	$(CC) $(CFLAGS) -I$(ID_REDUCED) $(INCLUDE_CORE) $(INCLUDE_PPDDL) \
+#    -o testFF.out $(TD)/reduced/testFF.cpp $(OD_DOMAINS)/*.o \
+#    $(ID_PPDDL)/mini-gpt/heuristics.cc \
+#    $(LIBS) lib/libminigpt.a lib/libmdp_reduced.a lib/libmdp_ppddl.a
 	$(CC) $(CFLAGS) -I$(ID_REDUCED) $(INCLUDE_CORE) $(INCLUDE_PPDDL) \
+    -o testReducedFF.out $(TD)/reduced/testReducedFF.cpp $(OD_DOMAINS)/*.o \
+    $(SD_SOLV)/LAOStarSolver.cpp \
+    $(SD)/Action.cpp \
+    $(ID_PPDDL)/mini-gpt/heuristics.cc \
+    $(LIBS) lib/libminigpt.a lib/libmdp_reduced.a lib/libmdp_ppddl.a
+
+patilla: lib/libmdp.a lib/libmdp_reduced.a domains ppddl $(SD_REDUCED)/*.cpp $(ID_REDUCED)/*.h 
+	$(CC) $(CFLAGS) -I$(ID_REDUCED) $(INCLUDE_CORE) $(INCLUDE_PPDDL) \
+<<<<<<< HEAD
 	  -o testreduced.out $(TD)/reduced/testReduced.cpp $(OD_DOMAINS)/*.o \
       $(ID_PPDDL)/mini-gpt/heuristics.cc \
       $(LIBS) lib/libminigpt.a lib/libmdp_reduced.a lib/libmdp_ppddl.a
@@ -279,6 +300,11 @@ lib/libmdp_reduced.a: lib/libmdp.a domains ppddl $(SD_REDUCED)/*.cpp $(ID_REDUCE
       $(SD)/Action.cpp \
       $(ID_PPDDL)/mini-gpt/heuristics.cc \
       $(LIBS) lib/libminigpt.a lib/libmdp_reduced.a lib/libmdp_ppddl.a
+=======
+	-o patilla.out $(TD)/reduced/genBlockworld.cpp $(OD_DOMAINS)/*.o \
+	$(ID_PPDDL)/mini-gpt/heuristics.cc \
+	$(LIBS) lib/libminigpt.a lib/libmdp_reduced.a lib/libmdp_ppddl.a
+>>>>>>> master
 
 .PHONY: clean
 clean:

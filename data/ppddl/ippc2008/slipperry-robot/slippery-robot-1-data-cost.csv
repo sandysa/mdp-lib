@@ -1,0 +1,118 @@
+0,[ 0:(vehicle-at l-1-3) ],36,(move-car-without-umbrella l-1-3 l-1-2),0.0,true,0.0,0.0,0.0
+0,[ 0:(vehicle-at l-1-3) ],37,(move-car-without-umbrella l-1-3 l-2-2),0.0,true,0.0,0.0,0.0
+1,[ 14:(vehicle-at l-2-3) ],49,(move-car-without-umbrella l-2-3 l-2-2),0.149995261620548,false,4.774995261620543,1.0,4.624999999999995
+1,[ 14:(vehicle-at l-2-3) ],50,(move-car-without-umbrella l-2-3 l-3-3),0.9999999999999813,false,5.624999999999976,1.0,4.624999999999995
+1,[ 14:(vehicle-at l-2-3) ],62,(pickumbrella l-2-3),1.9999999999999902,false,5.749999999999988,3.0,3.7499999999999973
+1,[ 14:(vehicle-at l-2-3) ],77,(pickumbrella-and-move-with-umbrella l-2-3 l-2-2),2.7499999999999947,false,4.624999999999995,9.0,1.875
+1,[ 14:(vehicle-at l-2-3) ],78,(pickumbrella-and-move-with-umbrella l-2-3 l-3-3),1.9999999999999902,false,5.749999999999988,4.0,3.7499999999999973
+2,[ 18:(vehicle-at l-3-3) ],57,(move-car-without-umbrella l-3-3 l-2-2),0.149995261620548,false,4.774995261620543,2.0,4.624999999999995
+2,[ 18:(vehicle-at l-3-3) ],58,(move-car-without-umbrella l-3-3 l-2-3),0.9999999999999893,false,5.624999999999984,2.0,4.624999999999995
+2,[ 18:(vehicle-at l-3-3) ],59,(move-car-without-umbrella l-3-3 l-3-2),0.9999999999999885,false,5.624999999999983,2.0,4.624999999999995
+2,[ 18:(vehicle-at l-3-3) ],65,(pickumbrella l-3-3),1.9999999999999902,false,5.749999999999988,4.0,3.7499999999999973
+2,[ 18:(vehicle-at l-3-3) ],85,(pickumbrella-and-move-with-umbrella l-3-3 l-2-2),2.7499999999999947,false,4.624999999999995,9.0,1.875
+2,[ 18:(vehicle-at l-3-3) ],86,(pickumbrella-and-move-with-umbrella l-3-3 l-2-3),1.9999999999999902,false,5.749999999999988,3.0,3.7499999999999973
+2,[ 18:(vehicle-at l-3-3) ],87,(pickumbrella-and-move-with-umbrella l-3-3 l-3-2),1.9999999999999938,false,5.749999999999993,15.0,3.749999999999999
+3,[ 4:(has-umbrella) 14:(vehicle-at l-2-3) ],19,(move-car-umbrella l-2-3 l-2-2),1.8749999999999973,false,3.7499999999999973,9.0,1.875
+3,[ 4:(has-umbrella) 14:(vehicle-at l-2-3) ],20,(move-car-umbrella l-2-3 l-3-3),1.4999999999999902,false,5.249999999999988,4.0,3.7499999999999973
+3,[ 4:(has-umbrella) 14:(vehicle-at l-2-3) ],49,(move-car-without-umbrella l-2-3 l-2-2),0.24999999999999512,false,3.9999999999999925,3.0,3.7499999999999973
+3,[ 4:(has-umbrella) 14:(vehicle-at l-2-3) ],50,(move-car-without-umbrella l-2-3 l-3-3),0.9999999999999902,false,4.749999999999988,3.0,3.7499999999999973
+4,[ 4:(has-umbrella) 18:(vehicle-at l-3-3) ],27,(move-car-umbrella l-3-3 l-2-2),1.8749999999999973,false,3.7499999999999973,9.0,1.875
+4,[ 4:(has-umbrella) 18:(vehicle-at l-3-3) ],28,(move-car-umbrella l-3-3 l-2-3),1.4999999999999982,false,5.249999999999996,3.0,3.7499999999999973
+4,[ 4:(has-umbrella) 18:(vehicle-at l-3-3) ],29,(move-car-umbrella l-3-3 l-3-2),1.4999999999999956,false,5.249999999999995,15.0,3.749999999999999
+4,[ 4:(has-umbrella) 18:(vehicle-at l-3-3) ],57,(move-car-without-umbrella l-3-3 l-2-2),0.24999999999999512,false,3.9999999999999925,4.0,3.7499999999999973
+4,[ 4:(has-umbrella) 18:(vehicle-at l-3-3) ],58,(move-car-without-umbrella l-3-3 l-2-3),0.9999999999999938,false,4.749999999999991,4.0,3.7499999999999973
+4,[ 4:(has-umbrella) 18:(vehicle-at l-3-3) ],59,(move-car-without-umbrella l-3-3 l-3-2),0.9999999999999938,false,4.749999999999991,4.0,3.7499999999999973
+5,[ 2:(vehicle-at l-1-1) ],30,(move-car-without-umbrella l-1-1 l-1-2),0.0,false,1.0E-6,5.0,1.0E-6
+5,[ 2:(vehicle-at l-1-1) ],31,(move-car-without-umbrella l-1-1 l-2-1),0.8500047383794342,false,0.8500057383794343,5.0,1.0E-6
+6,[ 8:(vehicle-at l-2-1) ],38,(move-car-without-umbrella l-2-1 l-1-1),1.1499469301490919,false,5.7749469301490866,6.0,4.624999999999995
+6,[ 8:(vehicle-at l-2-1) ],39,(move-car-without-umbrella l-2-1 l-1-2),0.149995261620548,false,4.774995261620543,6.0,4.624999999999995
+6,[ 8:(vehicle-at l-2-1) ],40,(move-car-without-umbrella l-2-1 l-2-2),0.149995261620548,false,4.774995261620543,6.0,4.624999999999995
+6,[ 8:(vehicle-at l-2-1) ],41,(move-car-without-umbrella l-2-1 l-3-1),0.9999999999999893,false,5.624999999999984,6.0,4.624999999999995
+6,[ 8:(vehicle-at l-2-1) ],60,(pickumbrella l-2-1),1.9999999999999902,false,5.749999999999988,13.0,3.7499999999999973
+6,[ 8:(vehicle-at l-2-1) ],66,(pickumbrella-and-move-with-umbrella l-2-1 l-1-1),1.9999999999999933,false,5.749999999999993,16.0,3.7499999999999996
+6,[ 8:(vehicle-at l-2-1) ],67,(pickumbrella-and-move-with-umbrella l-2-1 l-1-2),2.7499999999999947,false,4.624999999999995,14.0,1.875
+6,[ 8:(vehicle-at l-2-1) ],68,(pickumbrella-and-move-with-umbrella l-2-1 l-2-2),2.7499999999999947,false,4.624999999999995,9.0,1.875
+6,[ 8:(vehicle-at l-2-1) ],69,(pickumbrella-and-move-with-umbrella l-2-1 l-3-1),1.9999999999999933,false,5.749999999999993,17.0,3.7499999999999996
+7,[ 6:(vehicle-at l-1-2) ],32,(move-car-without-umbrella l-1-2 l-1-1),1.9999469301491013,false,1.9999479301491012,7.0,1.0E-6
+7,[ 6:(vehicle-at l-1-2) ],33,(move-car-without-umbrella l-1-2 l-1-3),0.0,false,1.0E-6,7.0,1.0E-6
+7,[ 6:(vehicle-at l-1-2) ],34,(move-car-without-umbrella l-1-2 l-2-1),1.8499999999999979,false,1.8500009999999978,7.0,1.0E-6
+7,[ 6:(vehicle-at l-1-2) ],35,(move-car-without-umbrella l-1-2 l-2-2),0.999995261620557,false,0.999996261620557,7.0,1.0E-6
+8,[ 0:(vehicle-at l-1-3) 4:(has-umbrella) ],6,(move-car-umbrella l-1-3 l-1-2),0.0,true,0.0,0.0,0.0
+8,[ 0:(vehicle-at l-1-3) 4:(has-umbrella) ],7,(move-car-umbrella l-1-3 l-2-2),0.0,true,0.0,0.0,0.0
+8,[ 0:(vehicle-at l-1-3) 4:(has-umbrella) ],36,(move-car-without-umbrella l-1-3 l-1-2),0.0,true,0.0,0.0,0.0
+8,[ 0:(vehicle-at l-1-3) 4:(has-umbrella) ],37,(move-car-without-umbrella l-1-3 l-2-2),0.0,true,0.0,0.0,0.0
+9,[ 4:(has-umbrella) 10:(vehicle-at l-2-2) ],12,(move-car-umbrella l-2-2 l-1-2),1.5,false,3.375,14.0,1.875
+9,[ 4:(has-umbrella) 10:(vehicle-at l-2-2) ],13,(move-car-umbrella l-2-2 l-1-3),1.875,false,1.875,8.0,0.0
+9,[ 4:(has-umbrella) 10:(vehicle-at l-2-2) ],14,(move-car-umbrella l-2-2 l-2-1),1.124999999999993,false,4.87499999999999,13.0,3.7499999999999973
+9,[ 4:(has-umbrella) 10:(vehicle-at l-2-2) ],15,(move-car-umbrella l-2-2 l-2-3),1.1250000000000009,false,4.874999999999998,3.0,3.7499999999999973
+9,[ 4:(has-umbrella) 10:(vehicle-at l-2-2) ],16,(move-car-umbrella l-2-2 l-3-1),1.1249999999999987,false,4.874999999999998,17.0,3.7499999999999996
+9,[ 4:(has-umbrella) 10:(vehicle-at l-2-2) ],17,(move-car-umbrella l-2-2 l-3-2),1.1249999999999982,false,4.874999999999997,15.0,3.749999999999999
+9,[ 4:(has-umbrella) 10:(vehicle-at l-2-2) ],18,(move-car-umbrella l-2-2 l-3-3),1.1250000000000009,false,4.874999999999998,4.0,3.7499999999999973
+9,[ 4:(has-umbrella) 10:(vehicle-at l-2-2) ],42,(move-car-without-umbrella l-2-2 l-1-2),1.0,false,2.875,9.0,1.875
+9,[ 4:(has-umbrella) 10:(vehicle-at l-2-2) ],43,(move-car-without-umbrella l-2-2 l-1-3),0.25,false,2.125,9.0,1.875
+9,[ 4:(has-umbrella) 10:(vehicle-at l-2-2) ],44,(move-car-without-umbrella l-2-2 l-2-1),1.7499999999999951,false,3.624999999999995,9.0,1.875
+9,[ 4:(has-umbrella) 10:(vehicle-at l-2-2) ],45,(move-car-without-umbrella l-2-2 l-2-3),1.7499999999999991,false,3.624999999999999,9.0,1.875
+9,[ 4:(has-umbrella) 10:(vehicle-at l-2-2) ],46,(move-car-without-umbrella l-2-2 l-3-1),1.7499999999999991,false,3.624999999999999,9.0,1.875
+9,[ 4:(has-umbrella) 10:(vehicle-at l-2-2) ],47,(move-car-without-umbrella l-2-2 l-3-2),1.7499999999999987,false,3.6249999999999987,9.0,1.875
+9,[ 4:(has-umbrella) 10:(vehicle-at l-2-2) ],48,(move-car-without-umbrella l-2-2 l-3-3),1.7499999999999991,false,3.624999999999999,9.0,1.875
+10,[ 10:(vehicle-at l-2-2) ],42,(move-car-without-umbrella l-2-2 l-1-2),0.9999971569723343,false,0.9999981569723343,10.0,1.0E-6
+10,[ 10:(vehicle-at l-2-2) ],43,(move-car-without-umbrella l-2-2 l-1-3),0.0,false,1.0E-6,10.0,1.0E-6
+10,[ 10:(vehicle-at l-2-2) ],44,(move-car-without-umbrella l-2-2 l-2-1),1.8499999999999979,false,1.8500009999999978,10.0,1.0E-6
+10,[ 10:(vehicle-at l-2-2) ],45,(move-car-without-umbrella l-2-2 l-2-3),1.8499999999999979,false,1.8500009999999978,10.0,1.0E-6
+10,[ 10:(vehicle-at l-2-2) ],46,(move-car-without-umbrella l-2-2 l-3-1),1.8499999999999979,false,1.8500009999999978,10.0,1.0E-6
+10,[ 10:(vehicle-at l-2-2) ],47,(move-car-without-umbrella l-2-2 l-3-2),1.849999999999997,false,1.850000999999997,10.0,1.0E-6
+10,[ 10:(vehicle-at l-2-2) ],48,(move-car-without-umbrella l-2-2 l-3-3),1.8499999999999979,false,1.8500009999999978,10.0,1.0E-6
+10,[ 10:(vehicle-at l-2-2) ],61,(pickumbrella l-2-2),2.0,false,3.875,9.0,1.875
+10,[ 10:(vehicle-at l-2-2) ],70,(pickumbrella-and-move-with-umbrella l-2-2 l-1-2),2.0,false,3.875,14.0,1.875
+10,[ 10:(vehicle-at l-2-2) ],71,(pickumbrella-and-move-with-umbrella l-2-2 l-1-3),2.75,false,2.75,8.0,0.0
+10,[ 10:(vehicle-at l-2-2) ],72,(pickumbrella-and-move-with-umbrella l-2-2 l-2-1),1.2499999999999956,false,4.999999999999993,13.0,3.7499999999999973
+10,[ 10:(vehicle-at l-2-2) ],73,(pickumbrella-and-move-with-umbrella l-2-2 l-2-3),1.2500000000000009,false,4.999999999999998,3.0,3.7499999999999973
+10,[ 10:(vehicle-at l-2-2) ],74,(pickumbrella-and-move-with-umbrella l-2-2 l-3-1),1.2499999999999987,false,4.999999999999998,17.0,3.7499999999999996
+10,[ 10:(vehicle-at l-2-2) ],75,(pickumbrella-and-move-with-umbrella l-2-2 l-3-2),1.2499999999999991,false,4.999999999999998,15.0,3.749999999999999
+10,[ 10:(vehicle-at l-2-2) ],76,(pickumbrella-and-move-with-umbrella l-2-2 l-3-3),1.2500000000000009,false,4.999999999999998,4.0,3.7499999999999973
+11,[ 12:(vehicle-at l-3-1) ],51,(move-car-without-umbrella l-3-1 l-2-1),0.9999999999999956,false,5.624999999999995,11.0,4.624999999999999
+11,[ 12:(vehicle-at l-3-1) ],52,(move-car-without-umbrella l-3-1 l-2-2),0.14999715697233196,false,4.774997156972331,11.0,4.624999999999999
+11,[ 12:(vehicle-at l-3-1) ],53,(move-car-without-umbrella l-3-1 l-3-2),0.9999999999999947,false,5.624999999999994,11.0,4.624999999999999
+11,[ 12:(vehicle-at l-3-1) ],63,(pickumbrella l-3-1),1.9999999999999978,false,5.749999999999997,17.0,3.7499999999999996
+11,[ 12:(vehicle-at l-3-1) ],79,(pickumbrella-and-move-with-umbrella l-3-1 l-2-1),1.9999999999999938,false,5.749999999999991,13.0,3.7499999999999973
+11,[ 12:(vehicle-at l-3-1) ],80,(pickumbrella-and-move-with-umbrella l-3-1 l-2-2),2.749999999999999,false,4.624999999999999,9.0,1.875
+11,[ 12:(vehicle-at l-3-1) ],81,(pickumbrella-and-move-with-umbrella l-3-1 l-3-2),1.9999999999999973,false,5.7499999999999964,15.0,3.749999999999999
+12,[ 16:(vehicle-at l-3-2) ],54,(move-car-without-umbrella l-3-2 l-2-2),0.14999715697233107,false,4.774997156972329,12.0,4.624999999999998
+12,[ 16:(vehicle-at l-3-2) ],55,(move-car-without-umbrella l-3-2 l-3-1),0.9999999999999964,false,5.624999999999995,12.0,4.624999999999998
+12,[ 16:(vehicle-at l-3-2) ],56,(move-car-without-umbrella l-3-2 l-3-3),0.9999999999999947,false,5.624999999999993,12.0,4.624999999999998
+12,[ 16:(vehicle-at l-3-2) ],64,(pickumbrella l-3-2),1.9999999999999973,false,5.7499999999999964,15.0,3.749999999999999
+12,[ 16:(vehicle-at l-3-2) ],82,(pickumbrella-and-move-with-umbrella l-3-2 l-2-2),2.7499999999999982,false,4.624999999999998,9.0,1.875
+12,[ 16:(vehicle-at l-3-2) ],83,(pickumbrella-and-move-with-umbrella l-3-2 l-3-1),1.999999999999997,false,5.7499999999999964,17.0,3.7499999999999996
+12,[ 16:(vehicle-at l-3-2) ],84,(pickumbrella-and-move-with-umbrella l-3-2 l-3-3),1.9999999999999991,false,5.7499999999999964,4.0,3.7499999999999973
+13,[ 4:(has-umbrella) 8:(vehicle-at l-2-1) ],8,(move-car-umbrella l-2-1 l-1-1),1.499999999999996,false,5.249999999999996,16.0,3.7499999999999996
+13,[ 4:(has-umbrella) 8:(vehicle-at l-2-1) ],9,(move-car-umbrella l-2-1 l-1-2),1.8749999999999973,false,3.7499999999999973,14.0,1.875
+13,[ 4:(has-umbrella) 8:(vehicle-at l-2-1) ],10,(move-car-umbrella l-2-1 l-2-2),1.8749999999999973,false,3.7499999999999973,9.0,1.875
+13,[ 4:(has-umbrella) 8:(vehicle-at l-2-1) ],11,(move-car-umbrella l-2-1 l-3-1),1.499999999999996,false,5.249999999999996,17.0,3.7499999999999996
+13,[ 4:(has-umbrella) 8:(vehicle-at l-2-1) ],38,(move-car-without-umbrella l-2-1 l-1-1),0.9999999999999938,false,4.749999999999991,13.0,3.7499999999999973
+13,[ 4:(has-umbrella) 8:(vehicle-at l-2-1) ],39,(move-car-without-umbrella l-2-1 l-1-2),0.24999999999999512,false,3.9999999999999925,13.0,3.7499999999999973
+13,[ 4:(has-umbrella) 8:(vehicle-at l-2-1) ],40,(move-car-without-umbrella l-2-1 l-2-2),0.24999999999999512,false,3.9999999999999925,13.0,3.7499999999999973
+13,[ 4:(has-umbrella) 8:(vehicle-at l-2-1) ],41,(move-car-without-umbrella l-2-1 l-3-1),0.9999999999999938,false,4.749999999999991,13.0,3.7499999999999973
+14,[ 4:(has-umbrella) 6:(vehicle-at l-1-2) ],2,(move-car-umbrella l-1-2 l-1-1),1.1249999999999987,false,4.874999999999998,16.0,3.7499999999999996
+14,[ 4:(has-umbrella) 6:(vehicle-at l-1-2) ],3,(move-car-umbrella l-1-2 l-1-3),1.875,false,1.875,8.0,0.0
+14,[ 4:(has-umbrella) 6:(vehicle-at l-1-2) ],4,(move-car-umbrella l-1-2 l-2-1),1.1250000000000009,false,4.874999999999998,13.0,3.7499999999999973
+14,[ 4:(has-umbrella) 6:(vehicle-at l-1-2) ],5,(move-car-umbrella l-1-2 l-2-2),1.5,false,3.375,9.0,1.875
+14,[ 4:(has-umbrella) 6:(vehicle-at l-1-2) ],32,(move-car-without-umbrella l-1-2 l-1-1),1.7499999999999991,false,3.624999999999999,14.0,1.875
+14,[ 4:(has-umbrella) 6:(vehicle-at l-1-2) ],33,(move-car-without-umbrella l-1-2 l-1-3),0.25,false,2.125,14.0,1.875
+14,[ 4:(has-umbrella) 6:(vehicle-at l-1-2) ],34,(move-car-without-umbrella l-1-2 l-2-1),1.7499999999999991,false,3.624999999999999,14.0,1.875
+14,[ 4:(has-umbrella) 6:(vehicle-at l-1-2) ],35,(move-car-without-umbrella l-1-2 l-2-2),1.0,false,2.875,14.0,1.875
+15,[ 4:(has-umbrella) 16:(vehicle-at l-3-2) ],24,(move-car-umbrella l-3-2 l-2-2),1.8749999999999991,false,3.749999999999999,9.0,1.875
+15,[ 4:(has-umbrella) 16:(vehicle-at l-3-2) ],25,(move-car-umbrella l-3-2 l-3-1),1.4999999999999978,false,5.249999999999997,17.0,3.7499999999999996
+15,[ 4:(has-umbrella) 16:(vehicle-at l-3-2) ],26,(move-car-umbrella l-3-2 l-3-3),1.5,false,5.249999999999997,4.0,3.7499999999999973
+15,[ 4:(has-umbrella) 16:(vehicle-at l-3-2) ],54,(move-car-without-umbrella l-3-2 l-2-2),0.24999999999999867,false,3.999999999999998,15.0,3.749999999999999
+15,[ 4:(has-umbrella) 16:(vehicle-at l-3-2) ],55,(move-car-without-umbrella l-3-2 l-3-1),0.9999999999999973,false,4.7499999999999964,15.0,3.749999999999999
+15,[ 4:(has-umbrella) 16:(vehicle-at l-3-2) ],56,(move-car-without-umbrella l-3-2 l-3-3),0.9999999999999973,false,4.7499999999999964,15.0,3.749999999999999
+16,[ 2:(vehicle-at l-1-1) 4:(has-umbrella) ],0,(move-car-umbrella l-1-1 l-1-2),1.8749999999999996,false,3.7499999999999996,14.0,1.875
+16,[ 2:(vehicle-at l-1-1) 4:(has-umbrella) ],1,(move-car-umbrella l-1-1 l-2-1),1.5000000000000009,false,5.249999999999998,13.0,3.7499999999999973
+16,[ 2:(vehicle-at l-1-1) 4:(has-umbrella) ],30,(move-car-without-umbrella l-1-1 l-1-2),0.24999999999999867,false,3.9999999999999982,16.0,3.7499999999999996
+16,[ 2:(vehicle-at l-1-1) 4:(has-umbrella) ],31,(move-car-without-umbrella l-1-1 l-2-1),0.9999999999999978,false,4.749999999999997,16.0,3.7499999999999996
+17,[ 4:(has-umbrella) 12:(vehicle-at l-3-1) ],21,(move-car-umbrella l-3-1 l-2-1),1.5000000000000009,false,5.249999999999998,13.0,3.7499999999999973
+17,[ 4:(has-umbrella) 12:(vehicle-at l-3-1) ],22,(move-car-umbrella l-3-1 l-2-2),1.8749999999999996,false,3.7499999999999996,9.0,1.875
+17,[ 4:(has-umbrella) 12:(vehicle-at l-3-1) ],23,(move-car-umbrella l-3-1 l-3-2),1.5,false,5.249999999999999,15.0,3.749999999999999
+17,[ 4:(has-umbrella) 12:(vehicle-at l-3-1) ],51,(move-car-without-umbrella l-3-1 l-2-1),0.9999999999999978,false,4.749999999999997,17.0,3.7499999999999996
+17,[ 4:(has-umbrella) 12:(vehicle-at l-3-1) ],52,(move-car-without-umbrella l-3-1 l-2-2),0.24999999999999867,false,3.9999999999999982,17.0,3.7499999999999996
+17,[ 4:(has-umbrella) 12:(vehicle-at l-3-1) ],53,(move-car-without-umbrella l-3-1 l-3-2),0.9999999999999987,false,4.749999999999998,17.0,3.7499999999999996

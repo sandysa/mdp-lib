@@ -1,0 +1,48 @@
+commit pending files
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# Committer: Sandhya Saisubramanian <saisubramanian@sandhyas.cs.umass.edu>
+#
+# On branch master
+# Your branch and 'origin/master' have diverged,
+# and have 1 and 40 different commits each, respectively.
+#   (use "git pull" to merge the remote branch into yours)
+#
+# Changes to be committed:
+#	modified:   FF-v2.3-goldman/p01.pddl
+#	modified:   FF-v2.3-goldman/p01.pddl~
+#	modified:   FF-v2.3-goldman/slip-robot-1-det.pddl
+#	modified:   FF-v2.3-goldman/slip-robot-1-det.pddl~
+#	modified:   FF-v2.3-goldman/triangle_tireworld_p01_det.pddl
+#	modified:   data/ppddl/ippc2008/sysAdmin-SLP/p01-n4-l1-s1.pddl
+#	modified:   data/ppddl/ippc2008/triangle-tireworld/p01.pddl
+#	modified:   exec cmnds
+#	modified:   include/domains/WrapperProblem.h
+#	modified:   include/solvers/FFReducedModelSolver.h
+#	modified:   src/reduced/ReducedModel.cpp
+#	modified:   src/solvers/FFReducedModelSolver.cpp
+#	modified:   src/solvers/FFReducedModelSolver.cpp~
+#	modified:   src/solvers/Solver.cpp
+#	modified:   test/reduced/genBlockworld.cpp~
+#	modified:   test/reduced/testReduced.cpp
+#	modified:   test/reduced/testReducedFF.cpp
+#	modified:   test/reduced/testReducedFF.cpp~
+#
+# Untracked files:
+#	FF-v2.3-goldman/blocksworld-4b-det.pddl
+#	FF-v2.3-goldman/blocksworld-5b-det.pddl
+#	FF-v2.3-goldman/blocksworld-6b-det.pddl
+#	FF-v2.3-goldman/slip-robot-1_det.pddl
+#	FF-v2.3-goldman/slip-robot-2_det.pddl
+#	FF-v2.3-goldman/slip-robot-3_det.pddl
+#	FF-v2.3-goldman/slip-robot-4_det.pddl
+#	FF-v2.3-goldman/tireworld-p01-det.pddl
+#	FF-v2.3-goldman/tireworld-p01-det.pddl~
+#	FF-v2.3-goldman/triangle_tireworld_p01_det.pddl~
+#	exec cmnds~
+#	log.txt-p01-det.pddl
+#	slip-robot-2-data
+#	slip-robot-2-data.text
+#

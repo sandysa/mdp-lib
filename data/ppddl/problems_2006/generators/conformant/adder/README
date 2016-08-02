@@ -1,0 +1,5 @@
+Adder generator.
+Author: Blai Bonet
+
+make
+usage: adder <n>
