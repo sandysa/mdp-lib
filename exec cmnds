@@ -1,3 +1,12 @@
 ./testReducedFF.out --det_problem=slip-robot-1-det.pddl --det_descriptor=data/ppddl/ippc2008/slipperry-robot/slip-robot-1-det-desc --k=0 --problem=data/ppddl/ippc2008/slipperry-robot/slip-robot-1.pddl:slip-robot-1 --dir=FF-v2.3-goldman &>log.txt
 
+./testReducedFF.out --det_problem=slip-robot-1-det.pddl --det_descriptor=data/ppddl/ippc2008/slipperry-robot/slip-robot-1-det-desc --k=0 --problem=data/ppddl/ippc2008/slipperry-robot/slip-robot-1.pddl:p01 --dir=FF-v2.3-goldman &>log.txt
 
+
+./testReducedFF.out --det_problem=blocksworld-6b-det.pddl --det_descriptor=data/ppddl/ippc2008/blocksworld/blocksworld-6b-det-desc --k=0 --problem=data/ppddl/ippc2008/blocksworld/blocksworld-6b.pddl:p01 --dir=FF-v2.3-goldman &>log.txt
+
+
+./testReducedFF.out --det_problem=tireworld-p01-det.pddl --det_descriptor=data/ppddl/problems_2006/final/probabilistic/tireworld/p01-det_desc --k=0 --problem=data/ppddl/problems_2006/final/probabilistic/tireworld/p01.pddl:p01 --dir=FF-v2.3-goldman &>log.txt
+
+
+./testReducedFF.out --det_problem=triangle_tireworld_p01_det.pddl --det_descriptor=data/ppddl/ippc2008/triangle-tireworld/triangle_tireworld_p01_det_desc --k=0 --problem=data/ppddl/ippc2008/triangle-tireworld/p01.pddl:triangle-tire-1 --dir=FF-v2.3-goldman &>log.txt

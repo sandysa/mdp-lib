@@ -9,7 +9,6 @@
 #include "../../include/domains/racetrack/RacetrackProblem.h"
 #include "../../include/domains/racetrack/RTrackDetHeuristic.h"
 #include "../../include/domains/DummyState.h"
-#include "../../include/domains/WrapperProblem.h"
 
 #include "../include/ppddl/mini-gpt/states.h"
 #include "../include/ppddl/mini-gpt/problems.h"
@@ -53,14 +52,12 @@ mlcore::Problem* problem = nullptr;
 mlcore::Heuristic* heuristic = nullptr;
 ReducedModel* reducedModel = nullptr;
 ReducedHeuristicWrapper* reducedHeuristic = nullptr;
-WrapperProblem* wrapperProblem = nullptr;
 list<ReducedTransition *> reductions;
 
-string ffExec="FF-v2.3-goldman/ff";
-//string ffExec = "../../FF-v2.3-goldman/ff";
-//string ffDomain = "-o /home/lpineda/Desktop/domain.pddl";
-//string ffProblem = "-f /home/lpineda/Desktop/problem.pddl";
-//string ffCommand = ffExec + " " + ffDomain + " " + ffProblem;
+string ffExec = "/home/lpineda/Desktop/FF-v2.3/ff";
+string ffDomain = "-o /home/lpineda/Desktop/domain.pddl";
+string ffProblem = "-f /home/lpineda/Desktop/problem.pddl";
+string ffCommand = ffExec + " " + ffDomain + " " + ffProblem;
 
 
 /*
@@ -100,8 +97,8 @@ bool initPPDDL(string ppddlArgs)
         ppddlArgs.substr(pos_equals + 1, ppddlArgs.size() - pos_equals);
 
     pair<state_t *,Rational> *initial = nullptr;
-	
-   if( !read_file( file.c_str() ) ) {
+
+    if( !read_file( file.c_str() ) ) {
         cerr << "<main>: ERROR: couldn't read problem file `" << file << endl;
         return false;
     }
@@ -146,14 +143,16 @@ bool initPPDDL(string ppddlArgs)
  *    --dir: the directory to use for FF. This directory must contain the file
  *        at "det_problem" as well as a file called "p01.pddl" containing only
  *        the PPDDL problem description (i.e., init and goal, not the domain).
+ *        The init state must be described in a single line.
  *        The user of testReducedFF is responsible for ensuring consistency
  *        between p01.pddl and the file passed in the "problem" flag.
  */
 int main(int argc, char* args[])
 {
-    mdplib_debug = true;
-
     register_flags(argc, args);
+
+    if (flag_is_registered("debug"))
+        mdplib_debug = true;
 
     // Reading flags.
     register_flags(argc, args);
@@ -182,10 +181,14 @@ int main(int argc, char* args[])
     if (flag_is_registered_with_value("v"))
         verbosity = stoi(flag_value("v"));
 
+    bool useFF = true;
+    if (flag_is_registered("no-ff"))
+        useFF = false;
+
     // The number of simulations for the experiments.
-    int nsims = 10000;
-    if (flag_is_registered_with_value("nsims"))
-        nsims = stoi(flag_value("nsims"));
+    int nsims = 100;
+    if (flag_is_registered_with_value("n"))
+        nsims = stoi(flag_value("n"));
 
     initPPDDL(ppddlArgs);
 
@@ -196,33 +199,67 @@ int main(int argc, char* args[])
     reducedHeuristic = new ReducedHeuristicWrapper(heuristic);
     reducedModel->setHeuristic(reducedHeuristic);
 
-    // We will now use the wrapper for the pro-active re-planning approach. It
-    // will allow us to plan in advance for the set of successors of a
-    // state-action.
-    wrapperProblem = new WrapperProblem(reducedModel);
-
     // Solving reduced model using LAO* + FF.
     double totalPlanningTime = 0.0;
     clock_t startTime = clock();
-    FFReducedModelSolver solver(wrapperProblem,
+    FFReducedModelSolver solver(reducedModel,
                                 ffExec,
                                 directory + "/" + detProblem,
                                 directory + "/p01.pddl",
-                                k);
-    solver.solve(wrapperProblem->initialState());
+                                k,
+                                1.0e-3,
+                                useFF);
+    solver.solve(reducedModel->initialState());
     clock_t endTime = clock();
     totalPlanningTime += (double(endTime - startTime) / CLOCKS_PER_SEC);
-    cout << "cost " << wrapperProblem->initialState()->cost() <<
+    cout << "cost " << reducedModel->initialState()->cost() <<
         " time " << totalPlanningTime << endl;
 
 
     // Running a trial of the continual planning approach.
     double expectedCost = 0.0;
     for (int i = 0; i < nsims; i++) {
-        pair<double, double> costAndTime =
-            reducedModel->trial(solver, wrapperProblem);
-                                                                                cerr << costAndTime.first << endl;
-        expectedCost += costAndTime.first;
+        double cost = 0.0;
+        ReducedState* currentState =
+            static_cast<ReducedState*> (reducedModel->initialState());
+        mlcore::Action* action = currentState->bestAction();
+        while (cost < mdplib::dead_end_cost) {
+            cost += problem->cost(currentState->originalState(), action);
+            // The successor state according to the original transition model.
+            mlcore::State* nextOriginalState =
+                randomSuccessor(problem, currentState->originalState(), action);
+
+            if (problem->goal(nextOriginalState)) {
+                dprint1("GOAL!");
+                break;
+            }
+
+            bool isException =
+                reducedModel->isException(currentState->originalState(),
+                                          nextOriginalState,
+                                          action);
+            int exceptionCount =
+                currentState->exceptionCount() + int(isException);
+            currentState = new ReducedState(nextOriginalState,
+                                            exceptionCount,
+                                            reducedModel);
+
+            // Re-planning if needed.
+            if (currentState->bestAction() == nullptr ||
+                    exceptionCount > k) {
+                currentState->exceptionCount(0);
+                currentState = static_cast<ReducedState*> (
+                    reducedModel->addState(currentState));
+                solver.solve(currentState);
+            }
+
+            if (currentState->deadEnd()) {
+                cost = mdplib::dead_end_cost;
+            }
+
+            action = currentState->bestAction();
+        }
+        expectedCost += cost;
     }
     cout << expectedCost / nsims << endl;
     cout << totalPlanningTime << endl;
@@ -232,8 +269,6 @@ int main(int argc, char* args[])
         delete reduction;
     reducedModel->cleanup();
     delete reducedModel;
-    wrapperProblem->cleanup();
-    delete wrapperProblem;
     delete problem;
     return 0;
 }

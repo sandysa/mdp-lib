@@ -349,7 +349,7 @@ void FFReducedModelSolver::lao(mlcore::State* s0)
             if (error < epsilon_)
                                                                                 {
                                                                                   mdplib_debug = true;
-                                                                             //     dprint1("Visiting BPSG");
+                                                                    //              dprint1("Visiting BPSG");
                                                                                   list<mlcore::State*> tmpStack;
                                                                                   tmpStack.push_back(s0);
                                                                                   visited.clear();
@@ -361,10 +361,10 @@ void FFReducedModelSolver::lao(mlcore::State* s0)
                                                                                     if (x->deadEnd() || problem_->goal(x))
                                                                                       continue;
                                                                                     mlcore::Action* y = x->bestAction();
-                                                                                   dprint1("*****************************");
-                                                                                    dprint1(x);
-                                                                                    dprint1(y);
-                                                                                    dprint1(x->cost());
+                                                                     //              dprint1("*****************************");
+                                                                      //              dprint1(x);
+                                                                      //              dprint1(y);
+                                                                      //              dprint1(x->cost());
                                                                                     for (auto const & z : problem_->transition(x, y)) {
                                                                                       tmpStack.push_back(z.su_state);
                                                                                     }

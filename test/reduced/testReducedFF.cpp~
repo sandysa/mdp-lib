@@ -56,11 +56,7 @@ ReducedHeuristicWrapper* reducedHeuristic = nullptr;
 WrapperProblem* wrapperProblem = nullptr;
 list<ReducedTransition *> reductions;
 
-string ffExec="FF-v2.3-goldman/ff";
-//string ffExec = "../../FF-v2.3-goldman/ff";
-//string ffDomain = "-o /home/lpineda/Desktop/domain.pddl";
-//string ffProblem = "-f /home/lpineda/Desktop/problem.pddl";
-//string ffCommand = ffExec + " " + ffDomain + " " + ffProblem;
+string ffExec = "/home/mygithub/mdp-lib/FF-v2.3-goldman/ff";
 
 
 /*
@@ -100,8 +96,8 @@ bool initPPDDL(string ppddlArgs)
         ppddlArgs.substr(pos_equals + 1, ppddlArgs.size() - pos_equals);
 
     pair<state_t *,Rational> *initial = nullptr;
-	
-   if( !read_file( file.c_str() ) ) {
+
+    if( !read_file( file.c_str() ) ) {
         cerr << "<main>: ERROR: couldn't read problem file `" << file << endl;
         return false;
     }
@@ -146,6 +142,7 @@ bool initPPDDL(string ppddlArgs)
  *    --dir: the directory to use for FF. This directory must contain the file
  *        at "det_problem" as well as a file called "p01.pddl" containing only
  *        the PPDDL problem description (i.e., init and goal, not the domain).
+ *        The init state must be described in a single line.
  *        The user of testReducedFF is responsible for ensuring consistency
  *        between p01.pddl and the file passed in the "problem" flag.
  */
@@ -182,10 +179,14 @@ int main(int argc, char* args[])
     if (flag_is_registered_with_value("v"))
         verbosity = stoi(flag_value("v"));
 
+    bool useFF = true;
+    if (flag_is_registered("no-ff"))
+        useFF = false;
+
     // The number of simulations for the experiments.
     int nsims = 100;
-    if (flag_is_registered_with_value("nsims"))
-        nsims = stoi(flag_value("nsims"));
+    if (flag_is_registered_with_value("n"))
+        nsims = stoi(flag_value("n"));
 
     initPPDDL(ppddlArgs);
 
@@ -208,7 +209,9 @@ int main(int argc, char* args[])
                                 ffExec,
                                 directory + "/" + detProblem,
                                 directory + "/p01.pddl",
-                                k);
+                                k,
+                                1.0e-3,
+                                useFF);
     solver.solve(wrapperProblem->initialState());
     clock_t endTime = clock();
     totalPlanningTime += (double(endTime - startTime) / CLOCKS_PER_SEC);
@@ -221,8 +224,8 @@ int main(int argc, char* args[])
     for (int i = 0; i < nsims; i++) {
         pair<double, double> costAndTime =
             reducedModel->trial(solver, wrapperProblem);
-                                                                                cerr << costAndTime.first << endl;
         expectedCost += costAndTime.first;
+                                                                                cerr << costAndTime.first << " " << expectedCost / (i+1) << endl;
     }
     cout << expectedCost / nsims << endl;
     cout << totalPlanningTime << endl;

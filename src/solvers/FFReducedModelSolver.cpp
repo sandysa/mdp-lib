@@ -1,9 +1,10 @@
 #include <fstream>
 #include <sstream>
 
-
+#include "../../include/ppddl/PPDDLProblem.h"
+#include "../../include/ppddl/mini-gpt/problems.h"
+#include "../../include/reduced/ReducedModel.h"
 #include "../../include/reduced/ReducedState.h"
-
 #include "../../include/solvers/FFReducedModelSolver.h"
 
 
@@ -15,37 +16,90 @@ using namespace std;
 namespace mlsolvers
 {
 
+void FFReducedModelSolver::storeRemovedInitAtoms()
+{
+    mlreduced::ReducedModel* reducedModel =
+        dynamic_cast<mlreduced::ReducedModel*> (problem_);
+    assert(reducedModel);
+    mlppddl::PPDDLProblem* originalProblem =
+        dynamic_cast<mlppddl::PPDDLProblem*> (reducedModel->originalProblem());
+    assert(originalProblem);
 
-string FFReducedModelSolver::extractStatePredicates(PPDDLState* state)
+    // Storing all atoms in the initial state
+    ifstream problemTemplateFile_;
+    problemTemplateFile_.open(templateProblemFilename_, ifstream::in);
+    string line;
+    unordered_set<string> initAtoms;
+    if (problemTemplateFile_.is_open()) {
+        while (getline(problemTemplateFile_, line)) {
+            size_t idx = line.find("init");
+            if (idx != string::npos) {
+                for (int i = idx + 4; i < line.size(); i++) {
+                    if (line[i] == '(') {
+                        string atom = "";
+                        do {
+                            atom += line[i];
+                        } while (line[i++] != ')');
+                        initAtoms.insert(atom);
+                        i--;
+                    }
+                }
+            }
+        }
+        problemTemplateFile_.close();
+    }
+
+    // Figuring out which atoms were removed from the PPDDL parser
+    problem_t* pProblem = originalProblem->pProblem();
+    Domain dom = pProblem->domain();
+    PredicateTable& preds = dom.predicates();
+    TermTable& terms = pProblem->terms();
+    for (auto const & atom : problem_t::atom_hash()) {
+        ostringstream oss;
+        atom.first->print(oss, preds, dom.functions(), terms);
+        if (initAtoms.find(oss.str()) != initAtoms.end())
+            initAtoms.erase(oss.str());
+    }
+
+    // Storing the removed atoms
+    removedInitAtoms_ = "";
+    for (string atom : initAtoms)
+        removedInitAtoms_ += atom + " ";
+}
+
+
+string FFReducedModelSolver::extractStateAtoms(PPDDLState* state)
 {
     ostringstream oss;
     oss << state;
     string stateStr = oss.str();
-    string currentStatePredicates = "";
+    string atomsCurrentState = "";
     for (int i = 0; i < stateStr.size(); i++) {
+        // The format of a PPDDLState "tostring" conversion is
+        // [ atom_1_Id:(atom_1), atom_2_Id:(atom_2), ..., atom_N_Id:(atom_N) ]
         if (stateStr[i] == ':') {
             i++;
             do {
-                currentStatePredicates += stateStr[i];
+                atomsCurrentState += stateStr[i];
             } while (stateStr[i++] != ')');
-            currentStatePredicates += " ";
+            atomsCurrentState += " ";
         }
     }
-    return currentStatePredicates;
+    return atomsCurrentState;
 }
 
 
 void FFReducedModelSolver::replaceInitStateInProblemFile(
-    string currentStatePredicates)
+    string atomsCurrentState)
 {
-    std::ifstream problemTemplateFile_;
+    ifstream problemTemplateFile_;
     problemTemplateFile_.open(templateProblemFilename_, ifstream::in);
     string line;
     string newProblemText = "";
     if (problemTemplateFile_.is_open()) {
         while (getline(problemTemplateFile_, line)) {
             if (line.find("init") != string::npos) {
-                line = "  (:init " + currentStatePredicates + ")";
+                line = "(:init " + removedInitAtoms_ + atomsCurrentState + ")";
             }
             newProblemText += line + "\n";
         }
@@ -63,7 +117,6 @@ pair<string, int> FFReducedModelSolver::getActionNameAndCostFromFF()
     string ffDomain = "-o " + determinizedDomainFilename_;
     string ffProblem = "-f " + currentProblemFilename_;
     string ffCommand = ffExecFilename_ + " " + ffDomain + " " + ffProblem;
-//                                                                                dprint1(ffCommand);
     string actionName = "__mdplib-dead-end__";
     FILE *ff = popen(ffCommand.c_str(), "r");
     int costFF = floor(mdplib::dead_end_cost);
@@ -71,7 +124,6 @@ pair<string, int> FFReducedModelSolver::getActionNameAndCostFromFF()
         char lineBuffer[1024];
         int currentLineAction = -1;
         while (fgets(lineBuffer, 1024, ff)) {
-  //                                                                                cerr << lineBuffer;
             if (strstr(lineBuffer, "goal can be simplified to FALSE.") !=
                     nullptr) {
                 break;
@@ -105,7 +157,6 @@ pair<string, int> FFReducedModelSolver::getActionNameAndCostFromFF()
     for (int i = 0; i < actionName.size(); i++) {
         actionName[i] = tolower(actionName[i]);
     }
-//                                                                                dprint4("CostFF", costFF, "action", actionName);
     return make_pair(actionName, costFF);
 }
 
@@ -124,154 +175,15 @@ mlcore::Action* FFReducedModelSolver::getActionFromName(string actionName)
 }
 
 
-mlcore::Action*
-FFReducedModelSolver::greedyAction_(mlcore::State* s, int horizon)
-{
-    if (horizon == 0) {
-        assert(ffStateActions_.count(s) > 0);
-        return ffStateActions_[s];
-    }
-    double qBestAction = mdplib::dead_end_cost + 1;
-    mlcore::Action* bestAction = nullptr;
-                                                                                bool check = false;
-    for (mlcore::Action* a : problem_->actions()) {
-        if (!problem_->applicable(s, a))
-            continue;
-//                                                                                check = true;
-//                                                                                dprint2("  APPLICABLE", a);
-//                                                                                mdplib_debug = false;
-        double qAction = this->qValue_(s, a, horizon);
-//                                                                                mdplib_debug = true;
-//                                                                                dprint2("  q-action", qAction);
-        if (qAction <= qBestAction) {
-//                                                                                dprint2("  BETTER", a);
-            qBestAction = qAction;
-            bestAction = a;
-        }
-    }
-//                                                                                if (!check) {
-                                                                                    dprint1("OMG!!! DEADEND!!");
-//                                                                                }
-    return bestAction;
-}
-
-
-double
-FFReducedModelSolver::qValue_(mlcore::State* s, mlcore::Action* a, int horizon)
-{
-//                                                                                dprint4("  Q-VALUE", s, a, horizon);
-//                                                                                assert(horizon > 0);
-    double qv = 0.0;
-    for (auto const & successor : problem_->transition(s, a)) {
-        qv += successor.su_prob *
-            estimatedCosts_[horizon - 1][successor.su_state];
-//                                                                                dprint4("    ",
-//                                                                                        successor.su_state,
-//                                                                                        successor.su_prob,
-//                                                                                        estimatedCosts_[horizon - 1][successor.su_state]);
-    }
-    return problem_->cost(s, a) + problem_->gamma() * qv;
-}
-
-
-double
-FFReducedModelSolver::solve(mlcore::State* s, int horizon, bool& isDeadEnd)
-{//                                                                                cerr << lineBuffer;
-
-//                                                                                for(int i = 0; i < 2 * (maxHorizon_ - horizon); i++) cerr << " ";
-                                                                                dprint3("SOLVING", s, horizon);
-    if (horizon == 0) {
-        // For horizon = 0 we just call FF.
-        string statePredicates = extractStatePredicates((PPDDLState*) s);
-        replaceInitStateInProblemFile(statePredicates);
-        mlcore::Action* stateFFAction;
-        int stateFFCost;
-        if (ffStateActions_.count(s)) {
-            stateFFAction = ffStateActions_[s];
-            stateFFCost = ffStateCosts_[s];
-        } else {
-            pair<string, int> actionNameAndCost = getActionNameAndCostFromFF();
-            stateFFAction = getActionFromName(actionNameAndCost.first);
-            ffStateActions_[s] = stateFFAction;
-            ffStateCosts_[s] = actionNameAndCost.second;
-            estimatedCosts_[0][s] = actionNameAndCost.second;
-        }
-        isDeadEnd = (stateFFAction == nullptr);
-//                                                                                for(int i = 0; i < 2 * (maxHorizon_ - horizon); i++) cerr << " ";
-                                                                    //            dprint2("RESULT", estimatedCosts_[0][s]);
-        return 0.0;
-    } else {
-        double maxResidual = 0.0;
-        mlcore::Action* action = this->greedyAction_(s, horizon);
-
-        if (action == nullptr) {
-            // This state is a dead-end.
-            isDeadEnd = true;
-            estimatedCosts_[horizon][s] = mdplib::dead_end_cost;
-            return 0.0;
-        }
-//                                                                                for(int i = 0; i < 2 * (maxHorizon_ - horizon); i++) cerr << " ";
-                                                                                dprint2("BEST ACTION BEFORE", action);
-                                                                                dprint1((void *) action);
-        bool newIsDeadEnd = true;
-        for (auto const & successor : problem_->transition(s, action)) {
-            maxResidual = std::max(maxResidual,
-                                   solve(successor.su_state,
-                                         horizon - 1,
-                                         isDeadEnd));
-            newIsDeadEnd &= isDeadEnd;
-
-        }
-        isDeadEnd = newIsDeadEnd;
-
-        // Computing the new best action.
-        mlcore::Action* prevAction = action;
-        action = this->greedyAction_(s, horizon);
-//                                                                                for(int i = 0; i < 2 * (maxHorizon_ - horizon); i++) cerr << " ";
-                                                                                  dprint2("BEST ACTION AFTER", action);
-
-        // Computing the new estimated cost of this state.
-        double newCost = std::min(this->qValue_(s, action, horizon),
-                                   mdplib::dead_end_cost);
-        double residual = fabs(estimatedCosts_[horizon][s] - newCost);
-        estimatedCosts_[horizon][s] = newCost;
-
-        if (prevAction != action) {
-            // The best action changed, therefore it hasn't converged.
-            residual = mdplib::dead_end_cost;
-        }
-        maxResidual = std::max(maxResidual, residual);
-//                                                                                for(int i = 0; i < 2 * (maxHorizon_ - horizon); i++) cerr << " ";
-                                                                      //          dprint2("RESULT", estimatedCosts_[horizon][s]);
-//                                                                                for(int i = 0; i < 2 * (maxHorizon_ - horizon); i++) cerr << " ";
-                                                                                dprint3("RESIDUAL", residual, isDeadEnd);
-        return maxResidual;
-    }
-
-}
-
-
 mlcore::Action* FFReducedModelSolver::solve(mlcore::State* s0)
 {
-//                                                                                bool prev = mdplib_debug;
-                                                                                mdplib_debug = false;
-                                                                                dprint2("xxxxxxxxxxxx", s0);
-//    double residual = mdplib::dead_end_cost;
-//    while (residual > 1.0e-3) {
-//        bool isDeadEnd = true;
-//        residual = solve(s0, maxHorizon_, isDeadEnd);
-//                                                                                dprint1(estimatedCosts_[maxHorizon_][s0]);
-//    }
     this->lao(s0);
-//                                                                                mdplib_debug = prev;
     return s0->bestAction();
-//    return this->greedyAction_(s0, maxHorizon_);
 }
 
 
 void FFReducedModelSolver::lao(mlcore::State* s0)
 {
-                                                                                dprint1("LAO*");
     // This is a stack based implementation of LAO*.
     // We don't use the existing library implementation because we are going to
     // solve the reduced states with j=k using FF.
@@ -293,25 +205,19 @@ void FFReducedModelSolver::lao(mlcore::State* s0)
                 int cnt = 0;
                 if (s->bestAction() == nullptr) {
                     // state has never been expanded.
-                                                                                dprint2("NEVER EXPANDED", s);
                     this->bellmanUpdate(s);
                     countExpanded++;
                     continue;
                 } else {
                     mlcore::Action* a = s->bestAction();
-                                                                                dprint3("ALREADY EXPANDED", s, a);
                     for (Successor sccr : problem_->transition(s, a)) {
                         stateStack.push_back(sccr.su_state);
-                                                                                dprint2("    SUCCESSOR", sccr.su_state);
                     }
                 }
                 this->bellmanUpdate(s);
             }
-                                                                                dprint4("count expanded", countExpanded,
-                                                                                        "cost initial state", s0->cost());
-//                                                                                dsleep(500);
         } while (countExpanded != 0);
-                                                                   //             dprint1("TEST CONVERGENCE");
+
         while (true) {
             visited.clear();
             list<mlcore::State*> stateStack;
@@ -322,59 +228,26 @@ void FFReducedModelSolver::lao(mlcore::State* s0)
                 stateStack.pop_back();
                 if (!visited.insert(s).second)
                     continue;
-                                                                                dprint2("TESTING", s);
                 if (s->deadEnd() || problem_->goal(s))
                     continue;
                 mlcore::Action* prevAction = s->bestAction();
-                                                                                dprint3("TESTING", s, prevAction);
                 if (prevAction == nullptr) {
                     // if it reaches this point it hasn't converged yet.
-                                                                                dprint1("NO-ACTION FOR s");
                     error = mdplib::dead_end_cost + 1;
                 } else {
                     for (Successor sccr : problem_->transition(s, prevAction)) {
-                                                                                dprint2("    SUCCESSOR", sccr.su_state);
                         stateStack.push_back(sccr.su_state);
                     }
                 }
                 error = std::max(error, this->bellmanUpdate(s));
-                                                                                dprint2("ERROR FOR s", error);
                 if (prevAction != s->bestAction()) {
-                                                                                dprint1("NO CONVERGENCE");
                     // it hasn't converged because the best action changed.
                     error = mdplib::dead_end_cost + 1;
                     break;
                 }
             }
             if (error < epsilon_)
-                                                                                {
-                                                                                  mdplib_debug = true;
-                                                                                  dprint1("Visiting BPSG");
-                                                                                  list<mlcore::State*> tmpStack;
-                                                                                  tmpStack.push_back(s0);
-                                                                                  visited.clear();
-                                                                                  while (!tmpStack.empty()) {
-                                                                                    mlcore::State* x = tmpStack.back();
-                                                                                    tmpStack.pop_back();
-                                                                                    if (!visited.insert(x).second)
-                                                                                      continue;
-                                                                                    if (x->deadEnd() || problem_->goal(x))
-                                                                                      continue;
-                                                                                    mlcore::Action* y = x->bestAction();
-                                                                                   dprint1("*****************************");
-                                                                                    dprint1(x);
-                                                                                    dprint1(y);
-                                                                                    dprint1(x->cost());
-                                                                                    for (auto const & z : problem_->transition(x, y)) {
-                                                                                      tmpStack.push_back(z.su_state);
-                                                                                    }
-                                                                                    bellmanBackup(problem_, x);
-                                                                              //      dprint1("*****************************");
-                                                                                  }
-                                                                                  dprint1("Done!");
-                                                                                  mdplib_debug = false;
                 return;
-                                                                                }
             if (error > mdplib::dead_end_cost) {
                 break;  // BPSG changed, must expand tip nodes again
             }
@@ -395,14 +268,14 @@ double FFReducedModelSolver::bellmanUpdate(mlcore::State* s)
         }
     }
 
-                                                                                dprint2("*** backup", s);
     mlreduced::ReducedState* redState = (mlreduced::ReducedState* ) s;
-    if (redState->exceptionCount() == maxHorizon_) {
-//    if (redState->exceptionCount() == 10000) {
+    if (useFF_ && redState->exceptionCount() == maxHorizon_) {
         // For exceptionCount = k we just call FF.
-        PPDDLState* pState = (PPDDLState*) redState->originalState();
-        string statePredicates = extractStatePredicates((PPDDLState*) pState);
-        replaceInitStateInProblemFile(statePredicates);
+        PPDDLState* pState =
+            static_cast<PPDDLState*> (redState->originalState());
+        string stateAtoms = extractStateAtoms(
+            static_cast<PPDDLState*> (pState));
+        replaceInitStateInProblemFile(stateAtoms);
         mlcore::Action* stateFFAction;
         int stateFFCost;
         if (ffStateActions_.count(s)) {
@@ -410,12 +283,7 @@ double FFReducedModelSolver::bellmanUpdate(mlcore::State* s)
             stateFFCost = ffStateCosts_[s];
         } else {
             pair<string, int> actionNameAndCost = getActionNameAndCostFromFF();
-//                                                                                mdplib_debug = true;
-//                                                                                dprint1(s);
-//                                                                                dprint3("called-FF",
-//                                                                                        actionNameAndCost.first,
-//                                                                                        actionNameAndCost.second);
-//                                                                                mdplib_debug = false;
+
             // If FF finds this state is a dead-end,
             // getActionNameAndCostFromFF() returns "__mdplib-dead-end__"
             // getActionFromName() returns a nullptr.
@@ -435,27 +303,10 @@ double FFReducedModelSolver::bellmanUpdate(mlcore::State* s)
     double residual = s->cost() - best.bb_cost;
 
     if (s->deadEnd()) {
-                                                                                dprint3("xxx backup", s, "DEAD-END!");
         s->setCost(mdplib::dead_end_cost);
         return 0.0;
     }
 
-//                                                                                mdplib_debug = true;
-//                                                                                if (redState->exceptionCount() == maxHorizon_) {
-//                                                                                    dprint1("*************************");
-//                                                                                    dprint1(s);
-                                                                                    dprint3("compare", best.bb_cost, ffStateCosts_[s]);
-//                                                                                    dprint1(best.bb_action);
-//                                                                                    for (auto const & ssss : problem_->transition(s, best.bb_action)) {
-//                                                                                        dprint2("    ", ssss.su_state);
-//                                                                                    }
-//                                                                                    bellmanBackup(problem_, s);
-//                                                                                    dprint1("*************************");
-//                                                                                }
-//                                                                                mdplib_debug = false;
-
-
-                                                                                dprint3("xxx backup", s, best.bb_action);
     s->setCost(best.bb_cost);
     s->setBestAction(best.bb_action);
     return fabs(residual);

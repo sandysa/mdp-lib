@@ -3,7 +3,7 @@
   (:types location)
   (:predicates (vehicle-at ?loc - location)
 	       (umbrella-in ?loc - location)
-	       (road ?from - location ?to - location)
+	       (road ?from ?to - location)
 	       (has-umbrella))
    
   (:action pickumbrella

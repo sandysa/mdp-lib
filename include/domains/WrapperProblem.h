@@ -49,11 +49,11 @@ private:
      /*
       * If true, then the destructor can be called safely.
       */
-      bool clean_ = false;
+      bool clean;
 
 public:
 
-    WrapperProblem(mlcore::Problem* problem) : clean_(false)
+    WrapperProblem(mlcore::Problem* problem) : clean(false)
     {
         dummyState_ = new DummyState();
         absorbing_ = new DummyState();
@@ -65,7 +65,7 @@ public:
     virtual ~WrapperProblem()
     {
         // Method free up must be called before the destructor.
-        assert(clean_);
+        assert(clean);
         // No need to delete dummy because the parent constructor will delete it.
     }
 
@@ -104,7 +104,7 @@ public:
             overrideStates_->insert(dummyState_);
         }
         actions_ = std::list<mlcore::Action*> ();
-        clean_ = true;
+        clean = true;
     }
 
     /**
@@ -154,11 +154,24 @@ public:
      * as there are override states.
      *
      * @param newStates The set of states that will override the previous ones.
+     * @param setToZero If true, the estimated cost of the state will be set
+     *                  to zero.
      */
-    void overrideStates(mlcore::StateSet* newStates)
+    void overrideStates(mlcore::StateSet* newStates, bool setToZero = false)
     {
         overrideStates_ = newStates;
+        if (setToZero) {
+            for (mlcore::State* s : *overrideStates_)
+                s->setCost(0.0);
+        }
+
     }
+
+    /**
+     * Returns the set of states that override the state of the original
+     * problem.
+     */
+    mlcore::StateSet* overrideStates() { return overrideStates_; }
 
     /**
      * Overrides method from Problem.
@@ -178,6 +191,8 @@ public:
 
     /**
      * Overrides method from Problem.
+     * If a state is part of overrideGoals_, this method will return the
+     * current estimated cost of the state as the cost of the action.
      */
     virtual double cost(mlcore::State* s, mlcore::Action* a) const;
 
