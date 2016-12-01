@@ -25,6 +25,9 @@
 
 #include "../../include/Problem.h"
 
+#include <algorithm>
+#include <regex>
+
 using namespace std;
 using namespace mdplib;
 using namespace mlppddl;
@@ -47,10 +50,9 @@ mlcore::Heuristic* heuristic = nullptr;
  */
 static bool read_file( const char* ppddlFileName )
 {
-    yyin = fopen( ppddlFileName, "r" );
+   	yyin = fopen( ppddlFileName, "r" );
      if( yyin == NULL ) {
-        cout << "parser:" << ppddlFileName <<
-            ": " << strerror( errno ) << endl;
+        cout << "parser:" << ppddlFileName << ": " << strerror( errno ) << endl;
         return( false );
     }
     else {
@@ -86,22 +88,19 @@ bool initPPDDL(string ppddlArgs)
     problem_t* internalPPDDLProblem =
         (problem_t *)(problem_t::find(prob.c_str()));
     if( !internalPPDDLProblem ) {
-        cerr << "<main>: ERROR: problem `" << prob <<
-            "' is not defined in file '" << file << "'" << endl;
+        cerr << "<main>: ERROR: problem `" << prob << "' is not defined in file '" << file << "'" << endl;
         return false;
     }
 
     problem = new PPDDLProblem(internalPPDDLProblem);
-    heuristic = new mlppddl::PPDDLHeuristic(static_cast<PPDDLProblem*>(problem),
-                                            mlppddl::FF);
-//                                            mlppddl::atomMin1Forward);
-    problem->setHeuristic(heuristic);
+//    heuristic = new mlppddl::PPDDLHeuristic(static_cast<PPDDLProblem*>(problem),mlppddl::FF);
+//    problem->setHeuristic(heuristic);
 }
 
 
 
-
-mlcore::State* getBestSucc(mlcore::Problem* problem,
+/*  Additions by Sandhya - starts here until split*/
+mlcore::State* getBestSucc_leastCost(mlcore::Problem* problem,
                                mlcore::State* s,
                                mlcore::Action* a)
 {
@@ -117,12 +116,77 @@ mlcore::State* to_ret;
   return to_ret;
 }
 
+mlcore::State* getBestSucc_maxProb(mlcore::Problem* problem,
+                               mlcore::State* s,
+                               mlcore::Action* a)
+{
+double max = 0.0;
+mlcore::State* to_ret;
+	for (mlcore::Successor sccr : problem->transition(s, a)) {
+        if (sccr.su_prob >0 && sccr.su_prob > max)
+	{
+		max  = sccr.su_prob;
+		to_ret = sccr.su_state;
+	}
+    }
+  return to_ret;
+}
 
+vector<string> split(const string &s, const char* delim){
+    // to avoid modifying original string
+    // first duplicate the original string and return a char pointer then free the memory
+    vector<string> v,v1;
+    std::string s1 = s;
+	s1.erase(std::remove(s1.begin(), s1.end(), '['), s1.end());
+	std::replace(s1.begin(), s1.end(), ']',' ');
+    char * dup = strdup(s1.c_str());
+    
+    char * token = strtok(dup, delim);
+    while(token != NULL){
+        v.push_back(string(token));
+        token = strtok(NULL, delim);
+    }
+    free(dup);
+
+	 for (int i = 0; i < v.size(); i=i+2){
+            v1.push_back(v[i]); }
+	return v1;
+}
+
+
+std::string toString(mlcore:: State* s)
+{
+	//PPDDLState* state = (PPDDLState *) s;
+	std::ostringstream buffer; 
+   	buffer << s;
+    return buffer.str()  ;
+}
+
+mlcore::State* getGoal()
+{
+	for (mlcore::State* s : problem->states()) {
+	if(problem->goal(s)){
+		return s; }	
+	}
+}
+
+int getCount(string &s, vector<string> goal_config) {
+	int count =0;
+	for(int i=0;i< goal_config.size();i++) {
+	std::size_t found = s.find(goal_config[i]);
+  	if (found!=std::string::npos){
+	count++;
+	}
+	} 
+
+return count;
+
+}
 int main(int argc, char* args[])
 {
     register_flags(argc, args);
 	
-	bool print_states = true;
+	bool print_states = false;
 	bool print_actions = false;
 	bool print_trans = false;
     // Reading flags.
@@ -146,45 +210,82 @@ int main(int argc, char* args[])
    }
  mlcore::StateSet reachableStates, tipStates;
 
-// generate all states : 
-	problem->generateAll();
+	problem->generateAll(); // generate all states
 
-/******** PRINT THE PROBLEM *******************/
-if(print_states){	
-int states_count =0 ;
-cout<<"printing states : \n";
-for (mlcore::State* s : problem->states()) {
-	states_count++;
-}
-cout<<"number of states = "<< states_count <<"\n";
-}
-int action_count =0;
-if(print_actions){
-cout<<"\n printing actios : \n";
-for (mlcore::Action* a : problem->actions()) {
+
+	/********Printing details- added by sandhya************/
+
+	int states_count =0 ;
+	for (mlcore::State* s : problem->states()) {
+		states_count++;
+	}
+	cout<<"S="<< states_count <<"\n";
+	
+	int action_count =0;
+	for (mlcore::Action* a : problem->actions()) {
 	action_count++;
-}
-	cout<<"number of actions = " <<action_count <<"\n";
-}
+	}
+	cout<<"A=" <<action_count <<"\n";
 
-if(print_trans){
-int trans_count =0 ;
-cout<<"\n printing transitions : \n";
-for (mlcore::State* s : problem->states()) {
-for(mlcore::Action* a: problem->actions()){
-if(problem->applicable(s, a)){
- for (mlcore::Successor su : problem->transition(s, a)) {
-	trans_count++;
-}
-}
-}
-}
-	cout<<"trans count = "<< trans_count <<"\n";
-}
+	cout<<"Init =" << problem->initialState() <<"\n";
+	for (mlcore::State* s : problem->states()) {
+		if(problem->goal(s))
+	cout <<"Goal="<<s <<"\n";
+	}
+/******** PRINT THE PROBLEM- added by sandhya *******************/
+	if(print_states){	
+	//int states_count =0 ;
+	cout<<"printing states : \n";
+	for (mlcore::State* s : problem->states()) {
+	//states_count++;
+	cout<<s <<"\n";
+	}
+	//cout<<"S="<< states_count <<"\n";
+	}
+	//int action_count =0;
+	if(print_actions){
+	cout<<"printing actions : \n";
+	for (mlcore::Action* a : problem->actions()) {
+	//action_count++;
+	cout<<a <<"\n";
+	}
+	//cout<<"number of actions = " <<action_count <<"\n";
+	}
+
+//added by sandhya
+	if(print_trans){
+	cout<<"printing transitions : \n";
+	for (mlcore::State* s : problem->states()) {
+		for(mlcore::Action* a: problem->actions()){
+			if(problem->applicable(s, a)){
+ 				for (mlcore::Successor su : problem->transition(s, a)) {
+					cout<< "s = " <<s << ";";
+					cout<<"a = "<< a <<";";
+					cout<< "j = " << su.su_state <<";";
+					cout<< "prob = "<< su.su_prob <<"\n";
+				}
+			}
+		}
+	}
+} 
+
+
+// set new cost
+/* for (mlcore::State* s : problem->states()) {
+	for (mlcore::Action* a : problem->actions()) {
+		if(problem->applicable(s,a)){
+			problem->setcost(s,a); 
+		          problem->hello(s,a);
+			}
+		}
+	} */
+
+
+
 
 //solving using lao*
 
-/*    double totalPlanningTime = 0.0;
+   double totalPlanningTime = 0.0;
     clock_t startTime = clock();
     LAOStarSolver solver(problem);
     solver.solve(problem->initialState());
@@ -192,26 +293,30 @@ if(problem->applicable(s, a)){
     totalPlanningTime += (double(endTime - startTime) / CLOCKS_PER_SEC);
     cout << "cost " << problem->initialState()->cost() <<
         " time " << totalPlanningTime << endl;
-	cout<<"Printing best action:\n";
-	for (mlcore::State* s : problem->states()) {
-		if(s->bestAction() != nullptr)
+//	cout<<"Printing best action:\n";
+//	for (mlcore::State* s : problem->states()) {
+//		if(s->bestAction() != nullptr)
 		//cout<<s <<": has no best action\n";
 		//else
-		cout<<""<<s<< " : "<< s->bestAction() <<"\n";
-} */
+//		cout<<""<<s<< " : "<< s->bestAction() <<"\n";
+//} 
 
 
 
 // solving using VI
- /*double totalPlanningTime = 0.0;
+/* double totalPlanningTime = 0.0;
     clock_t startTime = clock();
    VISolver vi(problem);
    vi.solve(problem->initialState());
    clock_t endTime = clock();
     totalPlanningTime += (double(endTime - startTime) / CLOCKS_PER_SEC);
     cout << "cost " << problem->initialState()->cost() <<
-        " time " << totalPlanningTime << endl;
-   for (mlcore::State* s : problem->states()) {
+        " time " << totalPlanningTime << endl; */
+	
+	
+
+	// cout <<goal_split;
+  /* for (mlcore::State* s : problem->states()) {
 	std::cout<<""<<s<<":"<<s->cost() <<"\n"; } */
 	
 
@@ -222,17 +327,37 @@ if(problem->applicable(s, a)){
  	  cout <<"error in file opening \n";
  	 } */
 //solve using ACAD
- double totalPlanningTime = 0.0;
+/* double totalPlanningTime = 0.0;
     clock_t startTime = clock();
 	VISolver vi(problem,100000000, 1.0e-6);
    	vi.solve(problem->initialState());
-	cout<<"VI Solved \n" << "***********************\n";  
+	cout<<"VI Solved \n" << "***********************\n";  */
 	
-	cout<<"Printing cost adjustment:\n";
+// get goal state config in string and predicates of the goal config
+/*	mlcore::State* g = getGoal();
+	string goal_config = toString(g);
+	cout<<"goal State \n " << goal_config <<"\n";
+	
+	char delimit[]="()";
+	vector<string> goal_split = split(goal_config,delimit);
+	
+	for (int i = 0; i < goal_split.size(); i++){
+        cout<<goal_split[i]<< "\n";
+	} */
+	
+	// convert state to string and get match count
+/*	cout<<"initial state\n ";
+	mlcore::State* s1 = problem->initialState();
+	std::string s1_string = toString(s1);
+	int count = getCount(s1_string, goal_split);
+	cout<< s1_string <<"  match count = "<< count <<"\n"; */
+
+
+/*	cout<<"Printing cost adjustment:\n";
 	int max_count = 0;
 	for (mlcore::State* s : problem->states()) {
 		max_count++;
-		if(max_count <= 500) {
+		if(max_count <= 200) {
 		double bestCost = 0;
 		int min = 100000.0;
 		double bestQ =0;
@@ -247,14 +372,20 @@ if(problem->applicable(s, a)){
 		}
 		}
 		}
-		mlcore::State* j = getBestSucc(problem, s, bestAction);
+		  mlcore::State* j = getBestSucc_leastCost(problem, s, bestAction);
+		//mlcore::State* j = getBestSucc_maxProb(problem, s, bestAction);
 		double bestVal = j->cost();
 		double new_cost = bestQ- bestVal;
-		cout<<""<<s << "best a"<< bestAction <<" : cost = "<< new_cost <<"\n"; 
-		//std::string to_write = ""+s+"  , best action =   "+ bestAction+", new cost = "+new_cost+"\n";
-		//fputs (to_write,pFile);
+		
+		std::string s1_string = toString(s);
+		int count = getCount(s1_string, goal_split);
+		vector<string> s_vector = split(s1_string, delimit);
+		double count_frac =  s_vector.size() - goal_split.size();
+		count_frac = count_frac / count ;
+//		cout<<""<<s << "best a"<< bestAction <<" : newcost = "<< new_cost <<" count = " << count <<" value = " << s->cost() << " fraction "<< count_frac <<"\n"; 
+		
  	}
-	} 
+	} */
 //fclose(pFile);
 /*	cout<<"Printing cost adjustment:\n";
 	for (mlcore::State* s : problem->states()) {

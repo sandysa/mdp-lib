@@ -18,7 +18,6 @@
 #include "../../include/ppddl/PPDDLHeuristic.h"
 #include "../../include/ppddl/PPDDLProblem.h"
 
-#include "../../include/reduced/BestDeterminizationReduction.h"
 #include "../../include/reduced/LeastLikelyOutcomeReduction.h"
 #include "../../include/reduced/MostLikelyOutcomeReduction.h"
 #include "../../include/reduced/RacetrackObviousReduction.h"
@@ -140,6 +139,8 @@ bool initPPDDL(string ppddlArgs)
 int main(int argc, char* args[])
 {
     register_flags(argc, args);
+    if (flag_is_registered("debug"))
+        mdplib_debug = true;
 
     // Reading flags.
     assert(flag_is_registered_with_value("domain"));
@@ -149,7 +150,6 @@ int main(int argc, char* args[])
 
     if (flag_is_registered_with_value("v"))
         verbosity = stoi(flag_value("v"));
-
 
     if (flag_is_registered_with_value("k"))
         k = stoi(flag_value("k"));
@@ -170,41 +170,9 @@ int main(int argc, char* args[])
 
     double totalReductionTime = 0.0;
     ReducedTransition* bestReduction = nullptr;
+    bestReduction = reductions.front();
     wrapperProblem = new WrapperProblem(problem);
-    mlcore::StateSet reachableStates, tipStates;
-////////////////////////////////////////////////
-    // Testing the code that evaluates the reductions on a small sub-problem
-    // We use this wrapper problem to generate small sub-problems for
-    // learning the best reduced model for the original problem.
-    if (!useFullTransition) {
-                                                                                mdplib_debug = true;
-        getReachableStates(wrapperProblem,
-                           wrapperProblem->initialState(),
-                           5,
-                           reachableStates,
-                           tipStates);
-
-        cout << "reachable " << reachableStates.size() <<
-            " tip " << tipStates.size() << endl;
-        wrapperProblem->overrideGoals(&tipStates);
-
-
-      wrapperProblem->overrideStates(&reachableStates);
-      BestDeterminizationReduction* best =
-          new BestDeterminizationReduction(wrapperProblem);
-
-//        wrapperProblem->setHeuristic(nullptr);
-//        clock_t startTimeReduction = clock();
-//        bestReduction = ReducedModel::getBestReduction(
-//              wrapperProblem, reductions, k, nullptr);
-//        clock_t endTimeReduction = clock();
-//        totalReductionTime =
-//            double(endTimeReduction - startTimeReduction) / CLOCKS_PER_SEC;
-
-        for (mlcore::State* s : wrapperProblem->states())
-            s->reset(); // Make sure the stored values/actions are cleared.
-    }
-/////////////////////////////////////////////////
+//    mlcore::StateSet reachableStates, tipStates;
 
     reducedModel = new ReducedModel(problem, bestReduction, k);
     reducedHeuristic = new ReducedHeuristicWrapper(heuristic);
@@ -230,7 +198,7 @@ int main(int argc, char* args[])
 
     // Running a trial of the continual planning approach.
     double expectedCost = 0.0;
-    int nsims = 30;
+    int nsims = 100;
     for (int i = 0; i < nsims; i++) {
         pair<double, double> costAndTime =
             reducedModel->trial(solver, wrapperProblem);
@@ -238,14 +206,6 @@ int main(int argc, char* args[])
     }
     cout << expectedCost / nsims << endl;
     cout << totalPlanningTime + totalReductionTime << endl;
-//    if (verbosity > 100) {
-//        cout << "Total cost " << costAndTime.first << endl;
-//        cout << "Total planning time " <<
-//            costAndTime.second + totalPlanningTime << endl;
-//    } else {
-//        cout << costAndTime.first << " "
-//            << costAndTime.second + totalPlanningTime << endl;
-//    }
 
     // Releasing memory
     for (auto reduction : reductions)

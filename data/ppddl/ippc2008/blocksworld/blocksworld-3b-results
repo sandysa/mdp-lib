@@ -20,3 +20,4 @@
 [ 0:(emptyhand) 10:(clear b3) 18:(clear b2) 20:(on b3 b1) 34:(on-table b2) 36:(on-table b1) ]best a(pick-up b3 b1) : newcost = 1.75 count = 1 value = 7.97222 fraction 1
 [ 6:(on-table b3) 8:(clear b1) 10:(clear b3) 18:(clear b2) 22:(holding b2) 36:(on-table b1) ]best a(put-on-block b2 b3) : newcost = 1.77778 count = 2 value = 4.88889 fraction 0.5
 [ 10:(clear b3) 18:(clear b2) 20:(on b3 b1) 30:(holding b1) 34:(on-table b2) ]best a(put-tower-down b3 b1) : newcost = 1 count = 0 value = 8.97222 fraction -nan
+

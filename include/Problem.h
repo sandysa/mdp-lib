@@ -101,14 +101,7 @@ public:
      */
     virtual double cost(State* s, Action *a) const =0;
 
-    /**
-     * Applicability check.
-     *
-     * Checks if the given action is applicable to the given state.
-     *
-     * @return true if the given action can be applied to the given state.
-     */
-    virtual bool applicable(State* s, Action *a) const =0;
+     virtual bool applicable(State* s, Action *a) const =0;
 
     /**
      * Initial state for this problem.
@@ -165,14 +158,11 @@ public:
     {
         bool check = states_.insert(s).second;
         State* ret = *states_.find(s);
-//                                                                                dprint2("addstate", s);
-//                                                                                dprint2((void *) s, (void *) ret);
         // If the the state was found but the object representing it in
         // memory is different to the given one, delete the given one.
         if ((void *) ret != (void *) s && !check) {
             delete s;
         }
-//                                                                                dprint1("afterdelete");
         return ret;
     }
 

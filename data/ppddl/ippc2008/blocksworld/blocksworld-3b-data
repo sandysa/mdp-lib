@@ -281,3 +281,4 @@ s = [ 6:(on-table b3) 8:(clear b1) 10:(clear b3) 18:(clear b2) 22:(holding b2) 3
 s = [ 10:(clear b3) 18:(clear b2) 20:(on b3 b1) 30:(holding b1) 34:(on-table b2) ];a = (put-tower-down b3 b1);j = [ 0:(emptyhand) 10:(clear b3) 18:(clear b2) 20:(on b3 b1) 34:(on-table b2) 36:(on-table b1) ];prob = 1
 s = [ 10:(clear b3) 18:(clear b2) 20:(on b3 b1) 30:(holding b1) 34:(on-table b2) ];a = (put-tower-on-block b3 b1 b2);j = [ 0:(emptyhand) 2:(on b1 b2) 10:(clear b3) 20:(on b3 b1) 34:(on-table b2) ];prob = 0.1
 s = [ 10:(clear b3) 18:(clear b2) 20:(on b3 b1) 30:(holding b1) 34:(on-table b2) ];a = (put-tower-on-block b3 b1 b2);j = [ 0:(emptyhand) 10:(clear b3) 18:(clear b2) 20:(on b3 b1) 34:(on-table b2) 36:(on-table b1) ];prob = 0.9
+

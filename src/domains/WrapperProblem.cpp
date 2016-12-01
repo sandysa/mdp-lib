@@ -14,9 +14,7 @@ std::list<mlcore::Successor>
 WrapperProblem::transition(mlcore::State* s, mlcore::Action* a)
 {
     if (s == absorbing_ ||
-            (overrideGoals_ != nullptr &&
-                !overrideGoals_->empty() &&
-                overrideGoals_->count(s) > 0)) {
+            (overrideGoals_ != nullptr && overrideGoals_->count(s) > 0)) {
         std::list<mlcore::Successor> successors;
         successors.push_back(mlcore::Successor(absorbing_, 1.0));
         return successors;
@@ -42,6 +40,12 @@ bool WrapperProblem::applicable(mlcore::State* s, mlcore::Action* a) const
 {
     if (s == dummyState_ || s == absorbing_)
         return a == dummyAction_;
+    if (overrideGoals_ != nullptr &&
+            !overrideGoals_->empty() && overrideGoals_->count(s) > 0) {
+        if (s->bestAction() != nullptr) {
+            return  s->bestAction();
+        }
+    }
     return problem_->applicable(s, a);
 }
 
