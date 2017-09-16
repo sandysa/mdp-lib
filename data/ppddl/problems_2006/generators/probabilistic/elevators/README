@@ -1,0 +1,6 @@
+Elevators generator.
+Author: Blai Bonet
+
+make
+usage: ./elevators <seed> <n> <m> <#elev> <#coins> <p>
+

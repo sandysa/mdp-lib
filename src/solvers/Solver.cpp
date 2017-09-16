@@ -3,6 +3,12 @@
 
 #include "../../include/solvers/Solver.h"
 
+//#include "../../test/reduced/CostEstimate.cpp"
+
+
+using namespace std;
+//using namespace acad;
+
 namespace mlsolvers
 {
 std::mutex bellman_mutex;
@@ -20,7 +26,9 @@ double qvalue(mlcore::Problem* problem, mlcore::State* s, mlcore::Action* a)
     for (mlcore::Successor su : problem->transition(s, a)) {
         qAction += su.su_prob * su.su_state->cost();
     }
-    qAction = (qAction * problem->gamma()) + problem->cost(s, a);
+ //    qAction = (qAction * problem->gamma()) + acad::new_cost_blocksworld(s,a,problem);
+//        qAction = (qAction * problem->gamma()) + acad::new_cost_triangletire(s,a,problem);
+       qAction = (qAction * problem->gamma()) + problem->cost(s, a);
     return qAction;
 }
 
@@ -143,7 +151,7 @@ mlcore::Action* greedyAction(mlcore::Problem* problem, mlcore::State* s)
 {
     if (s->bestAction() != nullptr)
         return s->bestAction();
-    mlcore::Action* bestAction;
+    mlcore::Action* bestAction = nullptr;
     double bestQ = mdplib::dead_end_cost;
     bool hasAction = false;
     for (mlcore::Action* a : problem->actions()) {
@@ -151,7 +159,7 @@ mlcore::Action* greedyAction(mlcore::Problem* problem, mlcore::State* s)
             continue;
         hasAction = true;
         double qAction = std::min(mdplib::dead_end_cost, qvalue(problem, s, a));
-        if (qAction < bestQ) {
+        if (qAction <= bestQ) {
             bestQ = qAction;
             bestAction = a;
         }

@@ -189,7 +189,7 @@ int main(int argc, char* args[])
 	
 	bool print_states = true;
 	bool print_actions = true;
-	bool print_trans = true;
+	bool print_trans = false;
     // Reading flags.
     assert(flag_is_registered_with_value("domain"));
     string domainName = flag_value("domain");
@@ -232,27 +232,23 @@ int main(int argc, char* args[])
 	for (mlcore::State* s : problem->states()) {
 		if(problem->goal(s))
 	cout <<"Goal="<<s <<"\n";
-	}
+	} 
 /******** PRINT THE PROBLEM *******************/
-	if(print_states){	
+/*	if(print_states){	
 	//int states_count =0 ;
 	cout<<"printing states : \n";
 	for (mlcore::State* s : problem->states()) {
-	//states_count++;
 	cout<<s <<"\n";
 	}
-	//cout<<"S="<< states_count <<"\n";
 	}
-	//int action_count =0;
+	
 	if(print_actions){
 	cout<<"printing actions : \n";
 	for (mlcore::Action* a : problem->actions()) {
-	//action_count++;
 	cout<<a <<"\n";
 	}
-	//cout<<"number of actions = " <<action_count <<"\n";
 	}
-
+ */
 if(print_trans){
 cout<<"printing transitions : \n";
 for (mlcore::State* s : problem->states()) {
@@ -267,51 +263,53 @@ if(problem->applicable(s, a)){
 	}
 	}
 }
-} 
+}  
 
+//solving using lao* -- without cost adjustment
 
-// set new cost
-/* for (mlcore::State* s : problem->states()) {
-	for (mlcore::Action* a : problem->actions()) {
-		if(problem->applicable(s,a)){
-			problem->setcost(s,a); 
-		          problem->hello(s,a);
-			}
-		}
-	} */
-
-
-
-
-//solving using lao*
-
-/*    double totalPlanningTime = 0.0;
+ /*   double totalPlanningTime = 0.0;
     clock_t startTime = clock();
+    bool costadjust = false;
     LAOStarSolver solver(problem);
     solver.solve(problem->initialState());
     clock_t endTime = clock();
     totalPlanningTime += (double(endTime - startTime) / CLOCKS_PER_SEC);
     cout << "cost " << problem->initialState()->cost() <<
-        " time " << totalPlanningTime << endl;
-	cout<<"Printing best action:\n";
-	for (mlcore::State* s : problem->states()) {
-		if(s->bestAction() != nullptr)
-		//cout<<s <<": has no best action\n";
-		//else
-		cout<<""<<s<< " : "<< s->bestAction() <<"\n";
-} */
+        " time " << totalPlanningTime << endl; 
+*/
+        
+//solving using lao* -- with cost adjustment
+
+/*    double totalPlanningTime = 0.0;
+    clock_t startTime = clock();
+    bool costadjust = true;
+    LAOStarSolver solver(problem,costadjust);
+    solver.solve(problem->initialState());
+    clock_t endTime = clock();
+    totalPlanningTime += (double(endTime - startTime) / CLOCKS_PER_SEC);
+    cout << "cost " << problem->initialState()->cost() <<
+        " time " << totalPlanningTime << endl; */
+        
+        
+//	cout<<"Printing best action:\n";
+// 	for (mlcore::State* s : problem->states()) {
+// 		if(s->bestAction() != nullptr)
+// 		//cout<<s <<": has no best action\n";
+// 		//else
+// 		cout<<""<<s<< " : "<< s->bestAction() <<"\n";
+// } 
 
 
 
 // solving using VI
- double totalPlanningTime = 0.0;
+/* double totalPlanningTime = 0.0;
     clock_t startTime = clock();
    VISolver vi(problem);
    vi.solve(problem->initialState());
    clock_t endTime = clock();
     totalPlanningTime += (double(endTime - startTime) / CLOCKS_PER_SEC);
     cout << "cost " << problem->initialState()->cost() <<
-        " time " << totalPlanningTime << endl; 
+        " time " << totalPlanningTime << endl; */
 	
 	
 

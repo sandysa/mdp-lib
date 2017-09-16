@@ -5,7 +5,6 @@
 #include "../State.h"
 
 #include "Solver.h"
-
 namespace mlsolvers
 {
 

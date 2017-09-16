@@ -1,7 +1,10 @@
 #include "../../include/ppddl/PPDDLAction.h"
 #include "../../include/ppddl/PPDDLProblem.h"
 #include "../../include/ppddl/PPDDLState.h"
+//#include "../../test/reduced/CostEstimate.cpp"
 
+using namespace std;
+//using namespace acad;
 namespace mlppddl
 {
 
@@ -23,13 +26,14 @@ PPDDLProblem::PPDDLProblem(problem_t* pProblem) : pProblem_(pProblem)
     actionList_t pActions = pProblem_->actionsT();
     for (int i = 0; i < pActions.size(); i++)
         actions_.push_back(new PPDDLAction(pActions[i], i));
+
 }
 
 
 bool PPDDLProblem::goal(mlcore::State* s) const
 {
     PPDDLState* state = (PPDDLState *) s;
-    return pProblem_->goal().holds(*state->pState());
+	return pProblem_->goal().holds(*state->pState());
 }
 
 
@@ -52,15 +56,20 @@ std::list<mlcore::Successor>
     return successors;
 }
 
-
+     
 double PPDDLProblem::cost(mlcore::State* s, mlcore::Action* a) const
 {
     PPDDLAction* action = (PPDDLAction *) a;
     PPDDLState* state = (PPDDLState *) s;
-
-    return action->pAction()->cost(*state->pState());
+	
+    
+    std::cout<<s<<endl;
+    
+   return action->pAction()->cost(*state->pState()); // luis
+//	return 3; //sandhya
+ 
+//	return acad::new_cost(s,a); //sandhya
 }
-
 
 bool PPDDLProblem::applicable(mlcore::State* s, mlcore::Action* a) const
 {

@@ -1,0 +1,35 @@
+/*********** Details: 3 blocks : blocksworld-3b.pddl
+**Init - all 3 on table
+***Final =  ontable(1) on(2,1) on(3,2) ***/
+
+
+printing states : 
+number of states = 22
+
+ printing actios : 
+number of actions = 78
+VI Solved 
+***********************
+Printing cost adjustment:
+[ 0:(emptyhand) 4:(on b2 b3) 6:(on-table b3) 8:(clear b1) 18:(clear b2) 36:(on-table b1) ]best a(pick-up-from-table b1) : cost = 1.33333
+[ 8:(clear b1) 10:(clear b3) 16:(on b3 b2) 22:(holding b2) 36:(on-table b1) ]best a(put-tower-down b3 b2) : cost = 1
+[ 2:(on b1 b2) 6:(on-table b3) 8:(clear b1) 10:(clear b3) 22:(holding b2) ]best a(put-tower-down b1 b2) : cost = 1
+[ 10:(clear b3) 14:(holding b3) 18:(clear b2) 26:(on b2 b1) 36:(on-table b1) ]best a(put-down b3) : cost = 1
+[ 0:(emptyhand) 2:(on b1 b2) 4:(on b2 b3) 6:(on-table b3) 8:(clear b1) ]best a(pick-tower b1 b2 b3) : cost = 1.8175
+[ 0:(emptyhand) 6:(on-table b3) 10:(clear b3) 18:(clear b2) 26:(on b2 b1) 36:(on-table b1) ]best a(pick-up b2 b1) : cost = 1.33333
+[ 6:(on-table b3) 10:(clear b3) 18:(clear b2) 26:(on b2 b1) 30:(holding b1) ]best a(put-tower-down b2 b1) : cost = 1
+[ 0:(emptyhand) 6:(on-table b3) 18:(clear b2) 26:(on b2 b1) 28:(on b1 b3) ]best a(pick-up b2 b1) : cost = 1.75
+[ 6:(on-table b3) 8:(clear b1) 18:(clear b2) 22:(holding b2) 28:(on b1 b3) ]best a(put-down b2) : cost = 1
+[ 0:(emptyhand) 8:(clear b1) 10:(clear b3) 16:(on b3 b2) 34:(on-table b2) 36:(on-table b1) ]best a(pick-up b3 b2) : cost = 1.75
+[ 8:(clear b1) 10:(clear b3) 14:(holding b3) 18:(clear b2) 34:(on-table b2) 36:(on-table b1) ]best a(put-down b3) : cost = 1
+[ 6:(on-table b3) 8:(clear b1) 10:(clear b3) 18:(clear b2) 30:(holding b1) 34:(on-table b2) ]best a(put-down b1) : cost = 1
+[ 0:(emptyhand) 2:(on b1 b2) 10:(clear b3) 20:(on b3 b1) 34:(on-table b2) ]best a(pick-up b3 b1) : cost = 1.75
+[ 0:(emptyhand) 6:(on-table b3) 8:(clear b1) 10:(clear b3) 18:(clear b2) 34:(on-table b2) 36:(on-table b1) ]best a(pick-up-from-table b2) : cost = 1.33333
+[ 2:(on b1 b2) 8:(clear b1) 10:(clear b3) 14:(holding b3) 34:(on-table b2) ]best a(put-down b3) : cost = 1
+[ 0:(emptyhand) 6:(on-table b3) 8:(clear b1) 18:(clear b2) 28:(on b1 b3) 34:(on-table b2) ]best a(pick-up b1 b3) : cost = 1.75
+[ 4:(on b2 b3) 6:(on-table b3) 8:(clear b1) 18:(clear b2) 30:(holding b1) ]best a(put-on-block b1 b2) : cost = 1.77778
+[ 0:(emptyhand) 2:(on b1 b2) 6:(on-table b3) 8:(clear b1) 10:(clear b3) 34:(on-table b2) ]best a(pick-up b1 b2) : cost = 1.75
+[ 0:(emptyhand) 10:(clear b3) 16:(on b3 b2) 26:(on b2 b1) 36:(on-table b1) ]best a(pick-up b3 b2) : cost = 1.75
+[ 0:(emptyhand) 10:(clear b3) 18:(clear b2) 20:(on b3 b1) 34:(on-table b2) 36:(on-table b1) ]best a(pick-up b3 b1) : cost = 1.75
+[ 6:(on-table b3) 8:(clear b1) 10:(clear b3) 18:(clear b2) 22:(holding b2) 36:(on-table b1) ]best a(put-on-block b2 b3) : cost = 1.77778
+[ 10:(clear b3) 18:(clear b2) 20:(on b3 b1) 30:(holding b1) 34:(on-table b2) ]best a(put-tower-down b3 b1) : cost = 1

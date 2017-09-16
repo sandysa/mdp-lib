@@ -1,0 +1,13 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
+#include "MDPLib.h"
+
+namespace acad
+{
+public:
+ std::string toString_state(mlcore:: State* s);
+ std::string toString_action(mlcore::Action* a1);
+
+}

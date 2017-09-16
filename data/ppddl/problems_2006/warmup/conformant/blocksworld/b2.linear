@@ -1,0 +1,5 @@
+0
+%%
+4 (unstack a b) (put-down a) (pick-up b) (stack b a)
+%%
+linear 4 0 1 2 3

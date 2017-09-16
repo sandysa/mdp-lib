@@ -1,0 +1,5 @@
+Universal Transversal Sequences generator.
+Author: Blai Bonet from a code by Dan Bryce.
+
+make
+usage: uts [-seed <seed>] {linear|cycle|complete|random} <n>

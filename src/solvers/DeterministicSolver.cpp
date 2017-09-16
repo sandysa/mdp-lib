@@ -1,6 +1,7 @@
 #include <queue>
 
 #include "../../include/solvers/DeterministicSolver.h"
+#include "../../test/reduced/CostEstimate.cpp"
 
 namespace mlsolvers
 {
@@ -35,18 +36,29 @@ mlcore::Action* DeterministicSolver::solve(mlcore::State* s0)
             if (choice_ == det_most_likely)
                 nextState = mostLikelyOutcome(problem_, node->state(), a);
 
-            double cost = problem_->cost(node->state(), a);
-
+           //double cost = problem_->cost(node->state(), a);
+            
+             double cost = acad::new_cost_blocksworld(node->state(),a,problem_);
+          //   cout<<"cost = "<<cost<<endl;
+         
             Node* next = new Node(node, nextState, a, cost, heuristic_, true);
             frontier.push(next);
             allNodes.push_back(next);
         }
     }
-
+ double final_f =0.0;
+ int index = 1;
     mlcore::Action* optimal;
     while (final->parent() != nullptr) {
         optimal = final->action();
         final = final->parent();
+           final_f = final->f();
+           if(index==1){
+               cout<<"final f value = ";
+           cout<<final_f<<endl;
+           }
+           
+           index++;
     }
 
     for (Node* node : allNodes) {
@@ -54,6 +66,7 @@ mlcore::Action* DeterministicSolver::solve(mlcore::State* s0)
         delete node;
     }
 
+     
     return optimal;
 }
 

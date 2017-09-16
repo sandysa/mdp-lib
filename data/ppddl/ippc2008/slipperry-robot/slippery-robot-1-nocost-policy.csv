@@ -1,0 +1,16 @@
+0,[ 0:(vehicle-at l-1-3) ],0,(move-car-umbrella l-1-1 l-1-2),0.0,true
+1,[ 10:(vehicle-at l-2-2) ],63,(pickumbrella-and-move-with-umbrella l-2-2 l-1-3),2.0,false
+2,[ 12:(vehicle-at l-3-1) ],81,(pickumbrella-and-move-with-umbrella l-3-1 l-1-3),2.0,false
+3,[ 4:(has-umbrella) 12:(vehicle-at l-3-1) ],7,(move-car-umbrella l-3-1 l-2-2),1.5,false
+4,[ 2:(vehicle-at l-1-1) ],27,(pickumbrella-and-move-with-umbrella l-1-1 l-1-3),2.0,false
+5,[ 8:(vehicle-at l-2-1) ],54,(pickumbrella-and-move-with-umbrella l-2-1 l-1-3),2.0,false
+6,[ 6:(vehicle-at l-1-2) ],36,(pickumbrella-and-move-with-umbrella l-1-2 l-1-3),2.0,false
+7,[ 4:(has-umbrella) 18:(vehicle-at l-3-3) ],-1,-,-,false
+8,[ 4:(has-umbrella) 14:(vehicle-at l-2-3) ],-1,-,-,false
+9,[ 4:(has-umbrella) 16:(vehicle-at l-3-2) ],-1,-,-,false
+10,[ 2:(vehicle-at l-1-1) 4:(has-umbrella) ],0,(move-car-umbrella l-1-1 l-1-2),1.5,false
+11,[ 4:(has-umbrella) ],-1,-,-,false
+12,[ 4:(has-umbrella) 6:(vehicle-at l-1-2) ],2,(move-car-umbrella l-1-2 l-1-3),1.5,false
+13,[ 4:(has-umbrella) 8:(vehicle-at l-2-1) ],4,(move-car-umbrella l-2-1 l-1-2),1.5,false
+14,[ 4:(has-umbrella) 10:(vehicle-at l-2-2) ],6,(move-car-umbrella l-2-2 l-1-3),1.5,false
+15,[ 0:(vehicle-at l-1-3) 4:(has-umbrella) ],0,(move-car-umbrella l-1-1 l-1-2),0.0,true

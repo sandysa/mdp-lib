@@ -224,6 +224,8 @@ int states_count =0 ;
 cout<<"printing states : \n";
 for (mlcore::State* s : problem->states()) {
 	states_count++;
+    if(states_count>10000)
+        break;
 }
 cout<<"number of states = "<< states_count <<"\n";
 }

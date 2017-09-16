@@ -1,0 +1,5 @@
+Sorting networks generator.
+Author: Blai Bonet
+
+make
+usage: sortn <n>

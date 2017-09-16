@@ -16,6 +16,7 @@
 #include "../../include/ppddl/PPDDLHeuristic.h"
 #include "../../include/ppddl/PPDDLProblem.h"
 
+#include "../../include/solvers/DeterministicSolver.h"
 #include "../../include/solvers/LAOStarSolver.h"
 #include "../../include/solvers/Solver.h"
 #include "../../include/solvers/VISolver.h"
@@ -24,6 +25,9 @@
 #include "../../include/util/general.h"
 
 #include "../../include/Problem.h"
+
+//#include "AStar.cpp"
+//#include "AStar.h"
 
 #include <sstream>
 #include <algorithm>
@@ -187,9 +191,9 @@ int main(int argc, char* args[])
 {
     register_flags(argc, args);
 	
-	bool print_states = true;
-	bool print_actions = true;
-	bool print_trans = true;
+	bool print_states = false;
+	bool print_actions = false;
+	bool print_trans = false;
     // Reading flags.
     assert(flag_is_registered_with_value("domain"));
     string domainName = flag_value("domain");
@@ -211,7 +215,7 @@ int main(int argc, char* args[])
    }
  mlcore::StateSet reachableStates, tipStates;
 
-	problem->generateAll(); // generate all states
+	//problem->generateAll(); // generate all states
 
 
 	/********Printing details************/
@@ -219,7 +223,7 @@ int main(int argc, char* args[])
 	int states_count =0 ;
 	for (mlcore::State* s : problem->states()) {
 		states_count++;
-	}
+     }
 	cout<<"S="<< states_count <<"\n";
 	
 	int action_count =0;
@@ -228,31 +232,27 @@ int main(int argc, char* args[])
 	}
 	cout<<"A=" <<action_count <<"\n";
 
-	cout<<"Init =" << problem->initialState() <<"\n";
+/*	cout<<"Init =" << problem->initialState() <<"\n";
 	for (mlcore::State* s : problem->states()) {
 		if(problem->goal(s))
 	cout <<"Goal="<<s <<"\n";
-	}
+	} */
 /******** PRINT THE PROBLEM *******************/
-	if(print_states){	
+/*	if(print_states){	
 	//int states_count =0 ;
 	cout<<"printing states : \n";
 	for (mlcore::State* s : problem->states()) {
-	//states_count++;
 	cout<<s <<"\n";
 	}
-	//cout<<"S="<< states_count <<"\n";
 	}
-	//int action_count =0;
+	
 	if(print_actions){
 	cout<<"printing actions : \n";
 	for (mlcore::Action* a : problem->actions()) {
-	//action_count++;
 	cout<<a <<"\n";
 	}
-	//cout<<"number of actions = " <<action_count <<"\n";
 	}
-
+ */
 if(print_trans){
 cout<<"printing transitions : \n";
 for (mlcore::State* s : problem->states()) {
@@ -267,39 +267,45 @@ if(problem->applicable(s, a)){
 	}
 	}
 }
-} 
+}  
 
+//solving using lao* -- without cost adjustment
 
-// set new cost
-/* for (mlcore::State* s : problem->states()) {
-	for (mlcore::Action* a : problem->actions()) {
-		if(problem->applicable(s,a)){
-			problem->setcost(s,a); 
-		          problem->hello(s,a);
-			}
-		}
-	} */
-
-
-
-
-//solving using lao*
-
-/*    double totalPlanningTime = 0.0;
+ /* double totalPlanningTime = 0.0;
     clock_t startTime = clock();
+    bool costadjust = false;
     LAOStarSolver solver(problem);
     solver.solve(problem->initialState());
     clock_t endTime = clock();
     totalPlanningTime += (double(endTime - startTime) / CLOCKS_PER_SEC);
     cout << "cost " << problem->initialState()->cost() <<
-        " time " << totalPlanningTime << endl;
-	cout<<"Printing best action:\n";
-	for (mlcore::State* s : problem->states()) {
-		if(s->bestAction() != nullptr)
-		//cout<<s <<": has no best action\n";
-		//else
-		cout<<""<<s<< " : "<< s->bestAction() <<"\n";
-} */
+        " time " << totalPlanningTime << endl; */
+        
+      
+        
+//solving using A* -- with cost adjustment
+
+    
+    double totalPlanningTime = 0.0;
+    clock_t startTime = clock();
+    bool costadjust = false;
+    DeterministicSolver Solver(problem);
+    Solver.solve(problem->initialState());
+    clock_t endTime = clock();
+    totalPlanningTime += (double(endTime - startTime) / CLOCKS_PER_SEC);
+    cout << " time " << totalPlanningTime << endl; 
+        
+        
+        
+            
+        
+//	cout<<"Printing best action:\n";
+// 	for (mlcore::State* s : problem->states()) {
+// 		if(s->bestAction() != nullptr)
+// 		//cout<<s <<": has no best action\n";
+// 		//else
+// 		cout<<""<<s<< " : "<< s->bestAction() <<"\n";
+// } 
 
 
 
@@ -320,12 +326,6 @@ if(problem->applicable(s, a)){
 	std::cout<<""<<s<<":"<<s->cost() <<"\n"; } */
 	
 
-/*	 FILE * pFile;
- 	pFile = fopen ("blocksworld_cost.txt","w");
-  	if (pFile +=NULL)
- 	 {
- 	  cout <<"error in file opening \n";
- 	 } */
 //solve using ACAD
 /* double totalPlanningTime = 0.0;
     clock_t startTime = clock();

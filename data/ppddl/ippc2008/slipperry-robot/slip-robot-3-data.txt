@@ -1,0 +1,879 @@
+S=50
+A=220
+Init =[ 44:(vehicle-at l-5-2) ]
+Goal=[ 0:(vehicle-at l-2-5) 4:(has-umbrella) ]
+Goal=[ 0:(vehicle-at l-2-5) ]
+printing states : 
+[ 2:(vehicle-at l-1-1) ]
+[ 6:(vehicle-at l-1-2) ]
+[ 10:(vehicle-at l-1-3) ]
+[ 14:(vehicle-at l-1-4) ]
+[ 4:(has-umbrella) 8:(vehicle-at l-2-1) ]
+[ 4:(has-umbrella) 42:(vehicle-at l-5-1) ]
+[ 4:(has-umbrella) 32:(vehicle-at l-4-1) ]
+[ 4:(has-umbrella) 12:(vehicle-at l-2-2) ]
+[ 4:(has-umbrella) 30:(vehicle-at l-3-5) ]
+[ 28:(vehicle-at l-3-4) ]
+[ 32:(vehicle-at l-4-1) ]
+[ 4:(has-umbrella) 38:(vehicle-at l-4-4) ]
+[ 30:(vehicle-at l-3-5) ]
+[ 20:(vehicle-at l-2-4) ]
+[ 4:(has-umbrella) 48:(vehicle-at l-5-4) ]
+[ 4:(has-umbrella) 26:(vehicle-at l-3-3) ]
+[ 46:(vehicle-at l-5-3) ]
+[ 36:(vehicle-at l-4-3) ]
+[ 4:(has-umbrella) 34:(vehicle-at l-4-2) ]
+[ 4:(has-umbrella) 22:(vehicle-at l-3-1) ]
+[ 42:(vehicle-at l-5-1) ]
+[ 40:(vehicle-at l-4-5) ]
+[ 4:(has-umbrella) 46:(vehicle-at l-5-3) ]
+[ 0:(vehicle-at l-2-5) 4:(has-umbrella) ]
+[ 4:(has-umbrella) 28:(vehicle-at l-3-4) ]
+[ 4:(has-umbrella) 40:(vehicle-at l-4-5) ]
+[ 4:(has-umbrella) 24:(vehicle-at l-3-2) ]
+[ 44:(vehicle-at l-5-2) ]
+[ 8:(vehicle-at l-2-1) ]
+[ 34:(vehicle-at l-4-2) ]
+[ 22:(vehicle-at l-3-1) ]
+[ 4:(has-umbrella) 36:(vehicle-at l-4-3) ]
+[ 4:(has-umbrella) 16:(vehicle-at l-2-3) ]
+[ 4:(has-umbrella) 18:(vehicle-at l-1-5) ]
+[ 4:(has-umbrella) 14:(vehicle-at l-1-4) ]
+[ 4:(has-umbrella) 10:(vehicle-at l-1-3) ]
+[ 4:(has-umbrella) 6:(vehicle-at l-1-2) ]
+[ 24:(vehicle-at l-3-2) ]
+[ 48:(vehicle-at l-5-4) ]
+[ 4:(has-umbrella) 20:(vehicle-at l-2-4) ]
+[ 2:(vehicle-at l-1-1) 4:(has-umbrella) ]
+[ 16:(vehicle-at l-2-3) ]
+[ 4:(has-umbrella) 44:(vehicle-at l-5-2) ]
+[ 38:(vehicle-at l-4-4) ]
+[ 50:(vehicle-at l-5-5) ]
+[ 26:(vehicle-at l-3-3) ]
+[ 12:(vehicle-at l-2-2) ]
+[ 18:(vehicle-at l-1-5) ]
+[ 4:(has-umbrella) 50:(vehicle-at l-5-5) ]
+[ 0:(vehicle-at l-2-5) ]
+printing actions : 
+(move-car-umbrella l-1-1 l-1-2)
+(move-car-umbrella l-1-1 l-2-1)
+(move-car-umbrella l-1-2 l-1-1)
+(move-car-umbrella l-1-2 l-1-3)
+(move-car-umbrella l-1-2 l-2-2)
+(move-car-umbrella l-1-3 l-1-2)
+(move-car-umbrella l-1-3 l-1-4)
+(move-car-umbrella l-1-3 l-2-3)
+(move-car-umbrella l-1-4 l-1-3)
+(move-car-umbrella l-1-4 l-1-5)
+(move-car-umbrella l-1-4 l-2-4)
+(move-car-umbrella l-1-5 l-1-4)
+(move-car-umbrella l-1-5 l-2-5)
+(move-car-umbrella l-2-1 l-1-1)
+(move-car-umbrella l-2-1 l-2-2)
+(move-car-umbrella l-2-1 l-3-1)
+(move-car-umbrella l-2-2 l-1-2)
+(move-car-umbrella l-2-2 l-2-1)
+(move-car-umbrella l-2-2 l-2-3)
+(move-car-umbrella l-2-2 l-3-2)
+(move-car-umbrella l-2-3 l-1-3)
+(move-car-umbrella l-2-3 l-2-2)
+(move-car-umbrella l-2-3 l-2-4)
+(move-car-umbrella l-2-3 l-3-3)
+(move-car-umbrella l-2-4 l-1-4)
+(move-car-umbrella l-2-4 l-2-3)
+(move-car-umbrella l-2-4 l-2-5)
+(move-car-umbrella l-2-4 l-3-4)
+(move-car-umbrella l-2-5 l-1-5)
+(move-car-umbrella l-2-5 l-2-4)
+(move-car-umbrella l-2-5 l-3-4)
+(move-car-umbrella l-2-5 l-3-5)
+(move-car-umbrella l-3-1 l-2-1)
+(move-car-umbrella l-3-1 l-3-2)
+(move-car-umbrella l-3-1 l-4-1)
+(move-car-umbrella l-3-2 l-2-2)
+(move-car-umbrella l-3-2 l-3-1)
+(move-car-umbrella l-3-2 l-3-3)
+(move-car-umbrella l-3-2 l-4-2)
+(move-car-umbrella l-3-3 l-2-3)
+(move-car-umbrella l-3-3 l-3-2)
+(move-car-umbrella l-3-3 l-3-4)
+(move-car-umbrella l-3-3 l-4-3)
+(move-car-umbrella l-3-4 l-2-4)
+(move-car-umbrella l-3-4 l-2-5)
+(move-car-umbrella l-3-4 l-3-3)
+(move-car-umbrella l-3-4 l-3-5)
+(move-car-umbrella l-3-4 l-4-3)
+(move-car-umbrella l-3-4 l-4-4)
+(move-car-umbrella l-3-5 l-2-5)
+(move-car-umbrella l-3-5 l-3-4)
+(move-car-umbrella l-3-5 l-4-5)
+(move-car-umbrella l-4-1 l-3-1)
+(move-car-umbrella l-4-1 l-4-2)
+(move-car-umbrella l-4-1 l-5-1)
+(move-car-umbrella l-4-2 l-3-2)
+(move-car-umbrella l-4-2 l-4-1)
+(move-car-umbrella l-4-2 l-4-3)
+(move-car-umbrella l-4-2 l-5-2)
+(move-car-umbrella l-4-3 l-3-3)
+(move-car-umbrella l-4-3 l-3-4)
+(move-car-umbrella l-4-3 l-4-2)
+(move-car-umbrella l-4-3 l-4-4)
+(move-car-umbrella l-4-3 l-5-2)
+(move-car-umbrella l-4-3 l-5-3)
+(move-car-umbrella l-4-4 l-3-4)
+(move-car-umbrella l-4-4 l-4-3)
+(move-car-umbrella l-4-4 l-4-5)
+(move-car-umbrella l-4-4 l-5-4)
+(move-car-umbrella l-4-5 l-3-5)
+(move-car-umbrella l-4-5 l-4-4)
+(move-car-umbrella l-4-5 l-5-5)
+(move-car-umbrella l-5-1 l-4-1)
+(move-car-umbrella l-5-1 l-5-2)
+(move-car-umbrella l-5-2 l-4-2)
+(move-car-umbrella l-5-2 l-4-3)
+(move-car-umbrella l-5-2 l-5-1)
+(move-car-umbrella l-5-2 l-5-3)
+(move-car-umbrella l-5-3 l-4-3)
+(move-car-umbrella l-5-3 l-5-2)
+(move-car-umbrella l-5-3 l-5-4)
+(move-car-umbrella l-5-4 l-4-4)
+(move-car-umbrella l-5-4 l-5-3)
+(move-car-umbrella l-5-4 l-5-5)
+(move-car-umbrella l-5-5 l-4-5)
+(move-car-umbrella l-5-5 l-5-4)
+(move-car-without-umbrella l-1-1 l-1-2)
+(move-car-without-umbrella l-1-1 l-2-1)
+(move-car-without-umbrella l-1-2 l-1-1)
+(move-car-without-umbrella l-1-2 l-1-3)
+(move-car-without-umbrella l-1-2 l-2-2)
+(move-car-without-umbrella l-1-3 l-1-2)
+(move-car-without-umbrella l-1-3 l-1-4)
+(move-car-without-umbrella l-1-3 l-2-3)
+(move-car-without-umbrella l-1-4 l-1-3)
+(move-car-without-umbrella l-1-4 l-1-5)
+(move-car-without-umbrella l-1-4 l-2-4)
+(move-car-without-umbrella l-1-5 l-1-4)
+(move-car-without-umbrella l-1-5 l-2-5)
+(move-car-without-umbrella l-2-1 l-1-1)
+(move-car-without-umbrella l-2-1 l-2-2)
+(move-car-without-umbrella l-2-1 l-3-1)
+(move-car-without-umbrella l-2-2 l-1-2)
+(move-car-without-umbrella l-2-2 l-2-1)
+(move-car-without-umbrella l-2-2 l-2-3)
+(move-car-without-umbrella l-2-2 l-3-2)
+(move-car-without-umbrella l-2-3 l-1-3)
+(move-car-without-umbrella l-2-3 l-2-2)
+(move-car-without-umbrella l-2-3 l-2-4)
+(move-car-without-umbrella l-2-3 l-3-3)
+(move-car-without-umbrella l-2-4 l-1-4)
+(move-car-without-umbrella l-2-4 l-2-3)
+(move-car-without-umbrella l-2-4 l-2-5)
+(move-car-without-umbrella l-2-4 l-3-4)
+(move-car-without-umbrella l-2-5 l-1-5)
+(move-car-without-umbrella l-2-5 l-2-4)
+(move-car-without-umbrella l-2-5 l-3-4)
+(move-car-without-umbrella l-2-5 l-3-5)
+(move-car-without-umbrella l-3-1 l-2-1)
+(move-car-without-umbrella l-3-1 l-3-2)
+(move-car-without-umbrella l-3-1 l-4-1)
+(move-car-without-umbrella l-3-2 l-2-2)
+(move-car-without-umbrella l-3-2 l-3-1)
+(move-car-without-umbrella l-3-2 l-3-3)
+(move-car-without-umbrella l-3-2 l-4-2)
+(move-car-without-umbrella l-3-3 l-2-3)
+(move-car-without-umbrella l-3-3 l-3-2)
+(move-car-without-umbrella l-3-3 l-3-4)
+(move-car-without-umbrella l-3-3 l-4-3)
+(move-car-without-umbrella l-3-4 l-2-4)
+(move-car-without-umbrella l-3-4 l-2-5)
+(move-car-without-umbrella l-3-4 l-3-3)
+(move-car-without-umbrella l-3-4 l-3-5)
+(move-car-without-umbrella l-3-4 l-4-3)
+(move-car-without-umbrella l-3-4 l-4-4)
+(move-car-without-umbrella l-3-5 l-2-5)
+(move-car-without-umbrella l-3-5 l-3-4)
+(move-car-without-umbrella l-3-5 l-4-5)
+(move-car-without-umbrella l-4-1 l-3-1)
+(move-car-without-umbrella l-4-1 l-4-2)
+(move-car-without-umbrella l-4-1 l-5-1)
+(move-car-without-umbrella l-4-2 l-3-2)
+(move-car-without-umbrella l-4-2 l-4-1)
+(move-car-without-umbrella l-4-2 l-4-3)
+(move-car-without-umbrella l-4-2 l-5-2)
+(move-car-without-umbrella l-4-3 l-3-3)
+(move-car-without-umbrella l-4-3 l-3-4)
+(move-car-without-umbrella l-4-3 l-4-2)
+(move-car-without-umbrella l-4-3 l-4-4)
+(move-car-without-umbrella l-4-3 l-5-2)
+(move-car-without-umbrella l-4-3 l-5-3)
+(move-car-without-umbrella l-4-4 l-3-4)
+(move-car-without-umbrella l-4-4 l-4-3)
+(move-car-without-umbrella l-4-4 l-4-5)
+(move-car-without-umbrella l-4-4 l-5-4)
+(move-car-without-umbrella l-4-5 l-3-5)
+(move-car-without-umbrella l-4-5 l-4-4)
+(move-car-without-umbrella l-4-5 l-5-5)
+(move-car-without-umbrella l-5-1 l-4-1)
+(move-car-without-umbrella l-5-1 l-5-2)
+(move-car-without-umbrella l-5-2 l-4-2)
+(move-car-without-umbrella l-5-2 l-4-3)
+(move-car-without-umbrella l-5-2 l-5-1)
+(move-car-without-umbrella l-5-2 l-5-3)
+(move-car-without-umbrella l-5-3 l-4-3)
+(move-car-without-umbrella l-5-3 l-5-2)
+(move-car-without-umbrella l-5-3 l-5-4)
+(move-car-without-umbrella l-5-4 l-4-4)
+(move-car-without-umbrella l-5-4 l-5-3)
+(move-car-without-umbrella l-5-4 l-5-5)
+(move-car-without-umbrella l-5-5 l-4-5)
+(move-car-without-umbrella l-5-5 l-5-4)
+(pickumbrella l-1-1)
+(pickumbrella l-1-4)
+(pickumbrella l-1-5)
+(pickumbrella l-2-2)
+(pickumbrella l-3-2)
+(pickumbrella l-3-4)
+(pickumbrella l-3-5)
+(pickumbrella l-4-1)
+(pickumbrella l-4-5)
+(pickumbrella l-5-2)
+(pickumbrella l-5-4)
+(pickumbrella-and-move-with-umbrella l-1-1 l-1-2)
+(pickumbrella-and-move-with-umbrella l-1-1 l-2-1)
+(pickumbrella-and-move-with-umbrella l-1-4 l-1-3)
+(pickumbrella-and-move-with-umbrella l-1-4 l-1-5)
+(pickumbrella-and-move-with-umbrella l-1-4 l-2-4)
+(pickumbrella-and-move-with-umbrella l-1-5 l-1-4)
+(pickumbrella-and-move-with-umbrella l-1-5 l-2-5)
+(pickumbrella-and-move-with-umbrella l-2-2 l-1-2)
+(pickumbrella-and-move-with-umbrella l-2-2 l-2-1)
+(pickumbrella-and-move-with-umbrella l-2-2 l-2-3)
+(pickumbrella-and-move-with-umbrella l-2-2 l-3-2)
+(pickumbrella-and-move-with-umbrella l-3-2 l-2-2)
+(pickumbrella-and-move-with-umbrella l-3-2 l-3-1)
+(pickumbrella-and-move-with-umbrella l-3-2 l-3-3)
+(pickumbrella-and-move-with-umbrella l-3-2 l-4-2)
+(pickumbrella-and-move-with-umbrella l-3-4 l-2-4)
+(pickumbrella-and-move-with-umbrella l-3-4 l-2-5)
+(pickumbrella-and-move-with-umbrella l-3-4 l-3-3)
+(pickumbrella-and-move-with-umbrella l-3-4 l-3-5)
+(pickumbrella-and-move-with-umbrella l-3-4 l-4-3)
+(pickumbrella-and-move-with-umbrella l-3-4 l-4-4)
+(pickumbrella-and-move-with-umbrella l-3-5 l-2-5)
+(pickumbrella-and-move-with-umbrella l-3-5 l-3-4)
+(pickumbrella-and-move-with-umbrella l-3-5 l-4-5)
+(pickumbrella-and-move-with-umbrella l-4-1 l-3-1)
+(pickumbrella-and-move-with-umbrella l-4-1 l-4-2)
+(pickumbrella-and-move-with-umbrella l-4-1 l-5-1)
+(pickumbrella-and-move-with-umbrella l-4-5 l-3-5)
+(pickumbrella-and-move-with-umbrella l-4-5 l-4-4)
+(pickumbrella-and-move-with-umbrella l-4-5 l-5-5)
+(pickumbrella-and-move-with-umbrella l-5-2 l-4-2)
+(pickumbrella-and-move-with-umbrella l-5-2 l-4-3)
+(pickumbrella-and-move-with-umbrella l-5-2 l-5-1)
+(pickumbrella-and-move-with-umbrella l-5-2 l-5-3)
+(pickumbrella-and-move-with-umbrella l-5-4 l-4-4)
+(pickumbrella-and-move-with-umbrella l-5-4 l-5-3)
+(pickumbrella-and-move-with-umbrella l-5-4 l-5-5)
+printing transitions : 
+s = [ 2:(vehicle-at l-1-1) ];a = (move-car-without-umbrella l-1-1 l-1-2);j = [ 6:(vehicle-at l-1-2) ];prob = 0.4
+s = [ 2:(vehicle-at l-1-1) ];a = (move-car-without-umbrella l-1-1 l-1-2);j = [ 2:(vehicle-at l-1-1) ];prob = 0.6
+s = [ 2:(vehicle-at l-1-1) ];a = (move-car-without-umbrella l-1-1 l-2-1);j = [ 8:(vehicle-at l-2-1) ];prob = 0.4
+s = [ 2:(vehicle-at l-1-1) ];a = (move-car-without-umbrella l-1-1 l-2-1);j = [ 2:(vehicle-at l-1-1) ];prob = 0.6
+s = [ 2:(vehicle-at l-1-1) ];a = (pickumbrella l-1-1);j = [ 2:(vehicle-at l-1-1) 4:(has-umbrella) ];prob = 1
+s = [ 2:(vehicle-at l-1-1) ];a = (pickumbrella-and-move-with-umbrella l-1-1 l-1-2);j = [ 4:(has-umbrella) 6:(vehicle-at l-1-2) ];prob = 0.6
+s = [ 2:(vehicle-at l-1-1) ];a = (pickumbrella-and-move-with-umbrella l-1-1 l-1-2);j = [ 2:(vehicle-at l-1-1) 4:(has-umbrella) ];prob = 0.4
+s = [ 2:(vehicle-at l-1-1) ];a = (pickumbrella-and-move-with-umbrella l-1-1 l-2-1);j = [ 4:(has-umbrella) 8:(vehicle-at l-2-1) ];prob = 0.6
+s = [ 2:(vehicle-at l-1-1) ];a = (pickumbrella-and-move-with-umbrella l-1-1 l-2-1);j = [ 2:(vehicle-at l-1-1) 4:(has-umbrella) ];prob = 0.4
+s = [ 6:(vehicle-at l-1-2) ];a = (move-car-without-umbrella l-1-2 l-1-1);j = [ 2:(vehicle-at l-1-1) ];prob = 0.4
+s = [ 6:(vehicle-at l-1-2) ];a = (move-car-without-umbrella l-1-2 l-1-1);j = [ 6:(vehicle-at l-1-2) ];prob = 0.6
+s = [ 6:(vehicle-at l-1-2) ];a = (move-car-without-umbrella l-1-2 l-1-3);j = [ 10:(vehicle-at l-1-3) ];prob = 0.4
+s = [ 6:(vehicle-at l-1-2) ];a = (move-car-without-umbrella l-1-2 l-1-3);j = [ 6:(vehicle-at l-1-2) ];prob = 0.6
+s = [ 6:(vehicle-at l-1-2) ];a = (move-car-without-umbrella l-1-2 l-2-2);j = [ 12:(vehicle-at l-2-2) ];prob = 0.4
+s = [ 6:(vehicle-at l-1-2) ];a = (move-car-without-umbrella l-1-2 l-2-2);j = [ 6:(vehicle-at l-1-2) ];prob = 0.6
+s = [ 10:(vehicle-at l-1-3) ];a = (move-car-without-umbrella l-1-3 l-1-2);j = [ 6:(vehicle-at l-1-2) ];prob = 0.4
+s = [ 10:(vehicle-at l-1-3) ];a = (move-car-without-umbrella l-1-3 l-1-2);j = [ 10:(vehicle-at l-1-3) ];prob = 0.6
+s = [ 10:(vehicle-at l-1-3) ];a = (move-car-without-umbrella l-1-3 l-1-4);j = [ 14:(vehicle-at l-1-4) ];prob = 0.4
+s = [ 10:(vehicle-at l-1-3) ];a = (move-car-without-umbrella l-1-3 l-1-4);j = [ 10:(vehicle-at l-1-3) ];prob = 0.6
+s = [ 10:(vehicle-at l-1-3) ];a = (move-car-without-umbrella l-1-3 l-2-3);j = [ 16:(vehicle-at l-2-3) ];prob = 0.4
+s = [ 10:(vehicle-at l-1-3) ];a = (move-car-without-umbrella l-1-3 l-2-3);j = [ 10:(vehicle-at l-1-3) ];prob = 0.6
+s = [ 14:(vehicle-at l-1-4) ];a = (move-car-without-umbrella l-1-4 l-1-3);j = [ 10:(vehicle-at l-1-3) ];prob = 0.4
+s = [ 14:(vehicle-at l-1-4) ];a = (move-car-without-umbrella l-1-4 l-1-3);j = [ 14:(vehicle-at l-1-4) ];prob = 0.6
+s = [ 14:(vehicle-at l-1-4) ];a = (move-car-without-umbrella l-1-4 l-1-5);j = [ 18:(vehicle-at l-1-5) ];prob = 0.4
+s = [ 14:(vehicle-at l-1-4) ];a = (move-car-without-umbrella l-1-4 l-1-5);j = [ 14:(vehicle-at l-1-4) ];prob = 0.6
+s = [ 14:(vehicle-at l-1-4) ];a = (move-car-without-umbrella l-1-4 l-2-4);j = [ 20:(vehicle-at l-2-4) ];prob = 0.4
+s = [ 14:(vehicle-at l-1-4) ];a = (move-car-without-umbrella l-1-4 l-2-4);j = [ 14:(vehicle-at l-1-4) ];prob = 0.6
+s = [ 14:(vehicle-at l-1-4) ];a = (pickumbrella l-1-4);j = [ 4:(has-umbrella) 14:(vehicle-at l-1-4) ];prob = 1
+s = [ 14:(vehicle-at l-1-4) ];a = (pickumbrella-and-move-with-umbrella l-1-4 l-1-3);j = [ 4:(has-umbrella) 10:(vehicle-at l-1-3) ];prob = 0.6
+s = [ 14:(vehicle-at l-1-4) ];a = (pickumbrella-and-move-with-umbrella l-1-4 l-1-3);j = [ 4:(has-umbrella) 14:(vehicle-at l-1-4) ];prob = 0.4
+s = [ 14:(vehicle-at l-1-4) ];a = (pickumbrella-and-move-with-umbrella l-1-4 l-1-5);j = [ 4:(has-umbrella) 18:(vehicle-at l-1-5) ];prob = 0.6
+s = [ 14:(vehicle-at l-1-4) ];a = (pickumbrella-and-move-with-umbrella l-1-4 l-1-5);j = [ 4:(has-umbrella) 14:(vehicle-at l-1-4) ];prob = 0.4
+s = [ 14:(vehicle-at l-1-4) ];a = (pickumbrella-and-move-with-umbrella l-1-4 l-2-4);j = [ 4:(has-umbrella) 20:(vehicle-at l-2-4) ];prob = 0.6
+s = [ 14:(vehicle-at l-1-4) ];a = (pickumbrella-and-move-with-umbrella l-1-4 l-2-4);j = [ 4:(has-umbrella) 14:(vehicle-at l-1-4) ];prob = 0.4
+s = [ 4:(has-umbrella) 8:(vehicle-at l-2-1) ];a = (move-car-umbrella l-2-1 l-1-1);j = [ 2:(vehicle-at l-1-1) 4:(has-umbrella) ];prob = 0.8
+s = [ 4:(has-umbrella) 8:(vehicle-at l-2-1) ];a = (move-car-umbrella l-2-1 l-1-1);j = [ 4:(has-umbrella) 8:(vehicle-at l-2-1) ];prob = 0.2
+s = [ 4:(has-umbrella) 8:(vehicle-at l-2-1) ];a = (move-car-umbrella l-2-1 l-2-2);j = [ 4:(has-umbrella) 12:(vehicle-at l-2-2) ];prob = 0.8
+s = [ 4:(has-umbrella) 8:(vehicle-at l-2-1) ];a = (move-car-umbrella l-2-1 l-2-2);j = [ 4:(has-umbrella) 8:(vehicle-at l-2-1) ];prob = 0.2
+s = [ 4:(has-umbrella) 8:(vehicle-at l-2-1) ];a = (move-car-umbrella l-2-1 l-3-1);j = [ 4:(has-umbrella) 22:(vehicle-at l-3-1) ];prob = 0.8
+s = [ 4:(has-umbrella) 8:(vehicle-at l-2-1) ];a = (move-car-umbrella l-2-1 l-3-1);j = [ 4:(has-umbrella) 8:(vehicle-at l-2-1) ];prob = 0.2
+s = [ 4:(has-umbrella) 8:(vehicle-at l-2-1) ];a = (move-car-without-umbrella l-2-1 l-1-1);j = [ 2:(vehicle-at l-1-1) 4:(has-umbrella) ];prob = 0.4
+s = [ 4:(has-umbrella) 8:(vehicle-at l-2-1) ];a = (move-car-without-umbrella l-2-1 l-1-1);j = [ 4:(has-umbrella) 8:(vehicle-at l-2-1) ];prob = 0.6
+s = [ 4:(has-umbrella) 8:(vehicle-at l-2-1) ];a = (move-car-without-umbrella l-2-1 l-2-2);j = [ 4:(has-umbrella) 12:(vehicle-at l-2-2) ];prob = 0.4
+s = [ 4:(has-umbrella) 8:(vehicle-at l-2-1) ];a = (move-car-without-umbrella l-2-1 l-2-2);j = [ 4:(has-umbrella) 8:(vehicle-at l-2-1) ];prob = 0.6
+s = [ 4:(has-umbrella) 8:(vehicle-at l-2-1) ];a = (move-car-without-umbrella l-2-1 l-3-1);j = [ 4:(has-umbrella) 22:(vehicle-at l-3-1) ];prob = 0.4
+s = [ 4:(has-umbrella) 8:(vehicle-at l-2-1) ];a = (move-car-without-umbrella l-2-1 l-3-1);j = [ 4:(has-umbrella) 8:(vehicle-at l-2-1) ];prob = 0.6
+s = [ 4:(has-umbrella) 42:(vehicle-at l-5-1) ];a = (move-car-umbrella l-5-1 l-4-1);j = [ 4:(has-umbrella) 32:(vehicle-at l-4-1) ];prob = 0.8
+s = [ 4:(has-umbrella) 42:(vehicle-at l-5-1) ];a = (move-car-umbrella l-5-1 l-4-1);j = [ 4:(has-umbrella) 42:(vehicle-at l-5-1) ];prob = 0.2
+s = [ 4:(has-umbrella) 42:(vehicle-at l-5-1) ];a = (move-car-umbrella l-5-1 l-5-2);j = [ 4:(has-umbrella) 44:(vehicle-at l-5-2) ];prob = 0.8
+s = [ 4:(has-umbrella) 42:(vehicle-at l-5-1) ];a = (move-car-umbrella l-5-1 l-5-2);j = [ 4:(has-umbrella) 42:(vehicle-at l-5-1) ];prob = 0.2
+s = [ 4:(has-umbrella) 42:(vehicle-at l-5-1) ];a = (move-car-without-umbrella l-5-1 l-4-1);j = [ 4:(has-umbrella) 32:(vehicle-at l-4-1) ];prob = 0.4
+s = [ 4:(has-umbrella) 42:(vehicle-at l-5-1) ];a = (move-car-without-umbrella l-5-1 l-4-1);j = [ 4:(has-umbrella) 42:(vehicle-at l-5-1) ];prob = 0.6
+s = [ 4:(has-umbrella) 42:(vehicle-at l-5-1) ];a = (move-car-without-umbrella l-5-1 l-5-2);j = [ 4:(has-umbrella) 44:(vehicle-at l-5-2) ];prob = 0.4
+s = [ 4:(has-umbrella) 42:(vehicle-at l-5-1) ];a = (move-car-without-umbrella l-5-1 l-5-2);j = [ 4:(has-umbrella) 42:(vehicle-at l-5-1) ];prob = 0.6
+s = [ 4:(has-umbrella) 32:(vehicle-at l-4-1) ];a = (move-car-umbrella l-4-1 l-3-1);j = [ 4:(has-umbrella) 22:(vehicle-at l-3-1) ];prob = 0.8
+s = [ 4:(has-umbrella) 32:(vehicle-at l-4-1) ];a = (move-car-umbrella l-4-1 l-3-1);j = [ 4:(has-umbrella) 32:(vehicle-at l-4-1) ];prob = 0.2
+s = [ 4:(has-umbrella) 32:(vehicle-at l-4-1) ];a = (move-car-umbrella l-4-1 l-4-2);j = [ 4:(has-umbrella) 34:(vehicle-at l-4-2) ];prob = 0.8
+s = [ 4:(has-umbrella) 32:(vehicle-at l-4-1) ];a = (move-car-umbrella l-4-1 l-4-2);j = [ 4:(has-umbrella) 32:(vehicle-at l-4-1) ];prob = 0.2
+s = [ 4:(has-umbrella) 32:(vehicle-at l-4-1) ];a = (move-car-umbrella l-4-1 l-5-1);j = [ 4:(has-umbrella) 42:(vehicle-at l-5-1) ];prob = 0.8
+s = [ 4:(has-umbrella) 32:(vehicle-at l-4-1) ];a = (move-car-umbrella l-4-1 l-5-1);j = [ 4:(has-umbrella) 32:(vehicle-at l-4-1) ];prob = 0.2
+s = [ 4:(has-umbrella) 32:(vehicle-at l-4-1) ];a = (move-car-without-umbrella l-4-1 l-3-1);j = [ 4:(has-umbrella) 22:(vehicle-at l-3-1) ];prob = 0.4
+s = [ 4:(has-umbrella) 32:(vehicle-at l-4-1) ];a = (move-car-without-umbrella l-4-1 l-3-1);j = [ 4:(has-umbrella) 32:(vehicle-at l-4-1) ];prob = 0.6
+s = [ 4:(has-umbrella) 32:(vehicle-at l-4-1) ];a = (move-car-without-umbrella l-4-1 l-4-2);j = [ 4:(has-umbrella) 34:(vehicle-at l-4-2) ];prob = 0.4
+s = [ 4:(has-umbrella) 32:(vehicle-at l-4-1) ];a = (move-car-without-umbrella l-4-1 l-4-2);j = [ 4:(has-umbrella) 32:(vehicle-at l-4-1) ];prob = 0.6
+s = [ 4:(has-umbrella) 32:(vehicle-at l-4-1) ];a = (move-car-without-umbrella l-4-1 l-5-1);j = [ 4:(has-umbrella) 42:(vehicle-at l-5-1) ];prob = 0.4
+s = [ 4:(has-umbrella) 32:(vehicle-at l-4-1) ];a = (move-car-without-umbrella l-4-1 l-5-1);j = [ 4:(has-umbrella) 32:(vehicle-at l-4-1) ];prob = 0.6
+s = [ 4:(has-umbrella) 12:(vehicle-at l-2-2) ];a = (move-car-umbrella l-2-2 l-1-2);j = [ 4:(has-umbrella) 6:(vehicle-at l-1-2) ];prob = 0.8
+s = [ 4:(has-umbrella) 12:(vehicle-at l-2-2) ];a = (move-car-umbrella l-2-2 l-1-2);j = [ 4:(has-umbrella) 12:(vehicle-at l-2-2) ];prob = 0.2
+s = [ 4:(has-umbrella) 12:(vehicle-at l-2-2) ];a = (move-car-umbrella l-2-2 l-2-1);j = [ 4:(has-umbrella) 8:(vehicle-at l-2-1) ];prob = 0.8
+s = [ 4:(has-umbrella) 12:(vehicle-at l-2-2) ];a = (move-car-umbrella l-2-2 l-2-1);j = [ 4:(has-umbrella) 12:(vehicle-at l-2-2) ];prob = 0.2
+s = [ 4:(has-umbrella) 12:(vehicle-at l-2-2) ];a = (move-car-umbrella l-2-2 l-2-3);j = [ 4:(has-umbrella) 16:(vehicle-at l-2-3) ];prob = 0.8
+s = [ 4:(has-umbrella) 12:(vehicle-at l-2-2) ];a = (move-car-umbrella l-2-2 l-2-3);j = [ 4:(has-umbrella) 12:(vehicle-at l-2-2) ];prob = 0.2
+s = [ 4:(has-umbrella) 12:(vehicle-at l-2-2) ];a = (move-car-umbrella l-2-2 l-3-2);j = [ 4:(has-umbrella) 24:(vehicle-at l-3-2) ];prob = 0.8
+s = [ 4:(has-umbrella) 12:(vehicle-at l-2-2) ];a = (move-car-umbrella l-2-2 l-3-2);j = [ 4:(has-umbrella) 12:(vehicle-at l-2-2) ];prob = 0.2
+s = [ 4:(has-umbrella) 12:(vehicle-at l-2-2) ];a = (move-car-without-umbrella l-2-2 l-1-2);j = [ 4:(has-umbrella) 6:(vehicle-at l-1-2) ];prob = 0.4
+s = [ 4:(has-umbrella) 12:(vehicle-at l-2-2) ];a = (move-car-without-umbrella l-2-2 l-1-2);j = [ 4:(has-umbrella) 12:(vehicle-at l-2-2) ];prob = 0.6
+s = [ 4:(has-umbrella) 12:(vehicle-at l-2-2) ];a = (move-car-without-umbrella l-2-2 l-2-1);j = [ 4:(has-umbrella) 8:(vehicle-at l-2-1) ];prob = 0.4
+s = [ 4:(has-umbrella) 12:(vehicle-at l-2-2) ];a = (move-car-without-umbrella l-2-2 l-2-1);j = [ 4:(has-umbrella) 12:(vehicle-at l-2-2) ];prob = 0.6
+s = [ 4:(has-umbrella) 12:(vehicle-at l-2-2) ];a = (move-car-without-umbrella l-2-2 l-2-3);j = [ 4:(has-umbrella) 16:(vehicle-at l-2-3) ];prob = 0.4
+s = [ 4:(has-umbrella) 12:(vehicle-at l-2-2) ];a = (move-car-without-umbrella l-2-2 l-2-3);j = [ 4:(has-umbrella) 12:(vehicle-at l-2-2) ];prob = 0.6
+s = [ 4:(has-umbrella) 12:(vehicle-at l-2-2) ];a = (move-car-without-umbrella l-2-2 l-3-2);j = [ 4:(has-umbrella) 24:(vehicle-at l-3-2) ];prob = 0.4
+s = [ 4:(has-umbrella) 12:(vehicle-at l-2-2) ];a = (move-car-without-umbrella l-2-2 l-3-2);j = [ 4:(has-umbrella) 12:(vehicle-at l-2-2) ];prob = 0.6
+s = [ 4:(has-umbrella) 30:(vehicle-at l-3-5) ];a = (move-car-umbrella l-3-5 l-2-5);j = [ 0:(vehicle-at l-2-5) 4:(has-umbrella) ];prob = 0.8
+s = [ 4:(has-umbrella) 30:(vehicle-at l-3-5) ];a = (move-car-umbrella l-3-5 l-2-5);j = [ 4:(has-umbrella) 30:(vehicle-at l-3-5) ];prob = 0.2
+s = [ 4:(has-umbrella) 30:(vehicle-at l-3-5) ];a = (move-car-umbrella l-3-5 l-3-4);j = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];prob = 0.8
+s = [ 4:(has-umbrella) 30:(vehicle-at l-3-5) ];a = (move-car-umbrella l-3-5 l-3-4);j = [ 4:(has-umbrella) 30:(vehicle-at l-3-5) ];prob = 0.2
+s = [ 4:(has-umbrella) 30:(vehicle-at l-3-5) ];a = (move-car-umbrella l-3-5 l-4-5);j = [ 4:(has-umbrella) 40:(vehicle-at l-4-5) ];prob = 0.8
+s = [ 4:(has-umbrella) 30:(vehicle-at l-3-5) ];a = (move-car-umbrella l-3-5 l-4-5);j = [ 4:(has-umbrella) 30:(vehicle-at l-3-5) ];prob = 0.2
+s = [ 4:(has-umbrella) 30:(vehicle-at l-3-5) ];a = (move-car-without-umbrella l-3-5 l-2-5);j = [ 0:(vehicle-at l-2-5) 4:(has-umbrella) ];prob = 0.4
+s = [ 4:(has-umbrella) 30:(vehicle-at l-3-5) ];a = (move-car-without-umbrella l-3-5 l-2-5);j = [ 4:(has-umbrella) 30:(vehicle-at l-3-5) ];prob = 0.6
+s = [ 4:(has-umbrella) 30:(vehicle-at l-3-5) ];a = (move-car-without-umbrella l-3-5 l-3-4);j = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];prob = 0.4
+s = [ 4:(has-umbrella) 30:(vehicle-at l-3-5) ];a = (move-car-without-umbrella l-3-5 l-3-4);j = [ 4:(has-umbrella) 30:(vehicle-at l-3-5) ];prob = 0.6
+s = [ 4:(has-umbrella) 30:(vehicle-at l-3-5) ];a = (move-car-without-umbrella l-3-5 l-4-5);j = [ 4:(has-umbrella) 40:(vehicle-at l-4-5) ];prob = 0.4
+s = [ 4:(has-umbrella) 30:(vehicle-at l-3-5) ];a = (move-car-without-umbrella l-3-5 l-4-5);j = [ 4:(has-umbrella) 30:(vehicle-at l-3-5) ];prob = 0.6
+s = [ 28:(vehicle-at l-3-4) ];a = (move-car-without-umbrella l-3-4 l-2-4);j = [ 20:(vehicle-at l-2-4) ];prob = 0.4
+s = [ 28:(vehicle-at l-3-4) ];a = (move-car-without-umbrella l-3-4 l-2-4);j = [ 28:(vehicle-at l-3-4) ];prob = 0.6
+s = [ 28:(vehicle-at l-3-4) ];a = (move-car-without-umbrella l-3-4 l-2-5);j = [ 0:(vehicle-at l-2-5) ];prob = 0.4
+s = [ 28:(vehicle-at l-3-4) ];a = (move-car-without-umbrella l-3-4 l-2-5);j = [ 28:(vehicle-at l-3-4) ];prob = 0.6
+s = [ 28:(vehicle-at l-3-4) ];a = (move-car-without-umbrella l-3-4 l-3-3);j = [ 26:(vehicle-at l-3-3) ];prob = 0.4
+s = [ 28:(vehicle-at l-3-4) ];a = (move-car-without-umbrella l-3-4 l-3-3);j = [ 28:(vehicle-at l-3-4) ];prob = 0.6
+s = [ 28:(vehicle-at l-3-4) ];a = (move-car-without-umbrella l-3-4 l-3-5);j = [ 30:(vehicle-at l-3-5) ];prob = 0.4
+s = [ 28:(vehicle-at l-3-4) ];a = (move-car-without-umbrella l-3-4 l-3-5);j = [ 28:(vehicle-at l-3-4) ];prob = 0.6
+s = [ 28:(vehicle-at l-3-4) ];a = (move-car-without-umbrella l-3-4 l-4-3);j = [ 36:(vehicle-at l-4-3) ];prob = 0.4
+s = [ 28:(vehicle-at l-3-4) ];a = (move-car-without-umbrella l-3-4 l-4-3);j = [ 28:(vehicle-at l-3-4) ];prob = 0.6
+s = [ 28:(vehicle-at l-3-4) ];a = (move-car-without-umbrella l-3-4 l-4-4);j = [ 38:(vehicle-at l-4-4) ];prob = 0.4
+s = [ 28:(vehicle-at l-3-4) ];a = (move-car-without-umbrella l-3-4 l-4-4);j = [ 28:(vehicle-at l-3-4) ];prob = 0.6
+s = [ 28:(vehicle-at l-3-4) ];a = (pickumbrella l-3-4);j = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];prob = 1
+s = [ 28:(vehicle-at l-3-4) ];a = (pickumbrella-and-move-with-umbrella l-3-4 l-2-4);j = [ 4:(has-umbrella) 20:(vehicle-at l-2-4) ];prob = 0.6
+s = [ 28:(vehicle-at l-3-4) ];a = (pickumbrella-and-move-with-umbrella l-3-4 l-2-4);j = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];prob = 0.4
+s = [ 28:(vehicle-at l-3-4) ];a = (pickumbrella-and-move-with-umbrella l-3-4 l-2-5);j = [ 0:(vehicle-at l-2-5) 4:(has-umbrella) ];prob = 0.6
+s = [ 28:(vehicle-at l-3-4) ];a = (pickumbrella-and-move-with-umbrella l-3-4 l-2-5);j = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];prob = 0.4
+s = [ 28:(vehicle-at l-3-4) ];a = (pickumbrella-and-move-with-umbrella l-3-4 l-3-3);j = [ 4:(has-umbrella) 26:(vehicle-at l-3-3) ];prob = 0.6
+s = [ 28:(vehicle-at l-3-4) ];a = (pickumbrella-and-move-with-umbrella l-3-4 l-3-3);j = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];prob = 0.4
+s = [ 28:(vehicle-at l-3-4) ];a = (pickumbrella-and-move-with-umbrella l-3-4 l-3-5);j = [ 4:(has-umbrella) 30:(vehicle-at l-3-5) ];prob = 0.6
+s = [ 28:(vehicle-at l-3-4) ];a = (pickumbrella-and-move-with-umbrella l-3-4 l-3-5);j = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];prob = 0.4
+s = [ 28:(vehicle-at l-3-4) ];a = (pickumbrella-and-move-with-umbrella l-3-4 l-4-3);j = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];prob = 0.6
+s = [ 28:(vehicle-at l-3-4) ];a = (pickumbrella-and-move-with-umbrella l-3-4 l-4-3);j = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];prob = 0.4
+s = [ 28:(vehicle-at l-3-4) ];a = (pickumbrella-and-move-with-umbrella l-3-4 l-4-4);j = [ 4:(has-umbrella) 38:(vehicle-at l-4-4) ];prob = 0.6
+s = [ 28:(vehicle-at l-3-4) ];a = (pickumbrella-and-move-with-umbrella l-3-4 l-4-4);j = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];prob = 0.4
+s = [ 32:(vehicle-at l-4-1) ];a = (move-car-without-umbrella l-4-1 l-3-1);j = [ 22:(vehicle-at l-3-1) ];prob = 0.4
+s = [ 32:(vehicle-at l-4-1) ];a = (move-car-without-umbrella l-4-1 l-3-1);j = [ 32:(vehicle-at l-4-1) ];prob = 0.6
+s = [ 32:(vehicle-at l-4-1) ];a = (move-car-without-umbrella l-4-1 l-4-2);j = [ 34:(vehicle-at l-4-2) ];prob = 0.4
+s = [ 32:(vehicle-at l-4-1) ];a = (move-car-without-umbrella l-4-1 l-4-2);j = [ 32:(vehicle-at l-4-1) ];prob = 0.6
+s = [ 32:(vehicle-at l-4-1) ];a = (move-car-without-umbrella l-4-1 l-5-1);j = [ 42:(vehicle-at l-5-1) ];prob = 0.4
+s = [ 32:(vehicle-at l-4-1) ];a = (move-car-without-umbrella l-4-1 l-5-1);j = [ 32:(vehicle-at l-4-1) ];prob = 0.6
+s = [ 32:(vehicle-at l-4-1) ];a = (pickumbrella l-4-1);j = [ 4:(has-umbrella) 32:(vehicle-at l-4-1) ];prob = 1
+s = [ 32:(vehicle-at l-4-1) ];a = (pickumbrella-and-move-with-umbrella l-4-1 l-3-1);j = [ 4:(has-umbrella) 22:(vehicle-at l-3-1) ];prob = 0.6
+s = [ 32:(vehicle-at l-4-1) ];a = (pickumbrella-and-move-with-umbrella l-4-1 l-3-1);j = [ 4:(has-umbrella) 32:(vehicle-at l-4-1) ];prob = 0.4
+s = [ 32:(vehicle-at l-4-1) ];a = (pickumbrella-and-move-with-umbrella l-4-1 l-4-2);j = [ 4:(has-umbrella) 34:(vehicle-at l-4-2) ];prob = 0.6
+s = [ 32:(vehicle-at l-4-1) ];a = (pickumbrella-and-move-with-umbrella l-4-1 l-4-2);j = [ 4:(has-umbrella) 32:(vehicle-at l-4-1) ];prob = 0.4
+s = [ 32:(vehicle-at l-4-1) ];a = (pickumbrella-and-move-with-umbrella l-4-1 l-5-1);j = [ 4:(has-umbrella) 42:(vehicle-at l-5-1) ];prob = 0.6
+s = [ 32:(vehicle-at l-4-1) ];a = (pickumbrella-and-move-with-umbrella l-4-1 l-5-1);j = [ 4:(has-umbrella) 32:(vehicle-at l-4-1) ];prob = 0.4
+s = [ 4:(has-umbrella) 38:(vehicle-at l-4-4) ];a = (move-car-umbrella l-4-4 l-3-4);j = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];prob = 0.8
+s = [ 4:(has-umbrella) 38:(vehicle-at l-4-4) ];a = (move-car-umbrella l-4-4 l-3-4);j = [ 4:(has-umbrella) 38:(vehicle-at l-4-4) ];prob = 0.2
+s = [ 4:(has-umbrella) 38:(vehicle-at l-4-4) ];a = (move-car-umbrella l-4-4 l-4-3);j = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];prob = 0.8
+s = [ 4:(has-umbrella) 38:(vehicle-at l-4-4) ];a = (move-car-umbrella l-4-4 l-4-3);j = [ 4:(has-umbrella) 38:(vehicle-at l-4-4) ];prob = 0.2
+s = [ 4:(has-umbrella) 38:(vehicle-at l-4-4) ];a = (move-car-umbrella l-4-4 l-4-5);j = [ 4:(has-umbrella) 40:(vehicle-at l-4-5) ];prob = 0.8
+s = [ 4:(has-umbrella) 38:(vehicle-at l-4-4) ];a = (move-car-umbrella l-4-4 l-4-5);j = [ 4:(has-umbrella) 38:(vehicle-at l-4-4) ];prob = 0.2
+s = [ 4:(has-umbrella) 38:(vehicle-at l-4-4) ];a = (move-car-umbrella l-4-4 l-5-4);j = [ 4:(has-umbrella) 48:(vehicle-at l-5-4) ];prob = 0.8
+s = [ 4:(has-umbrella) 38:(vehicle-at l-4-4) ];a = (move-car-umbrella l-4-4 l-5-4);j = [ 4:(has-umbrella) 38:(vehicle-at l-4-4) ];prob = 0.2
+s = [ 4:(has-umbrella) 38:(vehicle-at l-4-4) ];a = (move-car-without-umbrella l-4-4 l-3-4);j = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];prob = 0.4
+s = [ 4:(has-umbrella) 38:(vehicle-at l-4-4) ];a = (move-car-without-umbrella l-4-4 l-3-4);j = [ 4:(has-umbrella) 38:(vehicle-at l-4-4) ];prob = 0.6
+s = [ 4:(has-umbrella) 38:(vehicle-at l-4-4) ];a = (move-car-without-umbrella l-4-4 l-4-3);j = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];prob = 0.4
+s = [ 4:(has-umbrella) 38:(vehicle-at l-4-4) ];a = (move-car-without-umbrella l-4-4 l-4-3);j = [ 4:(has-umbrella) 38:(vehicle-at l-4-4) ];prob = 0.6
+s = [ 4:(has-umbrella) 38:(vehicle-at l-4-4) ];a = (move-car-without-umbrella l-4-4 l-4-5);j = [ 4:(has-umbrella) 40:(vehicle-at l-4-5) ];prob = 0.4
+s = [ 4:(has-umbrella) 38:(vehicle-at l-4-4) ];a = (move-car-without-umbrella l-4-4 l-4-5);j = [ 4:(has-umbrella) 38:(vehicle-at l-4-4) ];prob = 0.6
+s = [ 4:(has-umbrella) 38:(vehicle-at l-4-4) ];a = (move-car-without-umbrella l-4-4 l-5-4);j = [ 4:(has-umbrella) 48:(vehicle-at l-5-4) ];prob = 0.4
+s = [ 4:(has-umbrella) 38:(vehicle-at l-4-4) ];a = (move-car-without-umbrella l-4-4 l-5-4);j = [ 4:(has-umbrella) 38:(vehicle-at l-4-4) ];prob = 0.6
+s = [ 30:(vehicle-at l-3-5) ];a = (move-car-without-umbrella l-3-5 l-2-5);j = [ 0:(vehicle-at l-2-5) ];prob = 0.4
+s = [ 30:(vehicle-at l-3-5) ];a = (move-car-without-umbrella l-3-5 l-2-5);j = [ 30:(vehicle-at l-3-5) ];prob = 0.6
+s = [ 30:(vehicle-at l-3-5) ];a = (move-car-without-umbrella l-3-5 l-3-4);j = [ 28:(vehicle-at l-3-4) ];prob = 0.4
+s = [ 30:(vehicle-at l-3-5) ];a = (move-car-without-umbrella l-3-5 l-3-4);j = [ 30:(vehicle-at l-3-5) ];prob = 0.6
+s = [ 30:(vehicle-at l-3-5) ];a = (move-car-without-umbrella l-3-5 l-4-5);j = [ 40:(vehicle-at l-4-5) ];prob = 0.4
+s = [ 30:(vehicle-at l-3-5) ];a = (move-car-without-umbrella l-3-5 l-4-5);j = [ 30:(vehicle-at l-3-5) ];prob = 0.6
+s = [ 30:(vehicle-at l-3-5) ];a = (pickumbrella l-3-5);j = [ 4:(has-umbrella) 30:(vehicle-at l-3-5) ];prob = 1
+s = [ 30:(vehicle-at l-3-5) ];a = (pickumbrella-and-move-with-umbrella l-3-5 l-2-5);j = [ 0:(vehicle-at l-2-5) 4:(has-umbrella) ];prob = 0.6
+s = [ 30:(vehicle-at l-3-5) ];a = (pickumbrella-and-move-with-umbrella l-3-5 l-2-5);j = [ 4:(has-umbrella) 30:(vehicle-at l-3-5) ];prob = 0.4
+s = [ 30:(vehicle-at l-3-5) ];a = (pickumbrella-and-move-with-umbrella l-3-5 l-3-4);j = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];prob = 0.6
+s = [ 30:(vehicle-at l-3-5) ];a = (pickumbrella-and-move-with-umbrella l-3-5 l-3-4);j = [ 4:(has-umbrella) 30:(vehicle-at l-3-5) ];prob = 0.4
+s = [ 30:(vehicle-at l-3-5) ];a = (pickumbrella-and-move-with-umbrella l-3-5 l-4-5);j = [ 4:(has-umbrella) 40:(vehicle-at l-4-5) ];prob = 0.6
+s = [ 30:(vehicle-at l-3-5) ];a = (pickumbrella-and-move-with-umbrella l-3-5 l-4-5);j = [ 4:(has-umbrella) 30:(vehicle-at l-3-5) ];prob = 0.4
+s = [ 20:(vehicle-at l-2-4) ];a = (move-car-without-umbrella l-2-4 l-1-4);j = [ 14:(vehicle-at l-1-4) ];prob = 0.4
+s = [ 20:(vehicle-at l-2-4) ];a = (move-car-without-umbrella l-2-4 l-1-4);j = [ 20:(vehicle-at l-2-4) ];prob = 0.6
+s = [ 20:(vehicle-at l-2-4) ];a = (move-car-without-umbrella l-2-4 l-2-3);j = [ 16:(vehicle-at l-2-3) ];prob = 0.4
+s = [ 20:(vehicle-at l-2-4) ];a = (move-car-without-umbrella l-2-4 l-2-3);j = [ 20:(vehicle-at l-2-4) ];prob = 0.6
+s = [ 20:(vehicle-at l-2-4) ];a = (move-car-without-umbrella l-2-4 l-2-5);j = [ 0:(vehicle-at l-2-5) ];prob = 0.4
+s = [ 20:(vehicle-at l-2-4) ];a = (move-car-without-umbrella l-2-4 l-2-5);j = [ 20:(vehicle-at l-2-4) ];prob = 0.6
+s = [ 20:(vehicle-at l-2-4) ];a = (move-car-without-umbrella l-2-4 l-3-4);j = [ 28:(vehicle-at l-3-4) ];prob = 0.4
+s = [ 20:(vehicle-at l-2-4) ];a = (move-car-without-umbrella l-2-4 l-3-4);j = [ 20:(vehicle-at l-2-4) ];prob = 0.6
+s = [ 4:(has-umbrella) 48:(vehicle-at l-5-4) ];a = (move-car-umbrella l-5-4 l-4-4);j = [ 4:(has-umbrella) 38:(vehicle-at l-4-4) ];prob = 0.8
+s = [ 4:(has-umbrella) 48:(vehicle-at l-5-4) ];a = (move-car-umbrella l-5-4 l-4-4);j = [ 4:(has-umbrella) 48:(vehicle-at l-5-4) ];prob = 0.2
+s = [ 4:(has-umbrella) 48:(vehicle-at l-5-4) ];a = (move-car-umbrella l-5-4 l-5-3);j = [ 4:(has-umbrella) 46:(vehicle-at l-5-3) ];prob = 0.8
+s = [ 4:(has-umbrella) 48:(vehicle-at l-5-4) ];a = (move-car-umbrella l-5-4 l-5-3);j = [ 4:(has-umbrella) 48:(vehicle-at l-5-4) ];prob = 0.2
+s = [ 4:(has-umbrella) 48:(vehicle-at l-5-4) ];a = (move-car-umbrella l-5-4 l-5-5);j = [ 4:(has-umbrella) 50:(vehicle-at l-5-5) ];prob = 0.8
+s = [ 4:(has-umbrella) 48:(vehicle-at l-5-4) ];a = (move-car-umbrella l-5-4 l-5-5);j = [ 4:(has-umbrella) 48:(vehicle-at l-5-4) ];prob = 0.2
+s = [ 4:(has-umbrella) 48:(vehicle-at l-5-4) ];a = (move-car-without-umbrella l-5-4 l-4-4);j = [ 4:(has-umbrella) 38:(vehicle-at l-4-4) ];prob = 0.4
+s = [ 4:(has-umbrella) 48:(vehicle-at l-5-4) ];a = (move-car-without-umbrella l-5-4 l-4-4);j = [ 4:(has-umbrella) 48:(vehicle-at l-5-4) ];prob = 0.6
+s = [ 4:(has-umbrella) 48:(vehicle-at l-5-4) ];a = (move-car-without-umbrella l-5-4 l-5-3);j = [ 4:(has-umbrella) 46:(vehicle-at l-5-3) ];prob = 0.4
+s = [ 4:(has-umbrella) 48:(vehicle-at l-5-4) ];a = (move-car-without-umbrella l-5-4 l-5-3);j = [ 4:(has-umbrella) 48:(vehicle-at l-5-4) ];prob = 0.6
+s = [ 4:(has-umbrella) 48:(vehicle-at l-5-4) ];a = (move-car-without-umbrella l-5-4 l-5-5);j = [ 4:(has-umbrella) 50:(vehicle-at l-5-5) ];prob = 0.4
+s = [ 4:(has-umbrella) 48:(vehicle-at l-5-4) ];a = (move-car-without-umbrella l-5-4 l-5-5);j = [ 4:(has-umbrella) 48:(vehicle-at l-5-4) ];prob = 0.6
+s = [ 4:(has-umbrella) 26:(vehicle-at l-3-3) ];a = (move-car-umbrella l-3-3 l-2-3);j = [ 4:(has-umbrella) 16:(vehicle-at l-2-3) ];prob = 0.8
+s = [ 4:(has-umbrella) 26:(vehicle-at l-3-3) ];a = (move-car-umbrella l-3-3 l-2-3);j = [ 4:(has-umbrella) 26:(vehicle-at l-3-3) ];prob = 0.2
+s = [ 4:(has-umbrella) 26:(vehicle-at l-3-3) ];a = (move-car-umbrella l-3-3 l-3-2);j = [ 4:(has-umbrella) 24:(vehicle-at l-3-2) ];prob = 0.8
+s = [ 4:(has-umbrella) 26:(vehicle-at l-3-3) ];a = (move-car-umbrella l-3-3 l-3-2);j = [ 4:(has-umbrella) 26:(vehicle-at l-3-3) ];prob = 0.2
+s = [ 4:(has-umbrella) 26:(vehicle-at l-3-3) ];a = (move-car-umbrella l-3-3 l-3-4);j = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];prob = 0.8
+s = [ 4:(has-umbrella) 26:(vehicle-at l-3-3) ];a = (move-car-umbrella l-3-3 l-3-4);j = [ 4:(has-umbrella) 26:(vehicle-at l-3-3) ];prob = 0.2
+s = [ 4:(has-umbrella) 26:(vehicle-at l-3-3) ];a = (move-car-umbrella l-3-3 l-4-3);j = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];prob = 0.8
+s = [ 4:(has-umbrella) 26:(vehicle-at l-3-3) ];a = (move-car-umbrella l-3-3 l-4-3);j = [ 4:(has-umbrella) 26:(vehicle-at l-3-3) ];prob = 0.2
+s = [ 4:(has-umbrella) 26:(vehicle-at l-3-3) ];a = (move-car-without-umbrella l-3-3 l-2-3);j = [ 4:(has-umbrella) 16:(vehicle-at l-2-3) ];prob = 0.4
+s = [ 4:(has-umbrella) 26:(vehicle-at l-3-3) ];a = (move-car-without-umbrella l-3-3 l-2-3);j = [ 4:(has-umbrella) 26:(vehicle-at l-3-3) ];prob = 0.6
+s = [ 4:(has-umbrella) 26:(vehicle-at l-3-3) ];a = (move-car-without-umbrella l-3-3 l-3-2);j = [ 4:(has-umbrella) 24:(vehicle-at l-3-2) ];prob = 0.4
+s = [ 4:(has-umbrella) 26:(vehicle-at l-3-3) ];a = (move-car-without-umbrella l-3-3 l-3-2);j = [ 4:(has-umbrella) 26:(vehicle-at l-3-3) ];prob = 0.6
+s = [ 4:(has-umbrella) 26:(vehicle-at l-3-3) ];a = (move-car-without-umbrella l-3-3 l-3-4);j = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];prob = 0.4
+s = [ 4:(has-umbrella) 26:(vehicle-at l-3-3) ];a = (move-car-without-umbrella l-3-3 l-3-4);j = [ 4:(has-umbrella) 26:(vehicle-at l-3-3) ];prob = 0.6
+s = [ 4:(has-umbrella) 26:(vehicle-at l-3-3) ];a = (move-car-without-umbrella l-3-3 l-4-3);j = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];prob = 0.4
+s = [ 4:(has-umbrella) 26:(vehicle-at l-3-3) ];a = (move-car-without-umbrella l-3-3 l-4-3);j = [ 4:(has-umbrella) 26:(vehicle-at l-3-3) ];prob = 0.6
+s = [ 46:(vehicle-at l-5-3) ];a = (move-car-without-umbrella l-5-3 l-4-3);j = [ 36:(vehicle-at l-4-3) ];prob = 0.4
+s = [ 46:(vehicle-at l-5-3) ];a = (move-car-without-umbrella l-5-3 l-4-3);j = [ 46:(vehicle-at l-5-3) ];prob = 0.6
+s = [ 46:(vehicle-at l-5-3) ];a = (move-car-without-umbrella l-5-3 l-5-2);j = [ 44:(vehicle-at l-5-2) ];prob = 0.4
+s = [ 46:(vehicle-at l-5-3) ];a = (move-car-without-umbrella l-5-3 l-5-2);j = [ 46:(vehicle-at l-5-3) ];prob = 0.6
+s = [ 46:(vehicle-at l-5-3) ];a = (move-car-without-umbrella l-5-3 l-5-4);j = [ 48:(vehicle-at l-5-4) ];prob = 0.4
+s = [ 46:(vehicle-at l-5-3) ];a = (move-car-without-umbrella l-5-3 l-5-4);j = [ 46:(vehicle-at l-5-3) ];prob = 0.6
+s = [ 36:(vehicle-at l-4-3) ];a = (move-car-without-umbrella l-4-3 l-3-3);j = [ 26:(vehicle-at l-3-3) ];prob = 0.4
+s = [ 36:(vehicle-at l-4-3) ];a = (move-car-without-umbrella l-4-3 l-3-3);j = [ 36:(vehicle-at l-4-3) ];prob = 0.6
+s = [ 36:(vehicle-at l-4-3) ];a = (move-car-without-umbrella l-4-3 l-3-4);j = [ 28:(vehicle-at l-3-4) ];prob = 0.4
+s = [ 36:(vehicle-at l-4-3) ];a = (move-car-without-umbrella l-4-3 l-3-4);j = [ 36:(vehicle-at l-4-3) ];prob = 0.6
+s = [ 36:(vehicle-at l-4-3) ];a = (move-car-without-umbrella l-4-3 l-4-2);j = [ 34:(vehicle-at l-4-2) ];prob = 0.4
+s = [ 36:(vehicle-at l-4-3) ];a = (move-car-without-umbrella l-4-3 l-4-2);j = [ 36:(vehicle-at l-4-3) ];prob = 0.6
+s = [ 36:(vehicle-at l-4-3) ];a = (move-car-without-umbrella l-4-3 l-4-4);j = [ 38:(vehicle-at l-4-4) ];prob = 0.4
+s = [ 36:(vehicle-at l-4-3) ];a = (move-car-without-umbrella l-4-3 l-4-4);j = [ 36:(vehicle-at l-4-3) ];prob = 0.6
+s = [ 36:(vehicle-at l-4-3) ];a = (move-car-without-umbrella l-4-3 l-5-2);j = [ 44:(vehicle-at l-5-2) ];prob = 0.4
+s = [ 36:(vehicle-at l-4-3) ];a = (move-car-without-umbrella l-4-3 l-5-2);j = [ 36:(vehicle-at l-4-3) ];prob = 0.6
+s = [ 36:(vehicle-at l-4-3) ];a = (move-car-without-umbrella l-4-3 l-5-3);j = [ 46:(vehicle-at l-5-3) ];prob = 0.4
+s = [ 36:(vehicle-at l-4-3) ];a = (move-car-without-umbrella l-4-3 l-5-3);j = [ 36:(vehicle-at l-4-3) ];prob = 0.6
+s = [ 4:(has-umbrella) 34:(vehicle-at l-4-2) ];a = (move-car-umbrella l-4-2 l-3-2);j = [ 4:(has-umbrella) 24:(vehicle-at l-3-2) ];prob = 0.8
+s = [ 4:(has-umbrella) 34:(vehicle-at l-4-2) ];a = (move-car-umbrella l-4-2 l-3-2);j = [ 4:(has-umbrella) 34:(vehicle-at l-4-2) ];prob = 0.2
+s = [ 4:(has-umbrella) 34:(vehicle-at l-4-2) ];a = (move-car-umbrella l-4-2 l-4-1);j = [ 4:(has-umbrella) 32:(vehicle-at l-4-1) ];prob = 0.8
+s = [ 4:(has-umbrella) 34:(vehicle-at l-4-2) ];a = (move-car-umbrella l-4-2 l-4-1);j = [ 4:(has-umbrella) 34:(vehicle-at l-4-2) ];prob = 0.2
+s = [ 4:(has-umbrella) 34:(vehicle-at l-4-2) ];a = (move-car-umbrella l-4-2 l-4-3);j = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];prob = 0.8
+s = [ 4:(has-umbrella) 34:(vehicle-at l-4-2) ];a = (move-car-umbrella l-4-2 l-4-3);j = [ 4:(has-umbrella) 34:(vehicle-at l-4-2) ];prob = 0.2
+s = [ 4:(has-umbrella) 34:(vehicle-at l-4-2) ];a = (move-car-umbrella l-4-2 l-5-2);j = [ 4:(has-umbrella) 44:(vehicle-at l-5-2) ];prob = 0.8
+s = [ 4:(has-umbrella) 34:(vehicle-at l-4-2) ];a = (move-car-umbrella l-4-2 l-5-2);j = [ 4:(has-umbrella) 34:(vehicle-at l-4-2) ];prob = 0.2
+s = [ 4:(has-umbrella) 34:(vehicle-at l-4-2) ];a = (move-car-without-umbrella l-4-2 l-3-2);j = [ 4:(has-umbrella) 24:(vehicle-at l-3-2) ];prob = 0.4
+s = [ 4:(has-umbrella) 34:(vehicle-at l-4-2) ];a = (move-car-without-umbrella l-4-2 l-3-2);j = [ 4:(has-umbrella) 34:(vehicle-at l-4-2) ];prob = 0.6
+s = [ 4:(has-umbrella) 34:(vehicle-at l-4-2) ];a = (move-car-without-umbrella l-4-2 l-4-1);j = [ 4:(has-umbrella) 32:(vehicle-at l-4-1) ];prob = 0.4
+s = [ 4:(has-umbrella) 34:(vehicle-at l-4-2) ];a = (move-car-without-umbrella l-4-2 l-4-1);j = [ 4:(has-umbrella) 34:(vehicle-at l-4-2) ];prob = 0.6
+s = [ 4:(has-umbrella) 34:(vehicle-at l-4-2) ];a = (move-car-without-umbrella l-4-2 l-4-3);j = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];prob = 0.4
+s = [ 4:(has-umbrella) 34:(vehicle-at l-4-2) ];a = (move-car-without-umbrella l-4-2 l-4-3);j = [ 4:(has-umbrella) 34:(vehicle-at l-4-2) ];prob = 0.6
+s = [ 4:(has-umbrella) 34:(vehicle-at l-4-2) ];a = (move-car-without-umbrella l-4-2 l-5-2);j = [ 4:(has-umbrella) 44:(vehicle-at l-5-2) ];prob = 0.4
+s = [ 4:(has-umbrella) 34:(vehicle-at l-4-2) ];a = (move-car-without-umbrella l-4-2 l-5-2);j = [ 4:(has-umbrella) 34:(vehicle-at l-4-2) ];prob = 0.6
+s = [ 4:(has-umbrella) 22:(vehicle-at l-3-1) ];a = (move-car-umbrella l-3-1 l-2-1);j = [ 4:(has-umbrella) 8:(vehicle-at l-2-1) ];prob = 0.8
+s = [ 4:(has-umbrella) 22:(vehicle-at l-3-1) ];a = (move-car-umbrella l-3-1 l-2-1);j = [ 4:(has-umbrella) 22:(vehicle-at l-3-1) ];prob = 0.2
+s = [ 4:(has-umbrella) 22:(vehicle-at l-3-1) ];a = (move-car-umbrella l-3-1 l-3-2);j = [ 4:(has-umbrella) 24:(vehicle-at l-3-2) ];prob = 0.8
+s = [ 4:(has-umbrella) 22:(vehicle-at l-3-1) ];a = (move-car-umbrella l-3-1 l-3-2);j = [ 4:(has-umbrella) 22:(vehicle-at l-3-1) ];prob = 0.2
+s = [ 4:(has-umbrella) 22:(vehicle-at l-3-1) ];a = (move-car-umbrella l-3-1 l-4-1);j = [ 4:(has-umbrella) 32:(vehicle-at l-4-1) ];prob = 0.8
+s = [ 4:(has-umbrella) 22:(vehicle-at l-3-1) ];a = (move-car-umbrella l-3-1 l-4-1);j = [ 4:(has-umbrella) 22:(vehicle-at l-3-1) ];prob = 0.2
+s = [ 4:(has-umbrella) 22:(vehicle-at l-3-1) ];a = (move-car-without-umbrella l-3-1 l-2-1);j = [ 4:(has-umbrella) 8:(vehicle-at l-2-1) ];prob = 0.4
+s = [ 4:(has-umbrella) 22:(vehicle-at l-3-1) ];a = (move-car-without-umbrella l-3-1 l-2-1);j = [ 4:(has-umbrella) 22:(vehicle-at l-3-1) ];prob = 0.6
+s = [ 4:(has-umbrella) 22:(vehicle-at l-3-1) ];a = (move-car-without-umbrella l-3-1 l-3-2);j = [ 4:(has-umbrella) 24:(vehicle-at l-3-2) ];prob = 0.4
+s = [ 4:(has-umbrella) 22:(vehicle-at l-3-1) ];a = (move-car-without-umbrella l-3-1 l-3-2);j = [ 4:(has-umbrella) 22:(vehicle-at l-3-1) ];prob = 0.6
+s = [ 4:(has-umbrella) 22:(vehicle-at l-3-1) ];a = (move-car-without-umbrella l-3-1 l-4-1);j = [ 4:(has-umbrella) 32:(vehicle-at l-4-1) ];prob = 0.4
+s = [ 4:(has-umbrella) 22:(vehicle-at l-3-1) ];a = (move-car-without-umbrella l-3-1 l-4-1);j = [ 4:(has-umbrella) 22:(vehicle-at l-3-1) ];prob = 0.6
+s = [ 42:(vehicle-at l-5-1) ];a = (move-car-without-umbrella l-5-1 l-4-1);j = [ 32:(vehicle-at l-4-1) ];prob = 0.4
+s = [ 42:(vehicle-at l-5-1) ];a = (move-car-without-umbrella l-5-1 l-4-1);j = [ 42:(vehicle-at l-5-1) ];prob = 0.6
+s = [ 42:(vehicle-at l-5-1) ];a = (move-car-without-umbrella l-5-1 l-5-2);j = [ 44:(vehicle-at l-5-2) ];prob = 0.4
+s = [ 42:(vehicle-at l-5-1) ];a = (move-car-without-umbrella l-5-1 l-5-2);j = [ 42:(vehicle-at l-5-1) ];prob = 0.6
+s = [ 40:(vehicle-at l-4-5) ];a = (move-car-without-umbrella l-4-5 l-3-5);j = [ 30:(vehicle-at l-3-5) ];prob = 0.4
+s = [ 40:(vehicle-at l-4-5) ];a = (move-car-without-umbrella l-4-5 l-3-5);j = [ 40:(vehicle-at l-4-5) ];prob = 0.6
+s = [ 40:(vehicle-at l-4-5) ];a = (move-car-without-umbrella l-4-5 l-4-4);j = [ 38:(vehicle-at l-4-4) ];prob = 0.4
+s = [ 40:(vehicle-at l-4-5) ];a = (move-car-without-umbrella l-4-5 l-4-4);j = [ 40:(vehicle-at l-4-5) ];prob = 0.6
+s = [ 40:(vehicle-at l-4-5) ];a = (move-car-without-umbrella l-4-5 l-5-5);j = [ 50:(vehicle-at l-5-5) ];prob = 0.4
+s = [ 40:(vehicle-at l-4-5) ];a = (move-car-without-umbrella l-4-5 l-5-5);j = [ 40:(vehicle-at l-4-5) ];prob = 0.6
+s = [ 40:(vehicle-at l-4-5) ];a = (pickumbrella l-4-5);j = [ 4:(has-umbrella) 40:(vehicle-at l-4-5) ];prob = 1
+s = [ 40:(vehicle-at l-4-5) ];a = (pickumbrella-and-move-with-umbrella l-4-5 l-3-5);j = [ 4:(has-umbrella) 30:(vehicle-at l-3-5) ];prob = 0.6
+s = [ 40:(vehicle-at l-4-5) ];a = (pickumbrella-and-move-with-umbrella l-4-5 l-3-5);j = [ 4:(has-umbrella) 40:(vehicle-at l-4-5) ];prob = 0.4
+s = [ 40:(vehicle-at l-4-5) ];a = (pickumbrella-and-move-with-umbrella l-4-5 l-4-4);j = [ 4:(has-umbrella) 38:(vehicle-at l-4-4) ];prob = 0.6
+s = [ 40:(vehicle-at l-4-5) ];a = (pickumbrella-and-move-with-umbrella l-4-5 l-4-4);j = [ 4:(has-umbrella) 40:(vehicle-at l-4-5) ];prob = 0.4
+s = [ 40:(vehicle-at l-4-5) ];a = (pickumbrella-and-move-with-umbrella l-4-5 l-5-5);j = [ 4:(has-umbrella) 50:(vehicle-at l-5-5) ];prob = 0.6
+s = [ 40:(vehicle-at l-4-5) ];a = (pickumbrella-and-move-with-umbrella l-4-5 l-5-5);j = [ 4:(has-umbrella) 40:(vehicle-at l-4-5) ];prob = 0.4
+s = [ 4:(has-umbrella) 46:(vehicle-at l-5-3) ];a = (move-car-umbrella l-5-3 l-4-3);j = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];prob = 0.8
+s = [ 4:(has-umbrella) 46:(vehicle-at l-5-3) ];a = (move-car-umbrella l-5-3 l-4-3);j = [ 4:(has-umbrella) 46:(vehicle-at l-5-3) ];prob = 0.2
+s = [ 4:(has-umbrella) 46:(vehicle-at l-5-3) ];a = (move-car-umbrella l-5-3 l-5-2);j = [ 4:(has-umbrella) 44:(vehicle-at l-5-2) ];prob = 0.8
+s = [ 4:(has-umbrella) 46:(vehicle-at l-5-3) ];a = (move-car-umbrella l-5-3 l-5-2);j = [ 4:(has-umbrella) 46:(vehicle-at l-5-3) ];prob = 0.2
+s = [ 4:(has-umbrella) 46:(vehicle-at l-5-3) ];a = (move-car-umbrella l-5-3 l-5-4);j = [ 4:(has-umbrella) 48:(vehicle-at l-5-4) ];prob = 0.8
+s = [ 4:(has-umbrella) 46:(vehicle-at l-5-3) ];a = (move-car-umbrella l-5-3 l-5-4);j = [ 4:(has-umbrella) 46:(vehicle-at l-5-3) ];prob = 0.2
+s = [ 4:(has-umbrella) 46:(vehicle-at l-5-3) ];a = (move-car-without-umbrella l-5-3 l-4-3);j = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];prob = 0.4
+s = [ 4:(has-umbrella) 46:(vehicle-at l-5-3) ];a = (move-car-without-umbrella l-5-3 l-4-3);j = [ 4:(has-umbrella) 46:(vehicle-at l-5-3) ];prob = 0.6
+s = [ 4:(has-umbrella) 46:(vehicle-at l-5-3) ];a = (move-car-without-umbrella l-5-3 l-5-2);j = [ 4:(has-umbrella) 44:(vehicle-at l-5-2) ];prob = 0.4
+s = [ 4:(has-umbrella) 46:(vehicle-at l-5-3) ];a = (move-car-without-umbrella l-5-3 l-5-2);j = [ 4:(has-umbrella) 46:(vehicle-at l-5-3) ];prob = 0.6
+s = [ 4:(has-umbrella) 46:(vehicle-at l-5-3) ];a = (move-car-without-umbrella l-5-3 l-5-4);j = [ 4:(has-umbrella) 48:(vehicle-at l-5-4) ];prob = 0.4
+s = [ 4:(has-umbrella) 46:(vehicle-at l-5-3) ];a = (move-car-without-umbrella l-5-3 l-5-4);j = [ 4:(has-umbrella) 46:(vehicle-at l-5-3) ];prob = 0.6
+s = [ 0:(vehicle-at l-2-5) 4:(has-umbrella) ];a = (move-car-umbrella l-2-5 l-1-5);j = [ 4:(has-umbrella) 18:(vehicle-at l-1-5) ];prob = 0.8
+s = [ 0:(vehicle-at l-2-5) 4:(has-umbrella) ];a = (move-car-umbrella l-2-5 l-1-5);j = [ 0:(vehicle-at l-2-5) 4:(has-umbrella) ];prob = 0.2
+s = [ 0:(vehicle-at l-2-5) 4:(has-umbrella) ];a = (move-car-umbrella l-2-5 l-2-4);j = [ 4:(has-umbrella) 20:(vehicle-at l-2-4) ];prob = 0.8
+s = [ 0:(vehicle-at l-2-5) 4:(has-umbrella) ];a = (move-car-umbrella l-2-5 l-2-4);j = [ 0:(vehicle-at l-2-5) 4:(has-umbrella) ];prob = 0.2
+s = [ 0:(vehicle-at l-2-5) 4:(has-umbrella) ];a = (move-car-umbrella l-2-5 l-3-4);j = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];prob = 0.8
+s = [ 0:(vehicle-at l-2-5) 4:(has-umbrella) ];a = (move-car-umbrella l-2-5 l-3-4);j = [ 0:(vehicle-at l-2-5) 4:(has-umbrella) ];prob = 0.2
+s = [ 0:(vehicle-at l-2-5) 4:(has-umbrella) ];a = (move-car-umbrella l-2-5 l-3-5);j = [ 4:(has-umbrella) 30:(vehicle-at l-3-5) ];prob = 0.8
+s = [ 0:(vehicle-at l-2-5) 4:(has-umbrella) ];a = (move-car-umbrella l-2-5 l-3-5);j = [ 0:(vehicle-at l-2-5) 4:(has-umbrella) ];prob = 0.2
+s = [ 0:(vehicle-at l-2-5) 4:(has-umbrella) ];a = (move-car-without-umbrella l-2-5 l-1-5);j = [ 4:(has-umbrella) 18:(vehicle-at l-1-5) ];prob = 0.4
+s = [ 0:(vehicle-at l-2-5) 4:(has-umbrella) ];a = (move-car-without-umbrella l-2-5 l-1-5);j = [ 0:(vehicle-at l-2-5) 4:(has-umbrella) ];prob = 0.6
+s = [ 0:(vehicle-at l-2-5) 4:(has-umbrella) ];a = (move-car-without-umbrella l-2-5 l-2-4);j = [ 4:(has-umbrella) 20:(vehicle-at l-2-4) ];prob = 0.4
+s = [ 0:(vehicle-at l-2-5) 4:(has-umbrella) ];a = (move-car-without-umbrella l-2-5 l-2-4);j = [ 0:(vehicle-at l-2-5) 4:(has-umbrella) ];prob = 0.6
+s = [ 0:(vehicle-at l-2-5) 4:(has-umbrella) ];a = (move-car-without-umbrella l-2-5 l-3-4);j = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];prob = 0.4
+s = [ 0:(vehicle-at l-2-5) 4:(has-umbrella) ];a = (move-car-without-umbrella l-2-5 l-3-4);j = [ 0:(vehicle-at l-2-5) 4:(has-umbrella) ];prob = 0.6
+s = [ 0:(vehicle-at l-2-5) 4:(has-umbrella) ];a = (move-car-without-umbrella l-2-5 l-3-5);j = [ 4:(has-umbrella) 30:(vehicle-at l-3-5) ];prob = 0.4
+s = [ 0:(vehicle-at l-2-5) 4:(has-umbrella) ];a = (move-car-without-umbrella l-2-5 l-3-5);j = [ 0:(vehicle-at l-2-5) 4:(has-umbrella) ];prob = 0.6
+s = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];a = (move-car-umbrella l-3-4 l-2-4);j = [ 4:(has-umbrella) 20:(vehicle-at l-2-4) ];prob = 0.8
+s = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];a = (move-car-umbrella l-3-4 l-2-4);j = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];prob = 0.2
+s = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];a = (move-car-umbrella l-3-4 l-2-5);j = [ 0:(vehicle-at l-2-5) 4:(has-umbrella) ];prob = 0.8
+s = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];a = (move-car-umbrella l-3-4 l-2-5);j = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];prob = 0.2
+s = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];a = (move-car-umbrella l-3-4 l-3-3);j = [ 4:(has-umbrella) 26:(vehicle-at l-3-3) ];prob = 0.8
+s = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];a = (move-car-umbrella l-3-4 l-3-3);j = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];prob = 0.2
+s = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];a = (move-car-umbrella l-3-4 l-3-5);j = [ 4:(has-umbrella) 30:(vehicle-at l-3-5) ];prob = 0.8
+s = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];a = (move-car-umbrella l-3-4 l-3-5);j = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];prob = 0.2
+s = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];a = (move-car-umbrella l-3-4 l-4-3);j = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];prob = 0.8
+s = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];a = (move-car-umbrella l-3-4 l-4-3);j = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];prob = 0.2
+s = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];a = (move-car-umbrella l-3-4 l-4-4);j = [ 4:(has-umbrella) 38:(vehicle-at l-4-4) ];prob = 0.8
+s = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];a = (move-car-umbrella l-3-4 l-4-4);j = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];prob = 0.2
+s = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];a = (move-car-without-umbrella l-3-4 l-2-4);j = [ 4:(has-umbrella) 20:(vehicle-at l-2-4) ];prob = 0.4
+s = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];a = (move-car-without-umbrella l-3-4 l-2-4);j = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];prob = 0.6
+s = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];a = (move-car-without-umbrella l-3-4 l-2-5);j = [ 0:(vehicle-at l-2-5) 4:(has-umbrella) ];prob = 0.4
+s = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];a = (move-car-without-umbrella l-3-4 l-2-5);j = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];prob = 0.6
+s = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];a = (move-car-without-umbrella l-3-4 l-3-3);j = [ 4:(has-umbrella) 26:(vehicle-at l-3-3) ];prob = 0.4
+s = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];a = (move-car-without-umbrella l-3-4 l-3-3);j = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];prob = 0.6
+s = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];a = (move-car-without-umbrella l-3-4 l-3-5);j = [ 4:(has-umbrella) 30:(vehicle-at l-3-5) ];prob = 0.4
+s = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];a = (move-car-without-umbrella l-3-4 l-3-5);j = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];prob = 0.6
+s = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];a = (move-car-without-umbrella l-3-4 l-4-3);j = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];prob = 0.4
+s = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];a = (move-car-without-umbrella l-3-4 l-4-3);j = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];prob = 0.6
+s = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];a = (move-car-without-umbrella l-3-4 l-4-4);j = [ 4:(has-umbrella) 38:(vehicle-at l-4-4) ];prob = 0.4
+s = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];a = (move-car-without-umbrella l-3-4 l-4-4);j = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];prob = 0.6
+s = [ 4:(has-umbrella) 40:(vehicle-at l-4-5) ];a = (move-car-umbrella l-4-5 l-3-5);j = [ 4:(has-umbrella) 30:(vehicle-at l-3-5) ];prob = 0.8
+s = [ 4:(has-umbrella) 40:(vehicle-at l-4-5) ];a = (move-car-umbrella l-4-5 l-3-5);j = [ 4:(has-umbrella) 40:(vehicle-at l-4-5) ];prob = 0.2
+s = [ 4:(has-umbrella) 40:(vehicle-at l-4-5) ];a = (move-car-umbrella l-4-5 l-4-4);j = [ 4:(has-umbrella) 38:(vehicle-at l-4-4) ];prob = 0.8
+s = [ 4:(has-umbrella) 40:(vehicle-at l-4-5) ];a = (move-car-umbrella l-4-5 l-4-4);j = [ 4:(has-umbrella) 40:(vehicle-at l-4-5) ];prob = 0.2
+s = [ 4:(has-umbrella) 40:(vehicle-at l-4-5) ];a = (move-car-umbrella l-4-5 l-5-5);j = [ 4:(has-umbrella) 50:(vehicle-at l-5-5) ];prob = 0.8
+s = [ 4:(has-umbrella) 40:(vehicle-at l-4-5) ];a = (move-car-umbrella l-4-5 l-5-5);j = [ 4:(has-umbrella) 40:(vehicle-at l-4-5) ];prob = 0.2
+s = [ 4:(has-umbrella) 40:(vehicle-at l-4-5) ];a = (move-car-without-umbrella l-4-5 l-3-5);j = [ 4:(has-umbrella) 30:(vehicle-at l-3-5) ];prob = 0.4
+s = [ 4:(has-umbrella) 40:(vehicle-at l-4-5) ];a = (move-car-without-umbrella l-4-5 l-3-5);j = [ 4:(has-umbrella) 40:(vehicle-at l-4-5) ];prob = 0.6
+s = [ 4:(has-umbrella) 40:(vehicle-at l-4-5) ];a = (move-car-without-umbrella l-4-5 l-4-4);j = [ 4:(has-umbrella) 38:(vehicle-at l-4-4) ];prob = 0.4
+s = [ 4:(has-umbrella) 40:(vehicle-at l-4-5) ];a = (move-car-without-umbrella l-4-5 l-4-4);j = [ 4:(has-umbrella) 40:(vehicle-at l-4-5) ];prob = 0.6
+s = [ 4:(has-umbrella) 40:(vehicle-at l-4-5) ];a = (move-car-without-umbrella l-4-5 l-5-5);j = [ 4:(has-umbrella) 50:(vehicle-at l-5-5) ];prob = 0.4
+s = [ 4:(has-umbrella) 40:(vehicle-at l-4-5) ];a = (move-car-without-umbrella l-4-5 l-5-5);j = [ 4:(has-umbrella) 40:(vehicle-at l-4-5) ];prob = 0.6
+s = [ 4:(has-umbrella) 24:(vehicle-at l-3-2) ];a = (move-car-umbrella l-3-2 l-2-2);j = [ 4:(has-umbrella) 12:(vehicle-at l-2-2) ];prob = 0.8
+s = [ 4:(has-umbrella) 24:(vehicle-at l-3-2) ];a = (move-car-umbrella l-3-2 l-2-2);j = [ 4:(has-umbrella) 24:(vehicle-at l-3-2) ];prob = 0.2
+s = [ 4:(has-umbrella) 24:(vehicle-at l-3-2) ];a = (move-car-umbrella l-3-2 l-3-1);j = [ 4:(has-umbrella) 22:(vehicle-at l-3-1) ];prob = 0.8
+s = [ 4:(has-umbrella) 24:(vehicle-at l-3-2) ];a = (move-car-umbrella l-3-2 l-3-1);j = [ 4:(has-umbrella) 24:(vehicle-at l-3-2) ];prob = 0.2
+s = [ 4:(has-umbrella) 24:(vehicle-at l-3-2) ];a = (move-car-umbrella l-3-2 l-3-3);j = [ 4:(has-umbrella) 26:(vehicle-at l-3-3) ];prob = 0.8
+s = [ 4:(has-umbrella) 24:(vehicle-at l-3-2) ];a = (move-car-umbrella l-3-2 l-3-3);j = [ 4:(has-umbrella) 24:(vehicle-at l-3-2) ];prob = 0.2
+s = [ 4:(has-umbrella) 24:(vehicle-at l-3-2) ];a = (move-car-umbrella l-3-2 l-4-2);j = [ 4:(has-umbrella) 34:(vehicle-at l-4-2) ];prob = 0.8
+s = [ 4:(has-umbrella) 24:(vehicle-at l-3-2) ];a = (move-car-umbrella l-3-2 l-4-2);j = [ 4:(has-umbrella) 24:(vehicle-at l-3-2) ];prob = 0.2
+s = [ 4:(has-umbrella) 24:(vehicle-at l-3-2) ];a = (move-car-without-umbrella l-3-2 l-2-2);j = [ 4:(has-umbrella) 12:(vehicle-at l-2-2) ];prob = 0.4
+s = [ 4:(has-umbrella) 24:(vehicle-at l-3-2) ];a = (move-car-without-umbrella l-3-2 l-2-2);j = [ 4:(has-umbrella) 24:(vehicle-at l-3-2) ];prob = 0.6
+s = [ 4:(has-umbrella) 24:(vehicle-at l-3-2) ];a = (move-car-without-umbrella l-3-2 l-3-1);j = [ 4:(has-umbrella) 22:(vehicle-at l-3-1) ];prob = 0.4
+s = [ 4:(has-umbrella) 24:(vehicle-at l-3-2) ];a = (move-car-without-umbrella l-3-2 l-3-1);j = [ 4:(has-umbrella) 24:(vehicle-at l-3-2) ];prob = 0.6
+s = [ 4:(has-umbrella) 24:(vehicle-at l-3-2) ];a = (move-car-without-umbrella l-3-2 l-3-3);j = [ 4:(has-umbrella) 26:(vehicle-at l-3-3) ];prob = 0.4
+s = [ 4:(has-umbrella) 24:(vehicle-at l-3-2) ];a = (move-car-without-umbrella l-3-2 l-3-3);j = [ 4:(has-umbrella) 24:(vehicle-at l-3-2) ];prob = 0.6
+s = [ 4:(has-umbrella) 24:(vehicle-at l-3-2) ];a = (move-car-without-umbrella l-3-2 l-4-2);j = [ 4:(has-umbrella) 34:(vehicle-at l-4-2) ];prob = 0.4
+s = [ 4:(has-umbrella) 24:(vehicle-at l-3-2) ];a = (move-car-without-umbrella l-3-2 l-4-2);j = [ 4:(has-umbrella) 24:(vehicle-at l-3-2) ];prob = 0.6
+s = [ 44:(vehicle-at l-5-2) ];a = (move-car-without-umbrella l-5-2 l-4-2);j = [ 34:(vehicle-at l-4-2) ];prob = 0.4
+s = [ 44:(vehicle-at l-5-2) ];a = (move-car-without-umbrella l-5-2 l-4-2);j = [ 44:(vehicle-at l-5-2) ];prob = 0.6
+s = [ 44:(vehicle-at l-5-2) ];a = (move-car-without-umbrella l-5-2 l-4-3);j = [ 36:(vehicle-at l-4-3) ];prob = 0.4
+s = [ 44:(vehicle-at l-5-2) ];a = (move-car-without-umbrella l-5-2 l-4-3);j = [ 44:(vehicle-at l-5-2) ];prob = 0.6
+s = [ 44:(vehicle-at l-5-2) ];a = (move-car-without-umbrella l-5-2 l-5-1);j = [ 42:(vehicle-at l-5-1) ];prob = 0.4
+s = [ 44:(vehicle-at l-5-2) ];a = (move-car-without-umbrella l-5-2 l-5-1);j = [ 44:(vehicle-at l-5-2) ];prob = 0.6
+s = [ 44:(vehicle-at l-5-2) ];a = (move-car-without-umbrella l-5-2 l-5-3);j = [ 46:(vehicle-at l-5-3) ];prob = 0.4
+s = [ 44:(vehicle-at l-5-2) ];a = (move-car-without-umbrella l-5-2 l-5-3);j = [ 44:(vehicle-at l-5-2) ];prob = 0.6
+s = [ 44:(vehicle-at l-5-2) ];a = (pickumbrella l-5-2);j = [ 4:(has-umbrella) 44:(vehicle-at l-5-2) ];prob = 1
+s = [ 44:(vehicle-at l-5-2) ];a = (pickumbrella-and-move-with-umbrella l-5-2 l-4-2);j = [ 4:(has-umbrella) 34:(vehicle-at l-4-2) ];prob = 0.6
+s = [ 44:(vehicle-at l-5-2) ];a = (pickumbrella-and-move-with-umbrella l-5-2 l-4-2);j = [ 4:(has-umbrella) 44:(vehicle-at l-5-2) ];prob = 0.4
+s = [ 44:(vehicle-at l-5-2) ];a = (pickumbrella-and-move-with-umbrella l-5-2 l-4-3);j = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];prob = 0.6
+s = [ 44:(vehicle-at l-5-2) ];a = (pickumbrella-and-move-with-umbrella l-5-2 l-4-3);j = [ 4:(has-umbrella) 44:(vehicle-at l-5-2) ];prob = 0.4
+s = [ 44:(vehicle-at l-5-2) ];a = (pickumbrella-and-move-with-umbrella l-5-2 l-5-1);j = [ 4:(has-umbrella) 42:(vehicle-at l-5-1) ];prob = 0.6
+s = [ 44:(vehicle-at l-5-2) ];a = (pickumbrella-and-move-with-umbrella l-5-2 l-5-1);j = [ 4:(has-umbrella) 44:(vehicle-at l-5-2) ];prob = 0.4
+s = [ 44:(vehicle-at l-5-2) ];a = (pickumbrella-and-move-with-umbrella l-5-2 l-5-3);j = [ 4:(has-umbrella) 46:(vehicle-at l-5-3) ];prob = 0.6
+s = [ 44:(vehicle-at l-5-2) ];a = (pickumbrella-and-move-with-umbrella l-5-2 l-5-3);j = [ 4:(has-umbrella) 44:(vehicle-at l-5-2) ];prob = 0.4
+s = [ 8:(vehicle-at l-2-1) ];a = (move-car-without-umbrella l-2-1 l-1-1);j = [ 2:(vehicle-at l-1-1) ];prob = 0.4
+s = [ 8:(vehicle-at l-2-1) ];a = (move-car-without-umbrella l-2-1 l-1-1);j = [ 8:(vehicle-at l-2-1) ];prob = 0.6
+s = [ 8:(vehicle-at l-2-1) ];a = (move-car-without-umbrella l-2-1 l-2-2);j = [ 12:(vehicle-at l-2-2) ];prob = 0.4
+s = [ 8:(vehicle-at l-2-1) ];a = (move-car-without-umbrella l-2-1 l-2-2);j = [ 8:(vehicle-at l-2-1) ];prob = 0.6
+s = [ 8:(vehicle-at l-2-1) ];a = (move-car-without-umbrella l-2-1 l-3-1);j = [ 22:(vehicle-at l-3-1) ];prob = 0.4
+s = [ 8:(vehicle-at l-2-1) ];a = (move-car-without-umbrella l-2-1 l-3-1);j = [ 8:(vehicle-at l-2-1) ];prob = 0.6
+s = [ 34:(vehicle-at l-4-2) ];a = (move-car-without-umbrella l-4-2 l-3-2);j = [ 24:(vehicle-at l-3-2) ];prob = 0.4
+s = [ 34:(vehicle-at l-4-2) ];a = (move-car-without-umbrella l-4-2 l-3-2);j = [ 34:(vehicle-at l-4-2) ];prob = 0.6
+s = [ 34:(vehicle-at l-4-2) ];a = (move-car-without-umbrella l-4-2 l-4-1);j = [ 32:(vehicle-at l-4-1) ];prob = 0.4
+s = [ 34:(vehicle-at l-4-2) ];a = (move-car-without-umbrella l-4-2 l-4-1);j = [ 34:(vehicle-at l-4-2) ];prob = 0.6
+s = [ 34:(vehicle-at l-4-2) ];a = (move-car-without-umbrella l-4-2 l-4-3);j = [ 36:(vehicle-at l-4-3) ];prob = 0.4
+s = [ 34:(vehicle-at l-4-2) ];a = (move-car-without-umbrella l-4-2 l-4-3);j = [ 34:(vehicle-at l-4-2) ];prob = 0.6
+s = [ 34:(vehicle-at l-4-2) ];a = (move-car-without-umbrella l-4-2 l-5-2);j = [ 44:(vehicle-at l-5-2) ];prob = 0.4
+s = [ 34:(vehicle-at l-4-2) ];a = (move-car-without-umbrella l-4-2 l-5-2);j = [ 34:(vehicle-at l-4-2) ];prob = 0.6
+s = [ 22:(vehicle-at l-3-1) ];a = (move-car-without-umbrella l-3-1 l-2-1);j = [ 8:(vehicle-at l-2-1) ];prob = 0.4
+s = [ 22:(vehicle-at l-3-1) ];a = (move-car-without-umbrella l-3-1 l-2-1);j = [ 22:(vehicle-at l-3-1) ];prob = 0.6
+s = [ 22:(vehicle-at l-3-1) ];a = (move-car-without-umbrella l-3-1 l-3-2);j = [ 24:(vehicle-at l-3-2) ];prob = 0.4
+s = [ 22:(vehicle-at l-3-1) ];a = (move-car-without-umbrella l-3-1 l-3-2);j = [ 22:(vehicle-at l-3-1) ];prob = 0.6
+s = [ 22:(vehicle-at l-3-1) ];a = (move-car-without-umbrella l-3-1 l-4-1);j = [ 32:(vehicle-at l-4-1) ];prob = 0.4
+s = [ 22:(vehicle-at l-3-1) ];a = (move-car-without-umbrella l-3-1 l-4-1);j = [ 22:(vehicle-at l-3-1) ];prob = 0.6
+s = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];a = (move-car-umbrella l-4-3 l-3-3);j = [ 4:(has-umbrella) 26:(vehicle-at l-3-3) ];prob = 0.8
+s = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];a = (move-car-umbrella l-4-3 l-3-3);j = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];prob = 0.2
+s = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];a = (move-car-umbrella l-4-3 l-3-4);j = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];prob = 0.8
+s = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];a = (move-car-umbrella l-4-3 l-3-4);j = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];prob = 0.2
+s = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];a = (move-car-umbrella l-4-3 l-4-2);j = [ 4:(has-umbrella) 34:(vehicle-at l-4-2) ];prob = 0.8
+s = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];a = (move-car-umbrella l-4-3 l-4-2);j = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];prob = 0.2
+s = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];a = (move-car-umbrella l-4-3 l-4-4);j = [ 4:(has-umbrella) 38:(vehicle-at l-4-4) ];prob = 0.8
+s = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];a = (move-car-umbrella l-4-3 l-4-4);j = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];prob = 0.2
+s = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];a = (move-car-umbrella l-4-3 l-5-2);j = [ 4:(has-umbrella) 44:(vehicle-at l-5-2) ];prob = 0.8
+s = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];a = (move-car-umbrella l-4-3 l-5-2);j = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];prob = 0.2
+s = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];a = (move-car-umbrella l-4-3 l-5-3);j = [ 4:(has-umbrella) 46:(vehicle-at l-5-3) ];prob = 0.8
+s = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];a = (move-car-umbrella l-4-3 l-5-3);j = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];prob = 0.2
+s = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];a = (move-car-without-umbrella l-4-3 l-3-3);j = [ 4:(has-umbrella) 26:(vehicle-at l-3-3) ];prob = 0.4
+s = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];a = (move-car-without-umbrella l-4-3 l-3-3);j = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];prob = 0.6
+s = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];a = (move-car-without-umbrella l-4-3 l-3-4);j = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];prob = 0.4
+s = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];a = (move-car-without-umbrella l-4-3 l-3-4);j = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];prob = 0.6
+s = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];a = (move-car-without-umbrella l-4-3 l-4-2);j = [ 4:(has-umbrella) 34:(vehicle-at l-4-2) ];prob = 0.4
+s = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];a = (move-car-without-umbrella l-4-3 l-4-2);j = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];prob = 0.6
+s = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];a = (move-car-without-umbrella l-4-3 l-4-4);j = [ 4:(has-umbrella) 38:(vehicle-at l-4-4) ];prob = 0.4
+s = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];a = (move-car-without-umbrella l-4-3 l-4-4);j = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];prob = 0.6
+s = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];a = (move-car-without-umbrella l-4-3 l-5-2);j = [ 4:(has-umbrella) 44:(vehicle-at l-5-2) ];prob = 0.4
+s = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];a = (move-car-without-umbrella l-4-3 l-5-2);j = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];prob = 0.6
+s = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];a = (move-car-without-umbrella l-4-3 l-5-3);j = [ 4:(has-umbrella) 46:(vehicle-at l-5-3) ];prob = 0.4
+s = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];a = (move-car-without-umbrella l-4-3 l-5-3);j = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];prob = 0.6
+s = [ 4:(has-umbrella) 16:(vehicle-at l-2-3) ];a = (move-car-umbrella l-2-3 l-1-3);j = [ 4:(has-umbrella) 10:(vehicle-at l-1-3) ];prob = 0.8
+s = [ 4:(has-umbrella) 16:(vehicle-at l-2-3) ];a = (move-car-umbrella l-2-3 l-1-3);j = [ 4:(has-umbrella) 16:(vehicle-at l-2-3) ];prob = 0.2
+s = [ 4:(has-umbrella) 16:(vehicle-at l-2-3) ];a = (move-car-umbrella l-2-3 l-2-2);j = [ 4:(has-umbrella) 12:(vehicle-at l-2-2) ];prob = 0.8
+s = [ 4:(has-umbrella) 16:(vehicle-at l-2-3) ];a = (move-car-umbrella l-2-3 l-2-2);j = [ 4:(has-umbrella) 16:(vehicle-at l-2-3) ];prob = 0.2
+s = [ 4:(has-umbrella) 16:(vehicle-at l-2-3) ];a = (move-car-umbrella l-2-3 l-2-4);j = [ 4:(has-umbrella) 20:(vehicle-at l-2-4) ];prob = 0.8
+s = [ 4:(has-umbrella) 16:(vehicle-at l-2-3) ];a = (move-car-umbrella l-2-3 l-2-4);j = [ 4:(has-umbrella) 16:(vehicle-at l-2-3) ];prob = 0.2
+s = [ 4:(has-umbrella) 16:(vehicle-at l-2-3) ];a = (move-car-umbrella l-2-3 l-3-3);j = [ 4:(has-umbrella) 26:(vehicle-at l-3-3) ];prob = 0.8
+s = [ 4:(has-umbrella) 16:(vehicle-at l-2-3) ];a = (move-car-umbrella l-2-3 l-3-3);j = [ 4:(has-umbrella) 16:(vehicle-at l-2-3) ];prob = 0.2
+s = [ 4:(has-umbrella) 16:(vehicle-at l-2-3) ];a = (move-car-without-umbrella l-2-3 l-1-3);j = [ 4:(has-umbrella) 10:(vehicle-at l-1-3) ];prob = 0.4
+s = [ 4:(has-umbrella) 16:(vehicle-at l-2-3) ];a = (move-car-without-umbrella l-2-3 l-1-3);j = [ 4:(has-umbrella) 16:(vehicle-at l-2-3) ];prob = 0.6
+s = [ 4:(has-umbrella) 16:(vehicle-at l-2-3) ];a = (move-car-without-umbrella l-2-3 l-2-2);j = [ 4:(has-umbrella) 12:(vehicle-at l-2-2) ];prob = 0.4
+s = [ 4:(has-umbrella) 16:(vehicle-at l-2-3) ];a = (move-car-without-umbrella l-2-3 l-2-2);j = [ 4:(has-umbrella) 16:(vehicle-at l-2-3) ];prob = 0.6
+s = [ 4:(has-umbrella) 16:(vehicle-at l-2-3) ];a = (move-car-without-umbrella l-2-3 l-2-4);j = [ 4:(has-umbrella) 20:(vehicle-at l-2-4) ];prob = 0.4
+s = [ 4:(has-umbrella) 16:(vehicle-at l-2-3) ];a = (move-car-without-umbrella l-2-3 l-2-4);j = [ 4:(has-umbrella) 16:(vehicle-at l-2-3) ];prob = 0.6
+s = [ 4:(has-umbrella) 16:(vehicle-at l-2-3) ];a = (move-car-without-umbrella l-2-3 l-3-3);j = [ 4:(has-umbrella) 26:(vehicle-at l-3-3) ];prob = 0.4
+s = [ 4:(has-umbrella) 16:(vehicle-at l-2-3) ];a = (move-car-without-umbrella l-2-3 l-3-3);j = [ 4:(has-umbrella) 16:(vehicle-at l-2-3) ];prob = 0.6
+s = [ 4:(has-umbrella) 18:(vehicle-at l-1-5) ];a = (move-car-umbrella l-1-5 l-1-4);j = [ 4:(has-umbrella) 14:(vehicle-at l-1-4) ];prob = 0.8
+s = [ 4:(has-umbrella) 18:(vehicle-at l-1-5) ];a = (move-car-umbrella l-1-5 l-1-4);j = [ 4:(has-umbrella) 18:(vehicle-at l-1-5) ];prob = 0.2
+s = [ 4:(has-umbrella) 18:(vehicle-at l-1-5) ];a = (move-car-umbrella l-1-5 l-2-5);j = [ 0:(vehicle-at l-2-5) 4:(has-umbrella) ];prob = 0.8
+s = [ 4:(has-umbrella) 18:(vehicle-at l-1-5) ];a = (move-car-umbrella l-1-5 l-2-5);j = [ 4:(has-umbrella) 18:(vehicle-at l-1-5) ];prob = 0.2
+s = [ 4:(has-umbrella) 18:(vehicle-at l-1-5) ];a = (move-car-without-umbrella l-1-5 l-1-4);j = [ 4:(has-umbrella) 14:(vehicle-at l-1-4) ];prob = 0.4
+s = [ 4:(has-umbrella) 18:(vehicle-at l-1-5) ];a = (move-car-without-umbrella l-1-5 l-1-4);j = [ 4:(has-umbrella) 18:(vehicle-at l-1-5) ];prob = 0.6
+s = [ 4:(has-umbrella) 18:(vehicle-at l-1-5) ];a = (move-car-without-umbrella l-1-5 l-2-5);j = [ 0:(vehicle-at l-2-5) 4:(has-umbrella) ];prob = 0.4
+s = [ 4:(has-umbrella) 18:(vehicle-at l-1-5) ];a = (move-car-without-umbrella l-1-5 l-2-5);j = [ 4:(has-umbrella) 18:(vehicle-at l-1-5) ];prob = 0.6
+s = [ 4:(has-umbrella) 14:(vehicle-at l-1-4) ];a = (move-car-umbrella l-1-4 l-1-3);j = [ 4:(has-umbrella) 10:(vehicle-at l-1-3) ];prob = 0.8
+s = [ 4:(has-umbrella) 14:(vehicle-at l-1-4) ];a = (move-car-umbrella l-1-4 l-1-3);j = [ 4:(has-umbrella) 14:(vehicle-at l-1-4) ];prob = 0.2
+s = [ 4:(has-umbrella) 14:(vehicle-at l-1-4) ];a = (move-car-umbrella l-1-4 l-1-5);j = [ 4:(has-umbrella) 18:(vehicle-at l-1-5) ];prob = 0.8
+s = [ 4:(has-umbrella) 14:(vehicle-at l-1-4) ];a = (move-car-umbrella l-1-4 l-1-5);j = [ 4:(has-umbrella) 14:(vehicle-at l-1-4) ];prob = 0.2
+s = [ 4:(has-umbrella) 14:(vehicle-at l-1-4) ];a = (move-car-umbrella l-1-4 l-2-4);j = [ 4:(has-umbrella) 20:(vehicle-at l-2-4) ];prob = 0.8
+s = [ 4:(has-umbrella) 14:(vehicle-at l-1-4) ];a = (move-car-umbrella l-1-4 l-2-4);j = [ 4:(has-umbrella) 14:(vehicle-at l-1-4) ];prob = 0.2
+s = [ 4:(has-umbrella) 14:(vehicle-at l-1-4) ];a = (move-car-without-umbrella l-1-4 l-1-3);j = [ 4:(has-umbrella) 10:(vehicle-at l-1-3) ];prob = 0.4
+s = [ 4:(has-umbrella) 14:(vehicle-at l-1-4) ];a = (move-car-without-umbrella l-1-4 l-1-3);j = [ 4:(has-umbrella) 14:(vehicle-at l-1-4) ];prob = 0.6
+s = [ 4:(has-umbrella) 14:(vehicle-at l-1-4) ];a = (move-car-without-umbrella l-1-4 l-1-5);j = [ 4:(has-umbrella) 18:(vehicle-at l-1-5) ];prob = 0.4
+s = [ 4:(has-umbrella) 14:(vehicle-at l-1-4) ];a = (move-car-without-umbrella l-1-4 l-1-5);j = [ 4:(has-umbrella) 14:(vehicle-at l-1-4) ];prob = 0.6
+s = [ 4:(has-umbrella) 14:(vehicle-at l-1-4) ];a = (move-car-without-umbrella l-1-4 l-2-4);j = [ 4:(has-umbrella) 20:(vehicle-at l-2-4) ];prob = 0.4
+s = [ 4:(has-umbrella) 14:(vehicle-at l-1-4) ];a = (move-car-without-umbrella l-1-4 l-2-4);j = [ 4:(has-umbrella) 14:(vehicle-at l-1-4) ];prob = 0.6
+s = [ 4:(has-umbrella) 10:(vehicle-at l-1-3) ];a = (move-car-umbrella l-1-3 l-1-2);j = [ 4:(has-umbrella) 6:(vehicle-at l-1-2) ];prob = 0.8
+s = [ 4:(has-umbrella) 10:(vehicle-at l-1-3) ];a = (move-car-umbrella l-1-3 l-1-2);j = [ 4:(has-umbrella) 10:(vehicle-at l-1-3) ];prob = 0.2
+s = [ 4:(has-umbrella) 10:(vehicle-at l-1-3) ];a = (move-car-umbrella l-1-3 l-1-4);j = [ 4:(has-umbrella) 14:(vehicle-at l-1-4) ];prob = 0.8
+s = [ 4:(has-umbrella) 10:(vehicle-at l-1-3) ];a = (move-car-umbrella l-1-3 l-1-4);j = [ 4:(has-umbrella) 10:(vehicle-at l-1-3) ];prob = 0.2
+s = [ 4:(has-umbrella) 10:(vehicle-at l-1-3) ];a = (move-car-umbrella l-1-3 l-2-3);j = [ 4:(has-umbrella) 16:(vehicle-at l-2-3) ];prob = 0.8
+s = [ 4:(has-umbrella) 10:(vehicle-at l-1-3) ];a = (move-car-umbrella l-1-3 l-2-3);j = [ 4:(has-umbrella) 10:(vehicle-at l-1-3) ];prob = 0.2
+s = [ 4:(has-umbrella) 10:(vehicle-at l-1-3) ];a = (move-car-without-umbrella l-1-3 l-1-2);j = [ 4:(has-umbrella) 6:(vehicle-at l-1-2) ];prob = 0.4
+s = [ 4:(has-umbrella) 10:(vehicle-at l-1-3) ];a = (move-car-without-umbrella l-1-3 l-1-2);j = [ 4:(has-umbrella) 10:(vehicle-at l-1-3) ];prob = 0.6
+s = [ 4:(has-umbrella) 10:(vehicle-at l-1-3) ];a = (move-car-without-umbrella l-1-3 l-1-4);j = [ 4:(has-umbrella) 14:(vehicle-at l-1-4) ];prob = 0.4
+s = [ 4:(has-umbrella) 10:(vehicle-at l-1-3) ];a = (move-car-without-umbrella l-1-3 l-1-4);j = [ 4:(has-umbrella) 10:(vehicle-at l-1-3) ];prob = 0.6
+s = [ 4:(has-umbrella) 10:(vehicle-at l-1-3) ];a = (move-car-without-umbrella l-1-3 l-2-3);j = [ 4:(has-umbrella) 16:(vehicle-at l-2-3) ];prob = 0.4
+s = [ 4:(has-umbrella) 10:(vehicle-at l-1-3) ];a = (move-car-without-umbrella l-1-3 l-2-3);j = [ 4:(has-umbrella) 10:(vehicle-at l-1-3) ];prob = 0.6
+s = [ 4:(has-umbrella) 6:(vehicle-at l-1-2) ];a = (move-car-umbrella l-1-2 l-1-1);j = [ 2:(vehicle-at l-1-1) 4:(has-umbrella) ];prob = 0.8
+s = [ 4:(has-umbrella) 6:(vehicle-at l-1-2) ];a = (move-car-umbrella l-1-2 l-1-1);j = [ 4:(has-umbrella) 6:(vehicle-at l-1-2) ];prob = 0.2
+s = [ 4:(has-umbrella) 6:(vehicle-at l-1-2) ];a = (move-car-umbrella l-1-2 l-1-3);j = [ 4:(has-umbrella) 10:(vehicle-at l-1-3) ];prob = 0.8
+s = [ 4:(has-umbrella) 6:(vehicle-at l-1-2) ];a = (move-car-umbrella l-1-2 l-1-3);j = [ 4:(has-umbrella) 6:(vehicle-at l-1-2) ];prob = 0.2
+s = [ 4:(has-umbrella) 6:(vehicle-at l-1-2) ];a = (move-car-umbrella l-1-2 l-2-2);j = [ 4:(has-umbrella) 12:(vehicle-at l-2-2) ];prob = 0.8
+s = [ 4:(has-umbrella) 6:(vehicle-at l-1-2) ];a = (move-car-umbrella l-1-2 l-2-2);j = [ 4:(has-umbrella) 6:(vehicle-at l-1-2) ];prob = 0.2
+s = [ 4:(has-umbrella) 6:(vehicle-at l-1-2) ];a = (move-car-without-umbrella l-1-2 l-1-1);j = [ 2:(vehicle-at l-1-1) 4:(has-umbrella) ];prob = 0.4
+s = [ 4:(has-umbrella) 6:(vehicle-at l-1-2) ];a = (move-car-without-umbrella l-1-2 l-1-1);j = [ 4:(has-umbrella) 6:(vehicle-at l-1-2) ];prob = 0.6
+s = [ 4:(has-umbrella) 6:(vehicle-at l-1-2) ];a = (move-car-without-umbrella l-1-2 l-1-3);j = [ 4:(has-umbrella) 10:(vehicle-at l-1-3) ];prob = 0.4
+s = [ 4:(has-umbrella) 6:(vehicle-at l-1-2) ];a = (move-car-without-umbrella l-1-2 l-1-3);j = [ 4:(has-umbrella) 6:(vehicle-at l-1-2) ];prob = 0.6
+s = [ 4:(has-umbrella) 6:(vehicle-at l-1-2) ];a = (move-car-without-umbrella l-1-2 l-2-2);j = [ 4:(has-umbrella) 12:(vehicle-at l-2-2) ];prob = 0.4
+s = [ 4:(has-umbrella) 6:(vehicle-at l-1-2) ];a = (move-car-without-umbrella l-1-2 l-2-2);j = [ 4:(has-umbrella) 6:(vehicle-at l-1-2) ];prob = 0.6
+s = [ 24:(vehicle-at l-3-2) ];a = (move-car-without-umbrella l-3-2 l-2-2);j = [ 12:(vehicle-at l-2-2) ];prob = 0.4
+s = [ 24:(vehicle-at l-3-2) ];a = (move-car-without-umbrella l-3-2 l-2-2);j = [ 24:(vehicle-at l-3-2) ];prob = 0.6
+s = [ 24:(vehicle-at l-3-2) ];a = (move-car-without-umbrella l-3-2 l-3-1);j = [ 22:(vehicle-at l-3-1) ];prob = 0.4
+s = [ 24:(vehicle-at l-3-2) ];a = (move-car-without-umbrella l-3-2 l-3-1);j = [ 24:(vehicle-at l-3-2) ];prob = 0.6
+s = [ 24:(vehicle-at l-3-2) ];a = (move-car-without-umbrella l-3-2 l-3-3);j = [ 26:(vehicle-at l-3-3) ];prob = 0.4
+s = [ 24:(vehicle-at l-3-2) ];a = (move-car-without-umbrella l-3-2 l-3-3);j = [ 24:(vehicle-at l-3-2) ];prob = 0.6
+s = [ 24:(vehicle-at l-3-2) ];a = (move-car-without-umbrella l-3-2 l-4-2);j = [ 34:(vehicle-at l-4-2) ];prob = 0.4
+s = [ 24:(vehicle-at l-3-2) ];a = (move-car-without-umbrella l-3-2 l-4-2);j = [ 24:(vehicle-at l-3-2) ];prob = 0.6
+s = [ 24:(vehicle-at l-3-2) ];a = (pickumbrella l-3-2);j = [ 4:(has-umbrella) 24:(vehicle-at l-3-2) ];prob = 1
+s = [ 24:(vehicle-at l-3-2) ];a = (pickumbrella-and-move-with-umbrella l-3-2 l-2-2);j = [ 4:(has-umbrella) 12:(vehicle-at l-2-2) ];prob = 0.6
+s = [ 24:(vehicle-at l-3-2) ];a = (pickumbrella-and-move-with-umbrella l-3-2 l-2-2);j = [ 4:(has-umbrella) 24:(vehicle-at l-3-2) ];prob = 0.4
+s = [ 24:(vehicle-at l-3-2) ];a = (pickumbrella-and-move-with-umbrella l-3-2 l-3-1);j = [ 4:(has-umbrella) 22:(vehicle-at l-3-1) ];prob = 0.6
+s = [ 24:(vehicle-at l-3-2) ];a = (pickumbrella-and-move-with-umbrella l-3-2 l-3-1);j = [ 4:(has-umbrella) 24:(vehicle-at l-3-2) ];prob = 0.4
+s = [ 24:(vehicle-at l-3-2) ];a = (pickumbrella-and-move-with-umbrella l-3-2 l-3-3);j = [ 4:(has-umbrella) 26:(vehicle-at l-3-3) ];prob = 0.6
+s = [ 24:(vehicle-at l-3-2) ];a = (pickumbrella-and-move-with-umbrella l-3-2 l-3-3);j = [ 4:(has-umbrella) 24:(vehicle-at l-3-2) ];prob = 0.4
+s = [ 24:(vehicle-at l-3-2) ];a = (pickumbrella-and-move-with-umbrella l-3-2 l-4-2);j = [ 4:(has-umbrella) 34:(vehicle-at l-4-2) ];prob = 0.6
+s = [ 24:(vehicle-at l-3-2) ];a = (pickumbrella-and-move-with-umbrella l-3-2 l-4-2);j = [ 4:(has-umbrella) 24:(vehicle-at l-3-2) ];prob = 0.4
+s = [ 48:(vehicle-at l-5-4) ];a = (move-car-without-umbrella l-5-4 l-4-4);j = [ 38:(vehicle-at l-4-4) ];prob = 0.4
+s = [ 48:(vehicle-at l-5-4) ];a = (move-car-without-umbrella l-5-4 l-4-4);j = [ 48:(vehicle-at l-5-4) ];prob = 0.6
+s = [ 48:(vehicle-at l-5-4) ];a = (move-car-without-umbrella l-5-4 l-5-3);j = [ 46:(vehicle-at l-5-3) ];prob = 0.4
+s = [ 48:(vehicle-at l-5-4) ];a = (move-car-without-umbrella l-5-4 l-5-3);j = [ 48:(vehicle-at l-5-4) ];prob = 0.6
+s = [ 48:(vehicle-at l-5-4) ];a = (move-car-without-umbrella l-5-4 l-5-5);j = [ 50:(vehicle-at l-5-5) ];prob = 0.4
+s = [ 48:(vehicle-at l-5-4) ];a = (move-car-without-umbrella l-5-4 l-5-5);j = [ 48:(vehicle-at l-5-4) ];prob = 0.6
+s = [ 48:(vehicle-at l-5-4) ];a = (pickumbrella l-5-4);j = [ 4:(has-umbrella) 48:(vehicle-at l-5-4) ];prob = 1
+s = [ 48:(vehicle-at l-5-4) ];a = (pickumbrella-and-move-with-umbrella l-5-4 l-4-4);j = [ 4:(has-umbrella) 38:(vehicle-at l-4-4) ];prob = 0.6
+s = [ 48:(vehicle-at l-5-4) ];a = (pickumbrella-and-move-with-umbrella l-5-4 l-4-4);j = [ 4:(has-umbrella) 48:(vehicle-at l-5-4) ];prob = 0.4
+s = [ 48:(vehicle-at l-5-4) ];a = (pickumbrella-and-move-with-umbrella l-5-4 l-5-3);j = [ 4:(has-umbrella) 46:(vehicle-at l-5-3) ];prob = 0.6
+s = [ 48:(vehicle-at l-5-4) ];a = (pickumbrella-and-move-with-umbrella l-5-4 l-5-3);j = [ 4:(has-umbrella) 48:(vehicle-at l-5-4) ];prob = 0.4
+s = [ 48:(vehicle-at l-5-4) ];a = (pickumbrella-and-move-with-umbrella l-5-4 l-5-5);j = [ 4:(has-umbrella) 50:(vehicle-at l-5-5) ];prob = 0.6
+s = [ 48:(vehicle-at l-5-4) ];a = (pickumbrella-and-move-with-umbrella l-5-4 l-5-5);j = [ 4:(has-umbrella) 48:(vehicle-at l-5-4) ];prob = 0.4
+s = [ 4:(has-umbrella) 20:(vehicle-at l-2-4) ];a = (move-car-umbrella l-2-4 l-1-4);j = [ 4:(has-umbrella) 14:(vehicle-at l-1-4) ];prob = 0.8
+s = [ 4:(has-umbrella) 20:(vehicle-at l-2-4) ];a = (move-car-umbrella l-2-4 l-1-4);j = [ 4:(has-umbrella) 20:(vehicle-at l-2-4) ];prob = 0.2
+s = [ 4:(has-umbrella) 20:(vehicle-at l-2-4) ];a = (move-car-umbrella l-2-4 l-2-3);j = [ 4:(has-umbrella) 16:(vehicle-at l-2-3) ];prob = 0.8
+s = [ 4:(has-umbrella) 20:(vehicle-at l-2-4) ];a = (move-car-umbrella l-2-4 l-2-3);j = [ 4:(has-umbrella) 20:(vehicle-at l-2-4) ];prob = 0.2
+s = [ 4:(has-umbrella) 20:(vehicle-at l-2-4) ];a = (move-car-umbrella l-2-4 l-2-5);j = [ 0:(vehicle-at l-2-5) 4:(has-umbrella) ];prob = 0.8
+s = [ 4:(has-umbrella) 20:(vehicle-at l-2-4) ];a = (move-car-umbrella l-2-4 l-2-5);j = [ 4:(has-umbrella) 20:(vehicle-at l-2-4) ];prob = 0.2
+s = [ 4:(has-umbrella) 20:(vehicle-at l-2-4) ];a = (move-car-umbrella l-2-4 l-3-4);j = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];prob = 0.8
+s = [ 4:(has-umbrella) 20:(vehicle-at l-2-4) ];a = (move-car-umbrella l-2-4 l-3-4);j = [ 4:(has-umbrella) 20:(vehicle-at l-2-4) ];prob = 0.2
+s = [ 4:(has-umbrella) 20:(vehicle-at l-2-4) ];a = (move-car-without-umbrella l-2-4 l-1-4);j = [ 4:(has-umbrella) 14:(vehicle-at l-1-4) ];prob = 0.4
+s = [ 4:(has-umbrella) 20:(vehicle-at l-2-4) ];a = (move-car-without-umbrella l-2-4 l-1-4);j = [ 4:(has-umbrella) 20:(vehicle-at l-2-4) ];prob = 0.6
+s = [ 4:(has-umbrella) 20:(vehicle-at l-2-4) ];a = (move-car-without-umbrella l-2-4 l-2-3);j = [ 4:(has-umbrella) 16:(vehicle-at l-2-3) ];prob = 0.4
+s = [ 4:(has-umbrella) 20:(vehicle-at l-2-4) ];a = (move-car-without-umbrella l-2-4 l-2-3);j = [ 4:(has-umbrella) 20:(vehicle-at l-2-4) ];prob = 0.6
+s = [ 4:(has-umbrella) 20:(vehicle-at l-2-4) ];a = (move-car-without-umbrella l-2-4 l-2-5);j = [ 0:(vehicle-at l-2-5) 4:(has-umbrella) ];prob = 0.4
+s = [ 4:(has-umbrella) 20:(vehicle-at l-2-4) ];a = (move-car-without-umbrella l-2-4 l-2-5);j = [ 4:(has-umbrella) 20:(vehicle-at l-2-4) ];prob = 0.6
+s = [ 4:(has-umbrella) 20:(vehicle-at l-2-4) ];a = (move-car-without-umbrella l-2-4 l-3-4);j = [ 4:(has-umbrella) 28:(vehicle-at l-3-4) ];prob = 0.4
+s = [ 4:(has-umbrella) 20:(vehicle-at l-2-4) ];a = (move-car-without-umbrella l-2-4 l-3-4);j = [ 4:(has-umbrella) 20:(vehicle-at l-2-4) ];prob = 0.6
+s = [ 2:(vehicle-at l-1-1) 4:(has-umbrella) ];a = (move-car-umbrella l-1-1 l-1-2);j = [ 4:(has-umbrella) 6:(vehicle-at l-1-2) ];prob = 0.8
+s = [ 2:(vehicle-at l-1-1) 4:(has-umbrella) ];a = (move-car-umbrella l-1-1 l-1-2);j = [ 2:(vehicle-at l-1-1) 4:(has-umbrella) ];prob = 0.2
+s = [ 2:(vehicle-at l-1-1) 4:(has-umbrella) ];a = (move-car-umbrella l-1-1 l-2-1);j = [ 4:(has-umbrella) 8:(vehicle-at l-2-1) ];prob = 0.8
+s = [ 2:(vehicle-at l-1-1) 4:(has-umbrella) ];a = (move-car-umbrella l-1-1 l-2-1);j = [ 2:(vehicle-at l-1-1) 4:(has-umbrella) ];prob = 0.2
+s = [ 2:(vehicle-at l-1-1) 4:(has-umbrella) ];a = (move-car-without-umbrella l-1-1 l-1-2);j = [ 4:(has-umbrella) 6:(vehicle-at l-1-2) ];prob = 0.4
+s = [ 2:(vehicle-at l-1-1) 4:(has-umbrella) ];a = (move-car-without-umbrella l-1-1 l-1-2);j = [ 2:(vehicle-at l-1-1) 4:(has-umbrella) ];prob = 0.6
+s = [ 2:(vehicle-at l-1-1) 4:(has-umbrella) ];a = (move-car-without-umbrella l-1-1 l-2-1);j = [ 4:(has-umbrella) 8:(vehicle-at l-2-1) ];prob = 0.4
+s = [ 2:(vehicle-at l-1-1) 4:(has-umbrella) ];a = (move-car-without-umbrella l-1-1 l-2-1);j = [ 2:(vehicle-at l-1-1) 4:(has-umbrella) ];prob = 0.6
+s = [ 16:(vehicle-at l-2-3) ];a = (move-car-without-umbrella l-2-3 l-1-3);j = [ 10:(vehicle-at l-1-3) ];prob = 0.4
+s = [ 16:(vehicle-at l-2-3) ];a = (move-car-without-umbrella l-2-3 l-1-3);j = [ 16:(vehicle-at l-2-3) ];prob = 0.6
+s = [ 16:(vehicle-at l-2-3) ];a = (move-car-without-umbrella l-2-3 l-2-2);j = [ 12:(vehicle-at l-2-2) ];prob = 0.4
+s = [ 16:(vehicle-at l-2-3) ];a = (move-car-without-umbrella l-2-3 l-2-2);j = [ 16:(vehicle-at l-2-3) ];prob = 0.6
+s = [ 16:(vehicle-at l-2-3) ];a = (move-car-without-umbrella l-2-3 l-2-4);j = [ 20:(vehicle-at l-2-4) ];prob = 0.4
+s = [ 16:(vehicle-at l-2-3) ];a = (move-car-without-umbrella l-2-3 l-2-4);j = [ 16:(vehicle-at l-2-3) ];prob = 0.6
+s = [ 16:(vehicle-at l-2-3) ];a = (move-car-without-umbrella l-2-3 l-3-3);j = [ 26:(vehicle-at l-3-3) ];prob = 0.4
+s = [ 16:(vehicle-at l-2-3) ];a = (move-car-without-umbrella l-2-3 l-3-3);j = [ 16:(vehicle-at l-2-3) ];prob = 0.6
+s = [ 4:(has-umbrella) 44:(vehicle-at l-5-2) ];a = (move-car-umbrella l-5-2 l-4-2);j = [ 4:(has-umbrella) 34:(vehicle-at l-4-2) ];prob = 0.8
+s = [ 4:(has-umbrella) 44:(vehicle-at l-5-2) ];a = (move-car-umbrella l-5-2 l-4-2);j = [ 4:(has-umbrella) 44:(vehicle-at l-5-2) ];prob = 0.2
+s = [ 4:(has-umbrella) 44:(vehicle-at l-5-2) ];a = (move-car-umbrella l-5-2 l-4-3);j = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];prob = 0.8
+s = [ 4:(has-umbrella) 44:(vehicle-at l-5-2) ];a = (move-car-umbrella l-5-2 l-4-3);j = [ 4:(has-umbrella) 44:(vehicle-at l-5-2) ];prob = 0.2
+s = [ 4:(has-umbrella) 44:(vehicle-at l-5-2) ];a = (move-car-umbrella l-5-2 l-5-1);j = [ 4:(has-umbrella) 42:(vehicle-at l-5-1) ];prob = 0.8
+s = [ 4:(has-umbrella) 44:(vehicle-at l-5-2) ];a = (move-car-umbrella l-5-2 l-5-1);j = [ 4:(has-umbrella) 44:(vehicle-at l-5-2) ];prob = 0.2
+s = [ 4:(has-umbrella) 44:(vehicle-at l-5-2) ];a = (move-car-umbrella l-5-2 l-5-3);j = [ 4:(has-umbrella) 46:(vehicle-at l-5-3) ];prob = 0.8
+s = [ 4:(has-umbrella) 44:(vehicle-at l-5-2) ];a = (move-car-umbrella l-5-2 l-5-3);j = [ 4:(has-umbrella) 44:(vehicle-at l-5-2) ];prob = 0.2
+s = [ 4:(has-umbrella) 44:(vehicle-at l-5-2) ];a = (move-car-without-umbrella l-5-2 l-4-2);j = [ 4:(has-umbrella) 34:(vehicle-at l-4-2) ];prob = 0.4
+s = [ 4:(has-umbrella) 44:(vehicle-at l-5-2) ];a = (move-car-without-umbrella l-5-2 l-4-2);j = [ 4:(has-umbrella) 44:(vehicle-at l-5-2) ];prob = 0.6
+s = [ 4:(has-umbrella) 44:(vehicle-at l-5-2) ];a = (move-car-without-umbrella l-5-2 l-4-3);j = [ 4:(has-umbrella) 36:(vehicle-at l-4-3) ];prob = 0.4
+s = [ 4:(has-umbrella) 44:(vehicle-at l-5-2) ];a = (move-car-without-umbrella l-5-2 l-4-3);j = [ 4:(has-umbrella) 44:(vehicle-at l-5-2) ];prob = 0.6
+s = [ 4:(has-umbrella) 44:(vehicle-at l-5-2) ];a = (move-car-without-umbrella l-5-2 l-5-1);j = [ 4:(has-umbrella) 42:(vehicle-at l-5-1) ];prob = 0.4
+s = [ 4:(has-umbrella) 44:(vehicle-at l-5-2) ];a = (move-car-without-umbrella l-5-2 l-5-1);j = [ 4:(has-umbrella) 44:(vehicle-at l-5-2) ];prob = 0.6
+s = [ 4:(has-umbrella) 44:(vehicle-at l-5-2) ];a = (move-car-without-umbrella l-5-2 l-5-3);j = [ 4:(has-umbrella) 46:(vehicle-at l-5-3) ];prob = 0.4
+s = [ 4:(has-umbrella) 44:(vehicle-at l-5-2) ];a = (move-car-without-umbrella l-5-2 l-5-3);j = [ 4:(has-umbrella) 44:(vehicle-at l-5-2) ];prob = 0.6
+s = [ 38:(vehicle-at l-4-4) ];a = (move-car-without-umbrella l-4-4 l-3-4);j = [ 28:(vehicle-at l-3-4) ];prob = 0.4
+s = [ 38:(vehicle-at l-4-4) ];a = (move-car-without-umbrella l-4-4 l-3-4);j = [ 38:(vehicle-at l-4-4) ];prob = 0.6
+s = [ 38:(vehicle-at l-4-4) ];a = (move-car-without-umbrella l-4-4 l-4-3);j = [ 36:(vehicle-at l-4-3) ];prob = 0.4
+s = [ 38:(vehicle-at l-4-4) ];a = (move-car-without-umbrella l-4-4 l-4-3);j = [ 38:(vehicle-at l-4-4) ];prob = 0.6
+s = [ 38:(vehicle-at l-4-4) ];a = (move-car-without-umbrella l-4-4 l-4-5);j = [ 40:(vehicle-at l-4-5) ];prob = 0.4
+s = [ 38:(vehicle-at l-4-4) ];a = (move-car-without-umbrella l-4-4 l-4-5);j = [ 38:(vehicle-at l-4-4) ];prob = 0.6
+s = [ 38:(vehicle-at l-4-4) ];a = (move-car-without-umbrella l-4-4 l-5-4);j = [ 48:(vehicle-at l-5-4) ];prob = 0.4
+s = [ 38:(vehicle-at l-4-4) ];a = (move-car-without-umbrella l-4-4 l-5-4);j = [ 38:(vehicle-at l-4-4) ];prob = 0.6
+s = [ 50:(vehicle-at l-5-5) ];a = (move-car-without-umbrella l-5-5 l-4-5);j = [ 40:(vehicle-at l-4-5) ];prob = 0.4
+s = [ 50:(vehicle-at l-5-5) ];a = (move-car-without-umbrella l-5-5 l-4-5);j = [ 50:(vehicle-at l-5-5) ];prob = 0.6
+s = [ 50:(vehicle-at l-5-5) ];a = (move-car-without-umbrella l-5-5 l-5-4);j = [ 48:(vehicle-at l-5-4) ];prob = 0.4
+s = [ 50:(vehicle-at l-5-5) ];a = (move-car-without-umbrella l-5-5 l-5-4);j = [ 50:(vehicle-at l-5-5) ];prob = 0.6
+s = [ 26:(vehicle-at l-3-3) ];a = (move-car-without-umbrella l-3-3 l-2-3);j = [ 16:(vehicle-at l-2-3) ];prob = 0.4
+s = [ 26:(vehicle-at l-3-3) ];a = (move-car-without-umbrella l-3-3 l-2-3);j = [ 26:(vehicle-at l-3-3) ];prob = 0.6
+s = [ 26:(vehicle-at l-3-3) ];a = (move-car-without-umbrella l-3-3 l-3-2);j = [ 24:(vehicle-at l-3-2) ];prob = 0.4
+s = [ 26:(vehicle-at l-3-3) ];a = (move-car-without-umbrella l-3-3 l-3-2);j = [ 26:(vehicle-at l-3-3) ];prob = 0.6
+s = [ 26:(vehicle-at l-3-3) ];a = (move-car-without-umbrella l-3-3 l-3-4);j = [ 28:(vehicle-at l-3-4) ];prob = 0.4
+s = [ 26:(vehicle-at l-3-3) ];a = (move-car-without-umbrella l-3-3 l-3-4);j = [ 26:(vehicle-at l-3-3) ];prob = 0.6
+s = [ 26:(vehicle-at l-3-3) ];a = (move-car-without-umbrella l-3-3 l-4-3);j = [ 36:(vehicle-at l-4-3) ];prob = 0.4
+s = [ 26:(vehicle-at l-3-3) ];a = (move-car-without-umbrella l-3-3 l-4-3);j = [ 26:(vehicle-at l-3-3) ];prob = 0.6
+s = [ 12:(vehicle-at l-2-2) ];a = (move-car-without-umbrella l-2-2 l-1-2);j = [ 6:(vehicle-at l-1-2) ];prob = 0.4
+s = [ 12:(vehicle-at l-2-2) ];a = (move-car-without-umbrella l-2-2 l-1-2);j = [ 12:(vehicle-at l-2-2) ];prob = 0.6
+s = [ 12:(vehicle-at l-2-2) ];a = (move-car-without-umbrella l-2-2 l-2-1);j = [ 8:(vehicle-at l-2-1) ];prob = 0.4
+s = [ 12:(vehicle-at l-2-2) ];a = (move-car-without-umbrella l-2-2 l-2-1);j = [ 12:(vehicle-at l-2-2) ];prob = 0.6
+s = [ 12:(vehicle-at l-2-2) ];a = (move-car-without-umbrella l-2-2 l-2-3);j = [ 16:(vehicle-at l-2-3) ];prob = 0.4
+s = [ 12:(vehicle-at l-2-2) ];a = (move-car-without-umbrella l-2-2 l-2-3);j = [ 12:(vehicle-at l-2-2) ];prob = 0.6
+s = [ 12:(vehicle-at l-2-2) ];a = (move-car-without-umbrella l-2-2 l-3-2);j = [ 24:(vehicle-at l-3-2) ];prob = 0.4
+s = [ 12:(vehicle-at l-2-2) ];a = (move-car-without-umbrella l-2-2 l-3-2);j = [ 12:(vehicle-at l-2-2) ];prob = 0.6
+s = [ 12:(vehicle-at l-2-2) ];a = (pickumbrella l-2-2);j = [ 4:(has-umbrella) 12:(vehicle-at l-2-2) ];prob = 1
+s = [ 12:(vehicle-at l-2-2) ];a = (pickumbrella-and-move-with-umbrella l-2-2 l-1-2);j = [ 4:(has-umbrella) 6:(vehicle-at l-1-2) ];prob = 0.6
+s = [ 12:(vehicle-at l-2-2) ];a = (pickumbrella-and-move-with-umbrella l-2-2 l-1-2);j = [ 4:(has-umbrella) 12:(vehicle-at l-2-2) ];prob = 0.4
+s = [ 12:(vehicle-at l-2-2) ];a = (pickumbrella-and-move-with-umbrella l-2-2 l-2-1);j = [ 4:(has-umbrella) 8:(vehicle-at l-2-1) ];prob = 0.6
+s = [ 12:(vehicle-at l-2-2) ];a = (pickumbrella-and-move-with-umbrella l-2-2 l-2-1);j = [ 4:(has-umbrella) 12:(vehicle-at l-2-2) ];prob = 0.4
+s = [ 12:(vehicle-at l-2-2) ];a = (pickumbrella-and-move-with-umbrella l-2-2 l-2-3);j = [ 4:(has-umbrella) 16:(vehicle-at l-2-3) ];prob = 0.6
+s = [ 12:(vehicle-at l-2-2) ];a = (pickumbrella-and-move-with-umbrella l-2-2 l-2-3);j = [ 4:(has-umbrella) 12:(vehicle-at l-2-2) ];prob = 0.4
+s = [ 12:(vehicle-at l-2-2) ];a = (pickumbrella-and-move-with-umbrella l-2-2 l-3-2);j = [ 4:(has-umbrella) 24:(vehicle-at l-3-2) ];prob = 0.6
+s = [ 12:(vehicle-at l-2-2) ];a = (pickumbrella-and-move-with-umbrella l-2-2 l-3-2);j = [ 4:(has-umbrella) 12:(vehicle-at l-2-2) ];prob = 0.4
+s = [ 18:(vehicle-at l-1-5) ];a = (move-car-without-umbrella l-1-5 l-1-4);j = [ 14:(vehicle-at l-1-4) ];prob = 0.4
+s = [ 18:(vehicle-at l-1-5) ];a = (move-car-without-umbrella l-1-5 l-1-4);j = [ 18:(vehicle-at l-1-5) ];prob = 0.6
+s = [ 18:(vehicle-at l-1-5) ];a = (move-car-without-umbrella l-1-5 l-2-5);j = [ 0:(vehicle-at l-2-5) ];prob = 0.4
+s = [ 18:(vehicle-at l-1-5) ];a = (move-car-without-umbrella l-1-5 l-2-5);j = [ 18:(vehicle-at l-1-5) ];prob = 0.6
+s = [ 18:(vehicle-at l-1-5) ];a = (pickumbrella l-1-5);j = [ 4:(has-umbrella) 18:(vehicle-at l-1-5) ];prob = 1
+s = [ 18:(vehicle-at l-1-5) ];a = (pickumbrella-and-move-with-umbrella l-1-5 l-1-4);j = [ 4:(has-umbrella) 14:(vehicle-at l-1-4) ];prob = 0.6
+s = [ 18:(vehicle-at l-1-5) ];a = (pickumbrella-and-move-with-umbrella l-1-5 l-1-4);j = [ 4:(has-umbrella) 18:(vehicle-at l-1-5) ];prob = 0.4
+s = [ 18:(vehicle-at l-1-5) ];a = (pickumbrella-and-move-with-umbrella l-1-5 l-2-5);j = [ 0:(vehicle-at l-2-5) 4:(has-umbrella) ];prob = 0.6
+s = [ 18:(vehicle-at l-1-5) ];a = (pickumbrella-and-move-with-umbrella l-1-5 l-2-5);j = [ 4:(has-umbrella) 18:(vehicle-at l-1-5) ];prob = 0.4
+s = [ 4:(has-umbrella) 50:(vehicle-at l-5-5) ];a = (move-car-umbrella l-5-5 l-4-5);j = [ 4:(has-umbrella) 40:(vehicle-at l-4-5) ];prob = 0.8
+s = [ 4:(has-umbrella) 50:(vehicle-at l-5-5) ];a = (move-car-umbrella l-5-5 l-4-5);j = [ 4:(has-umbrella) 50:(vehicle-at l-5-5) ];prob = 0.2
+s = [ 4:(has-umbrella) 50:(vehicle-at l-5-5) ];a = (move-car-umbrella l-5-5 l-5-4);j = [ 4:(has-umbrella) 48:(vehicle-at l-5-4) ];prob = 0.8
+s = [ 4:(has-umbrella) 50:(vehicle-at l-5-5) ];a = (move-car-umbrella l-5-5 l-5-4);j = [ 4:(has-umbrella) 50:(vehicle-at l-5-5) ];prob = 0.2
+s = [ 4:(has-umbrella) 50:(vehicle-at l-5-5) ];a = (move-car-without-umbrella l-5-5 l-4-5);j = [ 4:(has-umbrella) 40:(vehicle-at l-4-5) ];prob = 0.4
+s = [ 4:(has-umbrella) 50:(vehicle-at l-5-5) ];a = (move-car-without-umbrella l-5-5 l-4-5);j = [ 4:(has-umbrella) 50:(vehicle-at l-5-5) ];prob = 0.6
+s = [ 4:(has-umbrella) 50:(vehicle-at l-5-5) ];a = (move-car-without-umbrella l-5-5 l-5-4);j = [ 4:(has-umbrella) 48:(vehicle-at l-5-4) ];prob = 0.4
+s = [ 4:(has-umbrella) 50:(vehicle-at l-5-5) ];a = (move-car-without-umbrella l-5-5 l-5-4);j = [ 4:(has-umbrella) 50:(vehicle-at l-5-5) ];prob = 0.6
+s = [ 0:(vehicle-at l-2-5) ];a = (move-car-without-umbrella l-2-5 l-1-5);j = [ 18:(vehicle-at l-1-5) ];prob = 0.4
+s = [ 0:(vehicle-at l-2-5) ];a = (move-car-without-umbrella l-2-5 l-1-5);j = [ 0:(vehicle-at l-2-5) ];prob = 0.6
+s = [ 0:(vehicle-at l-2-5) ];a = (move-car-without-umbrella l-2-5 l-2-4);j = [ 20:(vehicle-at l-2-4) ];prob = 0.4
+s = [ 0:(vehicle-at l-2-5) ];a = (move-car-without-umbrella l-2-5 l-2-4);j = [ 0:(vehicle-at l-2-5) ];prob = 0.6
+s = [ 0:(vehicle-at l-2-5) ];a = (move-car-without-umbrella l-2-5 l-3-4);j = [ 28:(vehicle-at l-3-4) ];prob = 0.4
+s = [ 0:(vehicle-at l-2-5) ];a = (move-car-without-umbrella l-2-5 l-3-4);j = [ 0:(vehicle-at l-2-5) ];prob = 0.6
+s = [ 0:(vehicle-at l-2-5) ];a = (move-car-without-umbrella l-2-5 l-3-5);j = [ 30:(vehicle-at l-3-5) ];prob = 0.4
+s = [ 0:(vehicle-at l-2-5) ];a = (move-car-without-umbrella l-2-5 l-3-5);j = [ 0:(vehicle-at l-2-5) ];prob = 0.6

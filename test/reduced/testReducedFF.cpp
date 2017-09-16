@@ -224,7 +224,7 @@ int main(int argc, char* args[])
                                                                                 cerr << costAndTime.first << endl;
         expectedCost += costAndTime.first;
     }
-    cout << expectedCost / nsims << endl;
+    cout << "avg cost = "<<expectedCost / nsims << endl;
     cout << totalPlanningTime << endl;
 
     // Releasing memory

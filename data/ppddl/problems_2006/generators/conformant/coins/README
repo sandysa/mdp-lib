@@ -1,0 +1,5 @@
+Coins generator.
+Author: Blai Bonet
+
+make
+usage: coins --rows <n> --cols <m> [--coins <l>] [--elevators <e>] [--seed <n>]

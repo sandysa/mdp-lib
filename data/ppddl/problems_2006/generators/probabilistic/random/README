@@ -1,0 +1,60 @@
+
+ACKNOWLEDGEMENT
+We have used FF's code in constructing this problem generator.
+
+
+USAGE
+
+"make.py genreset" will generate necessary binaries
+
+genreset is for generating random problems and random domains with reset actions that reset to the initial state.
+
+genreset does a simple syntactic check to prevent the generation of useless actions, though this check is not foolproof.
+
+To generate a problem, type "gen.py".
+This will generate a problem file "random-problem-reset".
+
+The gen.py script generates a random domain and a problem in random-problem-reset file.
+
+
+Customization
+
+Rather than providing gen.py with arguments, we provide customization via editing the command line call to genreset inside gen.py.
+
+Here we describe arguments for genreset used in gen.py  
+-i number of initial facts  
+-a number of probabilistic actions  
+-s number of predicates  
+-r random walk length used to generate goal  
+-t max predicate arity  
+-c max action arity  
+-p maximum number of probabilistic outputs of an action
+-e maximum number of effects (addition + deletion) 
+-d number of preconditions  
+-n probability of negating preconditions  
+-m probability of negating effects  
+-h random walk cutoff probability, the random walk stops when the path chosen is below this cutoff 
+
+These arguments need not be supplied, default values will be used by genreset, if not provided.
+
+The following are the parameter values we have used to generate problems with easy, medium, hard difficulty.
+
+Our estimate of difficulty was made with FF-replan and may not correctly reflect general difficulty level to participants.
+
+After some testing following settings seem to generate corresponding difficulties.
+
+simple difficulty
+- -i 20 -a 5 -s 5 -d 3 -e 3 -h 0.2 -n 0
+
+middle difficulty
+- -i 20 -a 5 -s 5 -d 5 -e 5 -h 0.2 -n 0
+
+harder difficulty
+- -i 100 -a 10 -s 10 -d 5 -e 5 -h 0.05 -n 0
+
+The example-problems directories have pre-generated problems.
+
+You can easily generate such problems with simply typing "gen.py"
+after setting arguments in the file.
+
+

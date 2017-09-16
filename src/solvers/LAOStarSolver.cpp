@@ -20,7 +20,7 @@ mlcore::Action* LAOStarSolver::solve(mlcore::State* s0)
             countExpanded = expand(s0);
             totalExpanded += countExpanded;
             if ((0.001 * (clock() - startTime)) /
-                    CLOCKS_PER_SEC > timeLimit_)
+                    CLOCKS_PER_SEC > timeLimit_+1000)
                 return s0->bestAction();
 
         } while (countExpanded != 0);
@@ -80,7 +80,6 @@ double LAOStarSolver::testConvergence(mlcore::State* s)
         for (mlcore::Successor sccr : problem_->transition(s, prevAction))
             error =  std::max(error, testConvergence(sccr.su_state));
     }
-
     error = std::max(error, bellmanUpdate(problem_, s, weight_));
     if (prevAction == s->bestAction())
         return error;

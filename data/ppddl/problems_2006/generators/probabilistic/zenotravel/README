@@ -1,0 +1,5 @@
+Zenotravel generator.
+Author: Blai Bonet upon a domain from Michael Littman and others in IPC-4
+
+make
+usage: zeno [--seed <seed>] [--cities <n>] [--persons <n>] [--aircrafts <n>]

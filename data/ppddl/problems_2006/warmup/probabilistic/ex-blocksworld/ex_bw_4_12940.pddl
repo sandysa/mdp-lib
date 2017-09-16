@@ -1,0 +1,6 @@
+(define (problem ex_bw_4_12940)
+  (:domain exploding-blocksworld-domain)
+  (:objects b1 b2 b3 b4 - block)
+  (:init (emptyhand) (on b1 b2) (on b2 b3) (on-table b3) (on-table b4) (clear b1) (clear b4) (no-detonated b1) (no-destroyed b1) (no-detonated b2) (no-destroyed b2) (no-detonated b3) (no-destroyed b3) (no-detonated b4) (no-destroyed b4) (no-destroyed-table))
+  (:goal (and (emptyhand) (on b1 b4) (on-table b2) (on-table b3) (on b4 b2)))
+)
