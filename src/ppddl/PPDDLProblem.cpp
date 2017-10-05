@@ -56,18 +56,15 @@ std::list<mlcore::Successor>
     return successors;
 }
 
-     
+
 double PPDDLProblem::cost(mlcore::State* s, mlcore::Action* a) const
 {
     PPDDLAction* action = (PPDDLAction *) a;
     PPDDLState* state = (PPDDLState *) s;
-	
-    
-    std::cout<<s<<endl;
-    
+
    return action->pAction()->cost(*state->pState()); // luis
 //	return 3; //sandhya
- 
+
 //	return acad::new_cost(s,a); //sandhya
 }
 

@@ -145,7 +145,7 @@ vector<string> split(const string &s, const char* delim){
 	s1.erase(std::remove(s1.begin(), s1.end(), '['), s1.end());
 	std::replace(s1.begin(), s1.end(), ']',' ');
     char * dup = strdup(s1.c_str());
-    
+
     char * token = strtok(dup, delim);
     while(token != NULL){
         v.push_back(string(token));
@@ -162,7 +162,7 @@ vector<string> split(const string &s, const char* delim){
 std::string toString(mlcore:: State* s)
 {
 	//PPDDLState* state = (PPDDLState *) s;
-	std::ostringstream buffer; 
+	std::ostringstream buffer;
    	buffer << s;
     return buffer.str()  ;
 }
@@ -171,7 +171,7 @@ mlcore::State* getGoal()
 {
 	for (mlcore::State* s : problem->states()) {
 	if(problem->goal(s)){
-		return s; }	
+		return s; }
 	}
 }
 
@@ -182,7 +182,7 @@ int getCount(string &s, vector<string> goal_config) {
   	if (found!=std::string::npos){
 	count++;
 	}
-	} 
+	}
 
 return count;
 
@@ -190,7 +190,7 @@ return count;
 int main(int argc, char* args[])
 {
     register_flags(argc, args);
-	
+
 	bool print_states = false;
 	bool print_actions = false;
 	bool print_trans = false;
@@ -215,7 +215,7 @@ int main(int argc, char* args[])
    }
  mlcore::StateSet reachableStates, tipStates;
 
-	//problem->generateAll(); // generate all states
+	problem->generateAll(); // generate all states
 
 
 	/********Printing details************/
@@ -225,7 +225,7 @@ int main(int argc, char* args[])
 		states_count++;
      }
 	cout<<"S="<< states_count <<"\n";
-	
+
 	int action_count =0;
 	for (mlcore::Action* a : problem->actions()) {
 	action_count++;
@@ -238,14 +238,14 @@ int main(int argc, char* args[])
 	cout <<"Goal="<<s <<"\n";
 	} */
 /******** PRINT THE PROBLEM *******************/
-/*	if(print_states){	
+/*	if(print_states){
 	//int states_count =0 ;
 	cout<<"printing states : \n";
 	for (mlcore::State* s : problem->states()) {
 	cout<<s <<"\n";
 	}
 	}
-	
+
 	if(print_actions){
 	cout<<"printing actions : \n";
 	for (mlcore::Action* a : problem->actions()) {
@@ -255,9 +255,6 @@ int main(int argc, char* args[])
  */
 if(print_trans){
 cout<<"printing transitions : \n";
-for (mlcore::State* s : problem->states()) {
-for(mlcore::Action* a: problem->actions()){
-if(problem->applicable(s, a)){
  for (mlcore::Successor su : problem->transition(s, a)) {
 	cout<< "s = " <<s << ";";
 	cout<<"a = "<< a <<";";
@@ -267,11 +264,11 @@ if(problem->applicable(s, a)){
 	}
 	}
 }
-}  
+}
 
 //solving using lao* -- without cost adjustment
 
- /* double totalPlanningTime = 0.0;
+ double totalPlanningTime = 0.0;
     clock_t startTime = clock();
     bool costadjust = false;
     LAOStarSolver solver(problem);
@@ -279,33 +276,33 @@ if(problem->applicable(s, a)){
     clock_t endTime = clock();
     totalPlanningTime += (double(endTime - startTime) / CLOCKS_PER_SEC);
     cout << "cost " << problem->initialState()->cost() <<
-        " time " << totalPlanningTime << endl; */
-        
-      
-        
+        " time " << totalPlanningTime << endl;
+
+
+
 //solving using A* -- with cost adjustment
 
-    
-    double totalPlanningTime = 0.0;
+
+/*    double totalPlanningTime = 0.0;
     clock_t startTime = clock();
     bool costadjust = false;
     DeterministicSolver Solver(problem);
     Solver.solve(problem->initialState());
     clock_t endTime = clock();
     totalPlanningTime += (double(endTime - startTime) / CLOCKS_PER_SEC);
-    cout << " time " << totalPlanningTime << endl; 
-        
-        
-        
-            
-        
+    cout << " time " << totalPlanningTime << endl; */
+
+
+
+
+
 //	cout<<"Printing best action:\n";
 // 	for (mlcore::State* s : problem->states()) {
 // 		if(s->bestAction() != nullptr)
 // 		//cout<<s <<": has no best action\n";
 // 		//else
 // 		cout<<""<<s<< " : "<< s->bestAction() <<"\n";
-// } 
+// }
 
 
 
@@ -318,13 +315,13 @@ if(problem->applicable(s, a)){
     totalPlanningTime += (double(endTime - startTime) / CLOCKS_PER_SEC);
     cout << "cost " << problem->initialState()->cost() <<
         " time " << totalPlanningTime << endl; */
-	
-	
+
+
 
 	// cout <<goal_split;
   /* for (mlcore::State* s : problem->states()) {
 	std::cout<<""<<s<<":"<<s->cost() <<"\n"; } */
-	
+
 
 //solve using ACAD
 /* double totalPlanningTime = 0.0;
@@ -332,19 +329,19 @@ if(problem->applicable(s, a)){
 	VISolver vi(problem,100000000, 1.0e-6);
    	vi.solve(problem->initialState());
 	cout<<"VI Solved \n" << "***********************\n";  */
-	
+
 // get goal state config in string and predicates of the goal config
 /*	mlcore::State* g = getGoal();
 	string goal_config = toString(g);
 	cout<<"goal State \n " << goal_config <<"\n";
-	
+
 	char delimit[]="()";
 	vector<string> goal_split = split(goal_config,delimit);
-	
+
 	for (int i = 0; i < goal_split.size(); i++){
         cout<<goal_split[i]<< "\n";
 	} */
-	
+
 	// convert state to string and get match count
 /*	cout<<"initial state\n ";
 	mlcore::State* s1 = problem->initialState();
@@ -376,14 +373,14 @@ if(problem->applicable(s, a)){
 		//mlcore::State* j = getBestSucc_maxProb(problem, s, bestAction);
 		double bestVal = j->cost();
 		double new_cost = bestQ- bestVal;
-		
+
 		std::string s1_string = toString(s);
 		int count = getCount(s1_string, goal_split);
 		vector<string> s_vector = split(s1_string, delimit);
 		double count_frac =  s_vector.size() - goal_split.size();
 		count_frac = count_frac / count ;
-//		cout<<""<<s << "best a"<< bestAction <<" : newcost = "<< new_cost <<" count = " << count <<" value = " << s->cost() << " fraction "<< count_frac <<"\n"; 
-		
+//		cout<<""<<s << "best a"<< bestAction <<" : newcost = "<< new_cost <<" count = " << count <<" value = " << s->cost() << " fraction "<< count_frac <<"\n";
+
  	}
 	} */
 //fclose(pFile);
@@ -396,7 +393,7 @@ if(problem->applicable(s, a)){
 		mlcore::State* j = getBestSucc(problem, s, a);
 		double bestVal = j->cost();
 		double new_cost = qAction- bestVal;
-		cout<<""<<s << " a = "<< a <<" : cost = "<< new_cost <<"\n"; 	
+		cout<<""<<s << " a = "<< a <<" : cost = "<< new_cost <<"\n";
  		}
 		}
 	}
@@ -405,7 +402,7 @@ cout <<"index = "<< index <<"\n";*/
 /////////////////////////////////////////////////
 
       // Releasing memory
-  
+
     delete problem;
     return 0;
 }

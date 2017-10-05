@@ -24,11 +24,12 @@ double qvalue(mlcore::Problem* problem, mlcore::State* s, mlcore::Action* a)
 {
     double qAction = 0.0;
     for (mlcore::Successor su : problem->transition(s, a)) {
-        qAction += su.su_prob * su.su_state->cost();
-    }
+          qAction += su.su_prob * su.su_state->cost();
+         }
  //    qAction = (qAction * problem->gamma()) + acad::new_cost_blocksworld(s,a,problem);
 //        qAction = (qAction * problem->gamma()) + acad::new_cost_triangletire(s,a,problem);
        qAction = (qAction * problem->gamma()) + problem->cost(s, a);
+
     return qAction;
 }
 
@@ -65,8 +66,7 @@ std::pair<double, mlcore::Action*> bellmanBackup(mlcore::Problem* problem,
 
     if (!hasAction && bestQ >= mdplib::dead_end_cost)
         s->markDeadEnd();
-
-    return std::make_pair(bestQ, bestAction);
+     return std::make_pair(bestQ, bestAction);
 }
 
 
@@ -128,7 +128,7 @@ mlcore::State* randomSuccessor(mlcore::Problem* problem,
                                double* prob)
 {
     double pick = dis(gen);
-
+    //std::cout<<"pick = "<<pick<<endl;
     if (a == nullptr)
         return s;
 
@@ -138,11 +138,13 @@ mlcore::State* randomSuccessor(mlcore::Problem* problem,
         if (acc >= pick) {
             if (prob != nullptr)
                 *prob = sccr.su_prob;
+    //        std::cout<<"acc = "<<acc <<"prob = "<< sccr.su_prob<<endl;
             return sccr.su_state;
         }
     }
     if (prob != nullptr)
         *prob = 1.0;
+
     return s;
 }
 

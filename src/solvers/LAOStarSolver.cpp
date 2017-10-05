@@ -4,6 +4,7 @@
 #include "../../include/util/general.h"
 
 #include <ctime>
+#include <iostream>
 
 namespace mlsolvers
 {
