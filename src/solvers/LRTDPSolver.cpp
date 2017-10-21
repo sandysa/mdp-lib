@@ -51,13 +51,16 @@ bool LRTDPSolver::checkSolved(mlcore::State* s)
         tmp = open.front();
         open.pop_front();
 
-        if (problem_->goal(tmp) || tmp->deadEnd())
+        if (problem_->goal(tmp))
+            continue;
+
+        mlcore::Action* a = greedyAction(problem_, tmp);
+
+        if (tmp->deadEnd())
             continue;
 
         closed.push_front(tmp);
         tmp->setBits(mdplib::CLOSED);
-
-        mlcore::Action* a = greedyAction(problem_, tmp);
 
         if (residual(problem_, tmp) > epsilon_)
             rv = false;
@@ -74,10 +77,10 @@ bool LRTDPSolver::checkSolved(mlcore::State* s)
     if (rv) {
         for (mlcore::State* sc : closed) {
             sc->setBits(mdplib::SOLVED);
+            sc->clearBits(mdplib::CLOSED);
         }
     } else {
         while (!closed.empty()) {
-            double res = residual(problem_, tmp);
             tmp = closed.front();
             closed.pop_front();
             tmp->clearBits(mdplib::CLOSED);
