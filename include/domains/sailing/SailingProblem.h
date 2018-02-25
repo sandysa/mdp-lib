@@ -76,6 +76,12 @@ public:
      * Overrides method from Problem.
      */
     virtual bool applicable(mlcore::State* s, mlcore::Action* a) const;
+
+    bool in_Lake(const short x, const short y){return inLake(x,y);}
+
+     mlcore::State* absorbing() const { return absorbing_; }
+
+     int get_tack(const SailingState* state, const SailingAction* action) {return tack(state,action);}
 };
 
 #endif // MDPLIB_SAILINGPROBLEM_H

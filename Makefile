@@ -45,6 +45,12 @@ SD_RACE = $(SD_DOMAINS)/racetrack
 ID_RACE = $(ID_DOMAINS)/racetrack
 SD_BORDER = $(SD_DOMAINS)/borderexit
 ID_BORDER = $(ID_DOMAINS)/borderexit
+SD_RS = $(SD_DOMAINS)/rocksample
+ID_RS = $(ID_DOMAINS)/rocksample
+SD_SR = $(SD_DOMAINS)/SearchRescue
+ID_SR = $(ID_DOMAINS)/SearchRescue
+SD_EV = $(SD_DOMAINS)/EV
+ID_EV = $(ID_DOMAINS)/EV
 
 # Variables for include directives
 INCLUDE_DOM = -I$(ID_GW) -I$(ID_CTP) -I$(ID_SAIL) -I$(ID_DOMAINS) -I$(ID_RACE)
@@ -75,8 +81,15 @@ RACE_CPP = $(SD_RACE)/*.cpp
 RACE_H = $(ID_RACE)/*.h
 BORDER_CPP = $(SD_BORDER)/*.cpp
 BORDER_H = $(ID_BORDER)/*.h
-DOM_CPP = $(GW_CPP) $(CTP_CPP) $(SAIL_CPP) $(RACE_CPP) $(BORDER_CPP) $(SD_DOMAINS)/*.cpp
-DOM_H = $(GW_H) $(CTP_H) $(SAIL_H) $(RACE_H) $(BORDER_H)
+SR_CPP = $(SD_SR)/*.cpp
+SR_H = $(ID_SR)/*.h
+RS_CPP = $(SD_RS)/*.cpp
+RS_H = $(ID_RS)/*.h
+EV_CPP = $(SD_EV)/*.cpp
+EV_H = $(ID_EV)/*.h
+
+DOM_CPP = $(GW_CPP) $(CTP_CPP) $(SAIL_CPP) $(RACE_CPP) $(BORDER_CPP) $(SR_CPP) $(RS_CPP) $(EV_CPP) $(SD_DOMAINS)/*.cpp
+DOM_H = $(GW_H) $(CTP_H) $(SAIL_H) $(RACE_H) $(BORDER_H) $(SR_H) $(RS_H) $(EV_H)
 
 ALL_H = $(I_H) $(SOLV_H) $(MOSOLV_H) $(DOM_H) $(UTIL_H)
 ALL_CPP = $(DOM_CPP) $(SOLV_CPP) $(MOSOLV_CPP) $(UTIL_CPP)
@@ -239,7 +252,11 @@ testsolver.out: lib/libmdp.a domains
 testvpi.out: lib/libmdp.a domains
 	$(CC) $(CFLAGS) $(INCLUDE) -o testvpi.out $(TD)/testVPISolver.cpp $(LIBS) \
 		src/solvers/VISolver.cpp
-
+		
+# Compiles the GUSSP test program
+testGussp.out: lib/libmdp.a domains
+	$(CC) $(CFLAGS) $(INCLUDE) -o testGussp.out $(TD)/testGUSSP.cpp $(LIBS)
+	
 # Compiles the mini-gpt library
 minigpt: lib/libminigpt.a
 lib/libminigpt.a: include/ppddl/mini-gpt/*

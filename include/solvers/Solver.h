@@ -71,6 +71,8 @@ public:
      * @param theTrials The maximum number of trials allowed.
      */
     virtual void maxTrials(time_t theTrials) { }
+
+    mlcore::StateSet isFullModel_;
 };
 
 /**

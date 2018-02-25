@@ -54,6 +54,11 @@ protected:
      */
     Heuristic* heuristic_;
 
+     /**
+     * A domain describing the problem's domain.
+     */
+    std::string problem_name_;
+
 public:
 
     /**
@@ -230,6 +235,13 @@ public:
     void setHeuristic(Heuristic* heuristic)
     {
         heuristic_ = heuristic;
+    }
+    /**
+     * Returns the domain name for the problem.
+     */
+    std::string getProblemName()
+    {
+        return  problem_name_;
     }
 };
 
