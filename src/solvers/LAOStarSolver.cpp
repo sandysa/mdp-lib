@@ -4,6 +4,7 @@
 #include "../../include/util/general.h"
 
 #include <ctime>
+using namespace std;
 
 namespace mlsolvers
 {
@@ -21,19 +22,28 @@ mlcore::Action* LAOStarSolver::solve(mlcore::State* s0)
             totalExpanded += countExpanded;
             if ((0.001 * (clock() - startTime)) /
                     CLOCKS_PER_SEC > timeLimit_)
-                return s0->bestAction();
+                    {
+       //                 std::cout << " nodes expanded (lao)= " << totalExpanded << std::endl;
+                         return s0->bestAction();
+                    }
 
         } while (countExpanded != 0);
 
         while (true) {
             if ((0.001 * (clock() - startTime)) /
                     CLOCKS_PER_SEC > timeLimit_)
-                return s0->bestAction();
+                    {
+  //                    std::cout << " nodes expanded (lao)= " << totalExpanded << std::endl;
+                         return s0->bestAction();
+                    }
 
             visited.clear();
             error = testConvergence(s0);
             if (error < epsilon_)
-                return s0->bestAction();
+                {
+ //                       std::cout << " nodes expanded (lao)= " << totalExpanded << std::endl;
+                         return s0->bestAction();
+                }
             if (error > mdplib::dead_end_cost) {
                 break;  // BPSG changed, must expand tip nodes again
             }

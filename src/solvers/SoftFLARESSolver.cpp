@@ -61,7 +61,6 @@ void SoftFLARESSolver::trial(State* s) {
     while (!labeledSolved(currentState)) {
         if (problem_->goal(currentState))
             break;
-
         visited.push_front(currentState);
         bellmanUpdate(problem_, currentState);
 
@@ -252,6 +251,7 @@ bool SoftFLARESSolver::moreTrials(
     if (maxTime_ <= -1) {
         return !labeledSolved(s) && trialsSoFar < maxTrials_;
     }
+
     auto endTime = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::
         duration_cast<std::chrono::milliseconds>(endTime-startTime).count();

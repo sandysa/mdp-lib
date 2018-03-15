@@ -9,6 +9,10 @@
 namespace mlsolvers
 {
 
+/**********************************************************************************************************
+**      THIS FILE HAS BEEN MODIFIED FOR GUSSPs. FOR ORGINAL IMPLEMENTATION, REFFER TO A DIFFERENT BRANCH **
+************************************************************************************************************/
+
 /**
  * Implements the hmin heuristic described in
  * http://www.aaai.org/Papers/ICAPS/2003/ICAPS03-002.pdf

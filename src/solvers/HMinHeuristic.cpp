@@ -2,11 +2,12 @@
 
 #include "../include/MDPLib.h"
 #include "../include/State.h"
-
 #include "../../include/solvers/HMinHeuristic.h"
 #include "../../include/solvers/Solver.h"
 
-
+/**********************************************************************************************************
+**      THIS FILE HAS BEEN MODIFIED FOR GUSSPs. FOR ORGINAL IMPLEMENTATION, REFFER TO A DIFFERENT BRANCH **
+************************************************************************************************************/
 using namespace mlcore;
 using namespace std;
 
@@ -32,7 +33,7 @@ HMinHeuristic::hminUpdate(State* s)
         costs_[s] = 0.0;
         return;
     }
-
+ //                                                                                           std::cout << " In hmin update" << std::endl;
     double bestQ = mdplib::dead_end_cost;
     bool hasAction = false;
     for (Action* a : problem_->actions()) {
@@ -153,8 +154,13 @@ bool HMinHeuristic::checkSolved(State* s)
         if (problem_->goal(tmp))
             continue;
 
-        if (tmp->deadEnd())
+         if (tmp->deadEnd()){
+            closed.push_front(tmp);
+            tmp->setBits(mdplib::SOLVED_HMIN);
+            tmp->setBits(mdplib::CLOSED);
+          //  rv = false;
             continue;
+        }
 
         closed.push_front(tmp);
         tmp->setBits(mdplib::CLOSED);

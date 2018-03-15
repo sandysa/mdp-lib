@@ -183,7 +183,7 @@ public:
                      double alpha = 0.01,
                      bool useProbsForDepth = false,
                      bool optimal = false,
-                     int maxTime = -1);
+                     int maxTime = 100);
 
     /**
      * Solves the associated problem using the Soft-FLARES algorithm.

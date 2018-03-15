@@ -57,7 +57,6 @@ std::pair<double, mlcore::Action*> bellmanBackup(mlcore::Problem* problem,
 
     if (!hasAction && bestQ >= mdplib::dead_end_cost)
         s->markDeadEnd();
-
     return std::make_pair(bestQ, bestAction);
 }
 

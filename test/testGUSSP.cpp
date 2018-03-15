@@ -33,15 +33,16 @@
 #include "../include/domains/gridworld/GridWorldProblem.h"
 #include "../include/domains/gridworld/GWManhattanHeuristic.h"
 #include "../include/domains/gridworld/GWDetHeuristicGUSSP.h"
+#include "../include/domains/gridworld/GUSSPGridWorldProblem.h"
 
-#include "../include/domains/SearchRescue/SearchRescueProblem.h"
+#include "../include/domains/SearchRescue/GUSSPSearchRescueProblem.h"
 #include "../include/domains/SearchRescue/SRDetHeuristicGUSSP.h"
 
-#include "../include/domains/rocksample/RockSampleProblem.h"
+#include "../include/domains/rocksample/GUSSPRockSampleProblem.h"
 #include "../include/domains/rocksample/RSDetHeuristicGUSSP.h"
 
-#include "../include/domains/EV/EVProblem.h"
-#include "../include/domains/EV/EVDetHeuristic.h"
+#include "../include/domains/EV/GUSSPEVProblem.h"
+#include "../include/domains/EV/EVDetHeuristicGUSSP.h"
 
 using namespace mdplib;
 using namespace mlcore;
@@ -64,22 +65,21 @@ void setupGridWorld()
     if (verbosity > 100)
         cout << "Setting up grid world " << grid << endl;
     bool all_directions = flag_is_registered("gw-all-dir");
-    problem = new GridWorldProblem(grid.c_str(), 1.0, 100.0, all_directions, uniform_goal_dist);
-    if (!flag_is_registered_with_value("heuristic") ||
-            flag_value("heuristic") == "domain")
-        heuristic = new GWManhattanHeuristic((GridWorldProblem*) problem);
+    problem = new GUSSPGridWorldProblem(grid.c_str(), 1.0, 100.0, all_directions, uniform_goal_dist);
     if(flag_value("heuristic") == "domainGUSSP")
-        heuristic = new GWDetHeuristicGUSSP((GridWorldProblem*) problem);
+        heuristic = new GWDetHeuristicGUSSP((GUSSPGridWorldProblem*) problem);
+    else if (!flag_is_registered("heuristic"))
+        heuristic = nullptr;
 }
 void setupSearchRescue()
 {
     string searchproblem = flag_value("searchrescue");
     bool uniform_goal_dist = flag_is_registered("uniform-goal-dist");
     bool all_directions = flag_is_registered("sr-all-dir");
-    problem = new SearchRescueProblem(searchproblem.c_str(), 1.0, 100.0, all_directions, uniform_goal_dist);
+    problem = new GUSSPSearchRescueProblem(searchproblem.c_str(), 1.0, 100.0, all_directions, uniform_goal_dist);
 
     if(flag_value("heuristic") == "domainGUSSP")
-        heuristic = new SRDetHeuristicGUSSP((SearchRescueProblem*) problem);
+        heuristic = new SRDetHeuristicGUSSP((GUSSPSearchRescueProblem*) problem);
 }
 void setupEV()
 {
@@ -91,12 +91,13 @@ void setupEV()
     double startTime = atof(flag_value("start-time").c_str());
     double endTime = atof(flag_value("end-time").c_str());
     int rewardCase =  atoi(flag_value("reward").c_str());
+    int exit_range = atoi(flag_value("exit-range").c_str());
+    bool uniform_goal_dist = flag_is_registered("uniform-goal-dist");
 
-    problem = new EVProblem(startSOC,endSOC,startTime,endTime,rewardCase);
+    problem = new GUSSPEVProblem(startSOC,endSOC,startTime,rewardCase, exit_range, uniform_goal_dist);
 
-    if (!flag_is_registered_with_value("heuristic") ||
-            flag_value("heuristic") == "domainGUSSP")
-        heuristic = new EVDetHeuristic(startSOC,endSOC,startTime,endTime,1); //setting reward case = 1 for heursitic calculation
+    if (flag_value("heuristic") == "domainGUSSP")
+        heuristic = new EVDetHeuristicGUSSP((GUSSPEVProblem*) problem);
  }
 
 void setupRockSample()
@@ -104,10 +105,10 @@ void setupRockSample()
     string rocksample = flag_value("rocksample");
     bool uniform_goal_dist = flag_is_registered("uniform-goal-dist");
     bool all_directions = flag_is_registered("sr-all-dir");
-    problem = new RockSampleProblem(rocksample.c_str(), 1.0, 100.0, all_directions, uniform_goal_dist);
+    problem = new GUSSPRockSampleProblem(rocksample.c_str(), 1.0, 100.0, all_directions, uniform_goal_dist);
 
     if(flag_value("heuristic") == "domainGUSSP")
-        heuristic = new RSDetHeuristicGUSSP((RockSampleProblem*) problem);
+        heuristic = new RSDetHeuristicGUSSP((GUSSPRockSampleProblem*) problem);
 }
 void setupProblem()
 {
@@ -124,7 +125,8 @@ void setupProblem()
     }
     else if (flag_is_registered_with_value("start-soc")) {
         setupEV();
-    } else {
+   }
+    else {
         cerr << "Invalid problem." << endl;
         exit(-1);
     }
@@ -152,27 +154,10 @@ void initSolver(string algorithm, Solver*& solver)
     if (flag_is_registered_with_value("tol"))
         tol = stof(flag_value("tol"));
 
-    if(algorithm == "acarm" || algorithm == "alld")
-        adjustCost = true;
-
-    if (algorithm == "wlao") {
-        double weight = 1.0;
-        if (flag_is_registered_with_value("weight"))
-            weight = stof(flag_value("weight"));
-        solver = new LAOStarSolver(problem, tol, 1000000, weight);
-    } else if (algorithm == "lao") {
+    if (algorithm == "lao") {
         solver = new LAOStarSolver(problem, tol, 1000000);
-    } else if (algorithm == "brtdp") {
-        // BRTDP is just VPI-RTDP with beta = 0
-        double tau = 100;
-        solver = new VPIRTDPSolver(problem, tol, trials,
-                                   -1.0, 0.0, tau,
-                                   mdplib::dead_end_cost + 10.0);
-        useUpperBound = true;
     }
-    else if (algorithm == "prm" || algorithm == "acarm") {
-        solver = new PRM_LAOStarSolver(problem, adjustCost, tol, 1000000);
-    }  else if (algorithm == "lrtdp") {
+     else if (algorithm == "lrtdp") {
         solver = new LRTDPSolver(problem, trials, tol);
     } else if (algorithm == "rtdp-ub") {
         // RTDP with upper bound action selection
@@ -211,7 +196,7 @@ void initSolver(string algorithm, Solver*& solver)
                                   tol,
                                   depth,
                                   optimal,
-                                  useProbsDepth);
+                                  useProbsDepth); // max time set to 10000 ms in Softflares header file.
     } else if (algorithm == "soft-flares") {
         double depth = horizon;
         double alpha = 0.10;
@@ -253,47 +238,12 @@ void initSolver(string algorithm, Solver*& solver)
         solver = new SoftFLARESSolver(
             problem, trials, tol, depth, mod_func, dist_func,
             alpha, false, optimal);
-    } else if (algorithm == "hdp") {
-        int plaus;
-        if (flag_is_registered_with_value("i"))
-            solver = new HDPSolver(problem, tol, stoi(flag_value("i")));
-        else
-            solver = new HDPSolver(problem, tol);
-    } else if (algorithm == "vi") {
+    }  else if (algorithm == "vi") {
         solver = new VISolver(problem, 1000000000, tol);
-    } else if (algorithm == "ssipp") {
-        solver = new SSiPPSolver(problem, tol, horizon);
-    } else if (algorithm == "labeled-ssipp") {
-        solver = new SSiPPSolver(problem, tol, horizon, SSiPPAlgo::Labeled);
-    } else if (algorithm == "det") {
+    }  else if (algorithm == "det") {
         solver = new DeterministicSolver(problem,
                                          mlsolvers::det_most_likely,
                                          heuristic);
-    } else if (algorithm == "alld") {
-        solver = new CostAdjusted_DeterministicSolver(problem, adjustCost,
-                                         mlsolvers::det_most_likely,
-                                         heuristic);
-    }else if (algorithm == "uct") {
-        int rollouts = 1000;
-        int cutoff = 50;
-        int delta = 5;
-        double C = 0.0;
-        bool use_qvalues_for_c = true;
-        if (flag_is_registered_with_value("rollouts"))
-            rollouts = stoi(flag_value("rollouts"));
-        if (flag_is_registered_with_value("cutoff"))
-            cutoff = stoi(flag_value("cutoff"));
-        if (flag_is_registered_with_value("delta"))
-            delta = stoi(flag_value("delta"));
-        if (flag_is_registered("cexp")) {
-            C = stod(flag_value("cexp"));
-            use_qvalues_for_c = false;
-        }
-
-        solver = new UCTSolver(problem,
-                               rollouts, cutoff, C,
-                               use_qvalues_for_c, delta,
-                               true);
     } else if (algorithm != "greedy") {
         cerr << "Unknown algorithm: " << algorithm << endl;
         exit(-1);
@@ -343,6 +293,7 @@ bool mustReplan(Solver* solver, string algorithm, State* s, int plausTrial) {
   return false;
 }
 
+
 // Runs [numSims] of the given solver and and returns the results
 // (i.e., expectedCost, variance, totalTime, statesSeen).
 // Argument [algorithm] is the name of the algorithm implemented by [solver].
@@ -353,6 +304,7 @@ bool mustReplan(Solver* solver, string algorithm, State* s, int plausTrial) {
 vector<double> simulate(Solver* solver,
                         string algorithm,
                         int numSims,
+                        double heuristic_time,
                         int maxTime = -1,
                         bool perReplan = false)
 {
@@ -365,7 +317,7 @@ vector<double> simulate(Solver* solver,
     int numDecisions = 0;
     clock_t simulationsStartTime = clock();
     for (int i = 0; i < numSims; i++) {
-        if (verbosity >= 100)
+        if (verbosity >= 10)
             cout << " ********* Simulation Starts ********* " << endl;
         clock_t startTime, endTime;
         if (i == 0 && !flag_is_registered("no-initial-plan")) {
@@ -379,6 +331,8 @@ vector<double> simulate(Solver* solver,
                 static_cast<UCTSolver*>(solver)->reset();
             } else if (algorithm != "greedy") {
                 solver->solve(problem->initialState());
+                                                                                        if (verbosity >= 10)
+                                                                                            cout << " problem solved " << endl;
                 if(algorithm == "prm" || algorithm == "acarm"){
                         double max_hval = 0.0;
                         double model_size = 0.0;
@@ -410,6 +364,7 @@ vector<double> simulate(Solver* solver,
             cout << "Estimated cost " <<
                 problem->initialState()->cost() << endl;
         }
+
         double costTrial = 0.0;
         int plausTrial = 0;
         while (!problem->goal(tmp)) {
@@ -422,10 +377,8 @@ vector<double> simulate(Solver* solver,
                 totalTime += (double(endTime - startTime) / CLOCKS_PER_SEC);
                 }
 
-            else
-            {
-
-            if (mustReplan(solver, algorithm, tmp, plausTrial)) {
+          else {
+             if (mustReplan(solver, algorithm, tmp, plausTrial)) {
                 startTime = clock();
                 int simulationsElapsedTime =
                     std::ceil(1000 * (double(startTime - simulationsStartTime)
@@ -435,6 +388,8 @@ vector<double> simulate(Solver* solver,
                         maxTime : std::max(0, maxTime - simulationsElapsedTime);
                     solver->maxPlanningTime(planningTime);
                 }
+                                                                                        if (verbosity >= 10)
+                                                                                            cout << " in mustreplan " << endl;
                 if (algorithm != "greedy")
                     solver->solve(tmp);
                 endTime = clock();
@@ -462,6 +417,7 @@ vector<double> simulate(Solver* solver,
             }
 
             costTrial += problem->cost(tmp, a);
+//                                                                               std::cout << tmp << " cost = " << problem->cost(tmp, a) << std::endl;
             costTrial = std::min(costTrial, mdplib::dead_end_cost);
             if (costTrial >= mdplib::dead_end_cost) {
                 break;
@@ -478,15 +434,6 @@ vector<double> simulate(Solver* solver,
             tmp = aux;
         }
 
- //            /** debugging with VI **/
-//        for (State* s : problem->states()){
-//            SearchRescueState* srs =  static_cast<SearchRescueState*> (s);
-//            SearchRescueProblem* srp = static_cast<SearchRescueProblem*> (problem);
-//            if(srp->isPotentialGoal(srs))
-//                cout <<  s << ", " << s->bestAction() << " cost = " << problem->cost(s,s->bestAction()) << endl;
-//        }
-
-
         if (flag_is_registered("ctp")) {
             CTPState* ctps = static_cast<CTPState*>(tmp);
             if (!ctps->badWeather()) {
@@ -501,12 +448,15 @@ vector<double> simulate(Solver* solver,
         }
     }
 
-
+    /** Adding time taken for heuristic computation to planning time-- if heuristic
+    ** was pre-computed as in hmin-solve-all
+    **/
+//        totalTime += heuristic_time;
     if (verbosity >= 1) {
         cout << "Estimated cost " << problem->initialState()->cost() << " ";
         cout << "Avg. Exec cost " << expectedCost << " ";
         cout << "Std. Dev. " << sqrt(variance / (cnt - 1)) << " ";
-        cout << "Total time " << totalTime / cnt << " " << endl;
+        cout << "Total time " << ((totalTime / cnt)+ heuristic_time) << " " << endl; // time in seconds
         cout << "States seen " << statesSeen.size() << endl;
         cout << "Avg. time per decision "
              << totalTime / numDecisions << endl
@@ -515,7 +465,7 @@ vector<double> simulate(Solver* solver,
     } else if (verbosity >= 0 && verbosity < 1) {
         cout << problem->initialState()->cost() << " ";
         cout << expectedCost << " " << sqrt(variance / (cnt - 1)) << " " <<
-            totalTime / cnt << " " << totalTime / numDecisions << endl;
+            ((totalTime / cnt)+ heuristic_time)<< " " << totalTime / numDecisions << endl;
     }
 
     double reportedTime = perReplan ?
@@ -535,7 +485,7 @@ vector<double> simulate(Solver* solver,
 int main(int argc, char* args[])
 {
     register_flags(argc, args);
-
+    double heuristic_time = 0; // in seconds
     verbosity = 0;
     if (flag_is_registered_with_value("v"))
         verbosity = stoi(flag_value("v"));
@@ -554,17 +504,22 @@ int main(int argc, char* args[])
     cout << " states = " << problem->states().size() << "  actions = " <<  problem->actions().size() << endl;
 
      if (flag_is_registered_with_value("heuristic")) {
-        if (flag_value("heuristic") == "hmin") {
+        if (flag_value("heuristic") == "hmin" || flag_value("heuristic") == "hmin-solve-all" ) {
             clock_t startTime = clock();
-            bool solveAll = flag_is_registered("hmin-solve-all");
-            heuristic = new HMinHeuristic(problem, solveAll);
+       //     bool solveAll = flag_is_registered("hmin-solve-all");
+             bool solveAll = (flag_value("heuristic") == "hmin-solve-all")? true: false;
+             heuristic = new HMinHeuristic(problem, solveAll);
 
            clock_t endTime = clock();
-            if (verbosity >= 100) {
-                cout << "Heuristic took " <<
-                    (double(endTime - startTime) / CLOCKS_PER_SEC) <<
+           if (solveAll)
+                heuristic_time =  (double(endTime - startTime) / CLOCKS_PER_SEC);
+
+            if (verbosity >= 10) {
+                cout << "Heuristic took "
+                    << heuristic_time <<
                     " seconds."  << endl;
              }
+
         } else if (flag_value("heuristic") == "zero")
             heuristic = nullptr;
     }
@@ -577,7 +532,6 @@ int main(int argc, char* args[])
     int numReps = 1;
     if (flag_is_registered_with_value("reps"))
         numReps = stoi(flag_value("reps"));
-
 
     // Running simulations to evaluate each algorithm's performance
     string algorithm = flag_value("algorithm");
@@ -602,10 +556,10 @@ int main(int argc, char* args[])
             double M2Cost = 0.0, M2Time = 0.0;
             for (int i = 1; i <= numReps; i++) {
                 std::vector<double> results =
-                    simulate(solver, alg_item, nsims, t, perReplan);
+                    simulate(solver, alg_item, nsims, heuristic_time, t, perReplan);
                 updateStatistics(results[0], i, avgCost, M2Cost);
                 updateStatistics(results[2], i, avgTime, M2Time);
-            }
+                }
 //            cout << t << " "
 //                << avgCost << " "
 //                << sqrt(M2Cost / (numReps * (numReps - 1))) << " "
@@ -618,5 +572,5 @@ int main(int argc, char* args[])
     }
     delete problem;
     delete heuristic;
-}
+ }
 
