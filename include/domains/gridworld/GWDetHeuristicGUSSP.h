@@ -1,49 +1,44 @@
 #ifndef MDPLIB_GWDETHEURGUSSP_H
 #define MDPLIB_GWDETHEURGUSSP_H
 
+#include <vector>
+#include <math.h>
 #include "../../util/general.h"
 
 #include "../../Heuristic.h"
 #include "../../State.h"
 
-#include "GridWorldProblem.h"
-#include "GridWorldState.h"
-
+#include "GUSSPGridWorldState.h"
+#include "GUSSPGridWorldProblem.h"
 
 class GWDetHeuristicGUSSP : public mlcore::Heuristic
 {
 private:
-    GridWorldProblem* problem_;
+    GUSSPGridWorldProblem* problem_;
 
 public:
-     GWDetHeuristicGUSSP(GridWorldProblem* problem)
+     GWDetHeuristicGUSSP(GUSSPGridWorldProblem* problem)
     {
         problem_ = problem;
     }
 
   virtual double cost(const mlcore::State* s){
 
-        GridWorldState* gws = (GridWorldState*) s;
-        if (gws->x() == -1) // absorbing dummy state
+        GUSSPGridWorldState* gws = (GUSSPGridWorldState*) s;
+        if (s == problem_->absorbing)
             return 0;
-
         double cost_ = mdplib::dead_end_cost;
-        for (auto const& element : problem_->potential_goals_prob) {
-            std::pair<int,int> goal = element.first;
-            double value = 0.0; // all goals have value 0.
-            if (gws->x() == goal.first && gws->y() == goal.second)
-                return value;
-            double md =
-                abs(gws->x() - goal.first) + abs(gws->y() - goal.second);
-
-                /** multiply cost by the probability of it being a goal**/
-            double goalCost = (element.second) * (problem_->getactioncost() * md + value);
+        double value = 0.0; // all goals have value 0.
+        for (auto const& element : gws->goalPos()) {
+            std::pair<int,int> loc = element.first;
+            double md = abs (loc.first -  gws->x()) +
+                        abs(loc.second - gws->y());
+             /** multiply cost by the probability of it not being a goal**/
+            double goalCost = std::round(1-element.second) * (problem_->getactioncost() * md + value);
             if (goalCost < cost_)
                 cost_ = goalCost;
-        }
-//    std::cout << " h for state : " << gws << "  = " << cost_ << std::endl;
+            }
     return cost_;
-
     }
 };
 

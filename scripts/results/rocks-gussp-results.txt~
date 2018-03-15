@@ -1,0 +1,243 @@
+********************************************************
+corridor|lao|zero
+potential goal size = 4 totalSamples = 3
+ states = 9963  actions = 5
+Estimated cost 20.3635 Avg. Exec cost 163.77 Std. Dev. 221.23 Total time 0.0008106 
+States seen 42
+Avg. time per decision 0.08106
+Longest planning time 0.08106
+Num. decisions 1
+********************************************************
+corridor|flares(0)|zero
+potential goal size = 4 totalSamples = 3
+ states = 9963  actions = 5
+Estimated cost 19.9009 Avg. Exec cost 131.05 Std. Dev. 202.683 Total time 0.00924764 
+States seen 41
+Avg. time per decision 0.102752
+Longest planning time 0.110496
+Num. decisions 9
+********************************************************
+corridor|flares(0)|hmin-solve-all
+potential goal size = 4 totalSamples = 3
+ states = 9963  actions = 5
+Estimated cost 20.3141 Avg. Exec cost 178.61 Std. Dev. 226.702 Total time 5.81814 
+States seen 37
+Avg. time per decision 0.102188
+Longest planning time 0.109057
+Num. decisions 5
+********************************************************
+corridor|flares(0)|domainGUSSP
+potential goal size = 4 totalSamples = 3
+ states = 9963  actions = 5
+Estimated cost 18.7776 Avg. Exec cost 72.93 Std. Dev. 135.458 Total time 0.00707295 
+States seen 41
+Avg. time per decision 0.101042
+Longest planning time 0.103829
+Num. decisions 7
+********************************************************
+corridor|flares(1)|zero
+potential goal size = 4 totalSamples = 3
+ states = 9963  actions = 5
+Estimated cost 20.3613 Avg. Exec cost 125.49 Std. Dev. 199.907 Total time 0.00712414 
+States seen 35
+Avg. time per decision 0.101773
+Longest planning time 0.104418
+Num. decisions 7
+********************************************************
+corridor|flares(1)|hmin-solve-all
+potential goal size = 4 totalSamples = 3
+ states = 9963  actions = 5
+Estimated cost 20.3604 Avg. Exec cost 183.52 Std. Dev. 228.303 Total time 5.73626 
+States seen 39
+Avg. time per decision 0.101272
+Longest planning time 0.106393
+Num. decisions 6
+********************************************************
+corridor|flares(1)|domainGUSSP
+potential goal size = 4 totalSamples = 3
+ states = 9963  actions = 5
+Estimated cost 20.3584 Avg. Exec cost 202.25 Std. Dev. 234.284 Total time 0.00819776 
+States seen 41
+Avg. time per decision 0.102472
+Longest planning time 0.108053
+Num. decisions 8
+********************************************************
+map1GUSSP|lao|zero
+potential goal size = 5 totalSamples = 4
+ states = 137965  actions = 5
+Estimated cost 13.1992 Avg. Exec cost 13.72 Std. Dev. 2.43742 Total time 0.0079396 
+States seen 44
+Avg. time per decision 0.79396
+Longest planning time 0.79396
+Num. decisions 1
+********************************************************
+map1GUSSP|flares(0)|zero
+potential goal size = 5 totalSamples = 4
+ states = 137965  actions = 5
+Estimated cost 12.7975 Avg. Exec cost 13.53 Std. Dev. 2.90751 Total time 1.66808 
+States seen 45
+Avg. time per decision 0.177455
+Longest planning time 0.25471
+Num. decisions 940
+********************************************************
+map1GUSSP|flares(0)|hmin-solve-all
+potential goal size = 5 totalSamples = 4
+ states = 137965  actions = 5
+Estimated cost 13.1763 Avg. Exec cost 13.32 Std. Dev. 2.52615 Total time 755.798 
+States seen 40
+Avg. time per decision 0.173043
+Longest planning time 0.38768
+Num. decisions 1013
+********************************************************
+map1GUSSP|flares(0)|domainGUSSP
+potential goal size = 5 totalSamples = 4
+ states = 137965  actions = 5
+Estimated cost 13.1634 Avg. Exec cost 13.2 Std. Dev. 2.20193 Total time 1.72011 
+States seen 42
+Avg. time per decision 0.170477
+Longest planning time 0.234292
+Num. decisions 1009
+********************************************************
+map1GUSSP|flares(1)|zero
+potential goal size = 5 totalSamples = 4
+ states = 137965  actions = 5
+Estimated cost 13.1787 Avg. Exec cost 13.25 Std. Dev. 2.31104 Total time 1.22789 
+States seen 39
+Avg. time per decision 0.136889
+Longest planning time 0.230669
+Num. decisions 897
+********************************************************
+map1GUSSP|flares(1)|hmin-solve-all
+potential goal size = 5 totalSamples = 4
+ states = 137965  actions = 5
+Estimated cost 13.1727 Avg. Exec cost 13.45 Std. Dev. 2.38842 Total time 703.845 
+States seen 43
+Avg. time per decision 0.168073
+Longest planning time 0.252418
+Num. decisions 786
+********************************************************
+map1GUSSP|flares(1)|domainGUSSP
+potential goal size = 5 totalSamples = 4
+ states = 137965  actions = 5
+Estimated cost 13.1895 Avg. Exec cost 13.65 Std. Dev. 2.64145 Total time 1.8955 
+States seen 48
+Avg. time per decision 0.203598
+Longest planning time 0.287272
+Num. decisions 931
+********************************************************
+map2GUSSP|lao|zero
+potential goal size = 6 totalSamples = 5
+ states = 969043  actions = 5
+Estimated cost 13.3097 Avg. Exec cost 13.57 Std. Dev. 2.5673 Total time 0.107415 
+States seen 41
+Avg. time per decision 10.7415
+Longest planning time 10.7415
+Num. decisions 1
+********************************************************
+map2GUSSP|flares(0)|zero
+potential goal size = 6 totalSamples = 5
+ states = 969043  actions = 5
+Estimated cost 13.3052 Avg. Exec cost 13.87 Std. Dev. 4.22751 Total time 4.39506 
+States seen 122
+Avg. time per decision 0.403957
+Longest planning time 1.1151
+Num. decisions 1088
+********************************************************
+map2GUSSP|flares(0)|hmin-solve-all
+potential goal size = 6 totalSamples = 5
+states = 969043  actions = 5
+Estimated cost - Avg. Exec cost - Std. Dev. - Total time - 
+States seen -
+Avg. time per decision -
+Longest planning time -
+Num. decisions -
+********************************************************
+map2GUSSP|flares(0)|domainGUSSP
+potential goal size = 6 totalSamples = 5
+ states = 969043  actions = 5
+Estimated cost 12.8099 Avg. Exec cost 13.52 Std. Dev. 3.31047 Total time 3.78036 
+States seen 45
+Avg. time per decision 0.402166
+Longest planning time 1.04483
+Num. decisions 940
+********************************************************
+map2GUSSP|flares(1)|zero
+potential goal size = 6 totalSamples = 5
+ states = 969043  actions = 5
+Estimated cost 13.2648 Avg. Exec cost 14.09 Std. Dev. 6.32151 Total time 2.46236 
+States seen 102
+Avg. time per decision 0.249226
+Longest planning time 1.18864
+Num. decisions 988
+********************************************************
+map2GUSSP|flares(1)|hmin-solve-all
+potential goal size = 6 totalSamples = 5
+states = 969043  actions = 5
+Estimated cost - Avg. Exec cost - Std. Dev. - Total time - 
+States seen -
+Avg. time per decision -
+Longest planning time -
+Num. decisions -
+********************************************************
+map2GUSSP|flares(1)|domainGUSSP
+potential goal size = 6 totalSamples = 5
+ states = 969043  actions = 5
+Estimated cost 13.3012 Avg. Exec cost 14.02 Std. Dev. 4.38312 Total time 2.99086 
+States seen 116
+Avg. time per decision 0.310901
+Longest planning time 1.15589
+Num. decisions 962
+********************************************************
+map3GUSSP|lao|zero
+potential goal size = 6 totalSamples = 5
+ states = 927946  actions = 5
+Estimated cost 29.081 Avg. Exec cost 29.5 Std. Dev. 3.40083 Total time 0.2899 
+States seen 66
+Avg. time per decision 28.99
+Longest planning time 28.99
+Num. decisions 1
+********************************************************
+map3GUSSP|flares(0)|zero
+potential goal size = 6 totalSamples = 5
+ states = 927946  actions = 5
+Estimated cost 29.0724 Avg. Exec cost 29.64 Std. Dev. 3.67223 Total time 19.3886 
+States seen 109
+Avg. time per decision 0.727528
+Longest planning time 1.28471
+Num. decisions 2665
+********************************************************
+map3GUSSP|flares(0)|hmin-solve-all
+potential goal size = 6 totalSamples = 5
+ states = 927946  actions = 5
+Estimated cost - Avg. Exec cost - Std. Dev. - Total time - 
+States seen -
+Avg. time per decision -
+Longest planning time -
+Num. decisions -
+********************************************************
+map3GUSSP|flares(0)|domainGUSSP
+potential goal size = 6 totalSamples = 5
+ states = 927946  actions = 5
+Estimated cost 28.9008 Avg. Exec cost 28.94 Std. Dev. 3.61204 Total time 17.5689 
+States seen 98
+Avg. time per decision 0.691415
+Longest planning time 1.59676
+Num. decisions 2541
+********************************************************
+map3GUSSP|flares(1)|zero
+potential goal size = 6 totalSamples = 5
+ states = 927946  actions = 5
+Estimated cost 29.0714 Avg. Exec cost 29.52 Std. Dev. 5.14139 Total time 18.7866 
+States seen 100
+Avg. time per decision 0.829428
+Longest planning time 1.39893
+Num. decisions 2265
+********************************************************
+map3GUSSP|flares(1)|hmin-solve-all
+potential goal size = 6 totalSamples = 5
+ states = 927946  actions = 5
+Estimated cost - Avg. Exec cost - Std. Dev. - Total time - 
+States seen -
+Avg. time per decision -
+Longest planning time -
+Num. decisions -

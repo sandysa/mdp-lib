@@ -2,9 +2,7 @@
 #define MPDLIB_GRIDWORLDSTATE_H
 
 #include <iostream>
-#include <vector>
-#include <map>
-#include <cassert>
+
 #include "../../State.h"
 
 /**
@@ -15,7 +13,6 @@ class GridWorldState : public mlcore::State
 private:
     int x_;
     int y_;
-    int status_;
 
     virtual std::ostream& print(std::ostream& os) const;
 
@@ -26,13 +23,13 @@ public:
      * on the problem
      * given as a first parameter.
      */
-    GridWorldState(mlcore::Problem* problem, int x, int y, int status);
+    GridWorldState(mlcore::Problem* problem, int x, int y);
 
     /**
      * Copy constructor. The resulting state represents the same position as the
      * state passed as parameter.
      */
-    GridWorldState(const GridWorldState& gws) : x_(gws.x_), y_(gws.y_),status_(gws.status_) {}
+    GridWorldState(const GridWorldState& gws) : x_(gws.x_), y_(gws.y_) {}
 
     virtual mlcore::State& operator=(const mlcore::State& rhs)
     {
@@ -42,26 +39,21 @@ public:
         GridWorldState* gws = (GridWorldState *) &rhs;
         x_ =  gws->x_;
         y_=  gws->y_;
-        status_ = gws->status_;
         return *this;
     }
 
     virtual bool operator==(const mlcore::State& rhs) const
     {
         GridWorldState* gws = (GridWorldState *) &rhs;
-        return x_ == gws->x_ && y_ == gws->y_ && status_ == gws->status_;
+        return x_ == gws->x_ && y_ == gws->y_;
     }
 
     virtual bool equals(mlcore::State* other) const;
     virtual int hashValue() const;
 
-
     int x() const;
 
     int y() const;
-
-    int status() const;
-
 };
 
 #endif // MDPLIB_GRIDWORLDSTATE_H

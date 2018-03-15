@@ -6,45 +6,45 @@
 #include "../../Heuristic.h"
 #include "../../State.h"
 
-#include "RockSampleProblem.h"
-#include "RockSampleState.h"
+#include "GUSSPRockSampleProblem.h"
+#include "GUSSPRockSampleState.h"
 
 
 class RSDetHeuristicGUSSP : public mlcore::Heuristic
 {
 private:
-    RockSampleProblem* problem_;
+    GUSSPRockSampleProblem* problem_;
 
 public:
-     RSDetHeuristicGUSSP(RockSampleProblem* problem)
+     RSDetHeuristicGUSSP(GUSSPRockSampleProblem* problem)
     {
         problem_ = problem;
     }
 
   virtual double cost(const mlcore::State* s){
 
-        RockSampleState* rss = (RockSampleState*) s;
+        GUSSPRockSampleState* rss = (GUSSPRockSampleState*) s;
         std::pair<int,int> pos (rss->x(),rss->y());
         if (rss->x() == -1) // absorbing dummy state
             return 0;
-      //check if it saved all victims
-      if (rss->sampledRocks() == problem_->maxRocks())
+      //check if it has sampled rocks. GUSSPRSgoal
+      if (rss->sampledRocks() == 1)
             return 0.0;
 
         double cost_ = mdplib::dead_end_cost;
-        for (auto const& element : problem_->potential_goals_prob) {
-            std::pair<int,int> goal = element.first;
-            double value = 0.0; // all goals have value 0.
-            double md =
-                abs(rss->x() - goal.first) + abs(rss->y() - goal.second);
+        double value  = 0; // all goals have cost 0.
+        for (auto const& element : rss->goalPos()) {
+            std::pair<int,int> loc = element.first;
+            double md = abs (loc.first -  rss->x()) +
+                        abs(loc.second - rss->y());
 
-                /** multiply cost by the probability of it being a goal.
-                ** always considers equal probability: 0.5 probability of being a goal
-                **/
-            double goalCost = (1-element.second) * (problem_->getactioncost() * md + value);
+             /** multiply cost by the probability of it not being a goal**/
+            double goalCost = std::round((1 - element.second) * (problem_->getactioncost() * md + value));
+ //           double goalCost =  (problem_->getactioncost() * md + value);
             if (goalCost < cost_)
                 cost_ = goalCost;
-        }
+            }
+ //                                                                      std::cout << rss << " hval= " << cost_ << std::endl;
     return cost_;
     }
 };
