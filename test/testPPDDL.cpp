@@ -11,11 +11,15 @@
 #include "../include/ppddl/PPDDLProblem.h"
 #include "../include/ppddl/PPDDLHeuristic.h"
 
+#include "../include/solvers/DeterministicSolver.h"
+#include "../include/solvers/CostAdjusted_DeterministicSolver.h"
+#include "../include/solvers/PRM_LAOStarSolver.h"
 #include "../include/solvers/Solver.h"
 #include "../include/solvers/HMinHeuristic.h"
 #include "../include/solvers/LRTDPSolver.h"
 #include "../include/solvers/LAOStarSolver.h"
 #include "../include/solvers/UCTSolver.h"
+
 
 using namespace std;
 
@@ -56,6 +60,7 @@ int main(int argc, char **argv)
     std::string file;
     std::string prob;
     problem_t *problem = NULL;
+
     std::pair<state_t *,Rational> *initial = NULL;
 
     if (argc < 2) {
@@ -95,14 +100,18 @@ int main(int argc, char **argv)
 
     cout << "INITIAL: " << MLProblem->initialState() << " ";
     mlsolvers::LRTDPSolver solver(MLProblem, ntrials, 0.0001);
+//    mlsolvers::DeterministicSolver solver(MLProblem,
+//                                         mlsolvers::det_most_likely,
+//                                         heuristic);
+
 
     mdplib_debug = true;
     solver.solve(MLProblem->initialState());
 
-    cout << MLProblem->initialState()->cost() << endl;
+    cout << "cost = " << MLProblem->initialState()->cost() << endl;
 
 
-    int nsims = argc > 4 ? atoi(argv[4]) : 1;
+    int nsims = argc > 4 ? atoi(argv[4]) : 100;
     int verbosity = argc > 5 ? atoi(argv[5]) : 0;
 
     int totalSuccess = 0;

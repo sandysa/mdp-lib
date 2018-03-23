@@ -43,11 +43,11 @@ static int k = 0;
 mlcore::Problem* problem = nullptr;
 mlcore::Heuristic* heuristic = nullptr;
 
-string ffExec = "/home/lpineda/Desktop/FF-v2.3/ff";
-string ffDomain = "-o /home/lpineda/Desktop/domain.pddl";
-string ffProblem = "-f /home/lpineda/Desktop/problem.pddl";
-string ffCommand = ffExec + " " + ffDomain + " " + ffProblem;
-
+//string ffExec = "/home/lpineda/Desktop/FF-v2.3/ff";
+//string ffDomain = "-o /home/lpineda/Desktop/domain.pddl";
+//string ffProblem = "-f /home/lpineda/Desktop/problem.pddl";
+//string ffCommand = ffExec + " " + ffDomain + " " + ffProblem;
+string ffExec="FF-v2.3-goldman/ff";
 
 /*
  * Parses the given PPDDL file, and returns true on success.
@@ -165,7 +165,7 @@ int main(int argc, char* args[])
     RFFSolver solver(static_cast<mlppddl::PPDDLProblem*> (problem),
               ffExec,
               directory + "/" + detProblem,
-              directory + "/ff-template.pddl");
+              directory + "/rff-template.pddl");
     solver.solve(problem->initialState());
     clock_t endTime = clock();
     totalPlanningTime += (double(endTime - startTime) / CLOCKS_PER_SEC);
@@ -187,7 +187,7 @@ int main(int argc, char* args[])
                 randomSuccessor(problem, currentState, action);
             if (problem->goal(nextState)) {
                 countSuccess++;
-                dprint2("GOAL!", countSuccess);
+//                dprint2("GOAL!", countSuccess);
                 break;
             }
             currentState = nextState;
