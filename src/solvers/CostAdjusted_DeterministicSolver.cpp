@@ -18,10 +18,10 @@ double getAdjustedCost(mlcore::State* s, mlcore::Action* a, mlcore::Problem* pro
         std::vector<std::vector <char> > track = ((RacetrackProblem*) problem)->track();
 
         if (track[next->x()][next->y()] == rtrack::wall || track[next->x()][next->y()] == rtrack::pothole )
-           return 10;
+           return 11;
 
         if(next->hValue() > s->hValue())
-            return (next->hValue() - s->hValue());
+            return ((next->hValue() - s->hValue())*.5);
     }
     if(problem->getProblemName() == "sailing")
     {

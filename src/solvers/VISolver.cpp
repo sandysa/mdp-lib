@@ -14,7 +14,7 @@ namespace mlsolvers
         problem_ = problem;
         maxIter_ = maxIter;
         tol_ = tol;
-        maxTime_ = -1;
+        maxTime_ = 100000;
     }
 
     mlcore::Action* VISolver::solve(mlcore::State* s0)
@@ -32,8 +32,10 @@ namespace mlsolvers
                 auto endTime = std::chrono::high_resolution_clock::now();
                 auto timeElapsed = std::chrono::duration_cast<
                     std::chrono::milliseconds>(endTime - beginTime).count();
-                if (timeElapsed > maxTime_)
+                if (timeElapsed > maxTime_){
+                    std::cout << " time elapsed.. " << timeElapsed << " max time = " << maxTime_ << std::endl;
                     return nullptr;
+                }
             }
             if (maxResidual < tol_)
                 return nullptr;
