@@ -76,6 +76,8 @@ public:
         for (Action* action : actions_)
             delete (action);
     }
+     /** sets problem name **/
+     void ProblemName(const std::string name) { problem_name_ = name; }
 
     /**
      * Goal check.

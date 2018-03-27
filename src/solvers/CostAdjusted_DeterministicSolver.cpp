@@ -9,7 +9,7 @@ using namespace rtrack;
 
 namespace mlsolvers
 {
-double getAdjustedCost(mlcore::State* s, mlcore::Action* a, mlcore::Problem* problem)
+double CostAdjusted_DeterministicSolver::getAdjustedCost(mlcore::State* s, mlcore::Action* a, mlcore::Problem* problem)
 {
    if(problem->getProblemName() == "racetrack")
    {

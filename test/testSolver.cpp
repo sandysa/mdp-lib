@@ -20,6 +20,9 @@
 #include "../include/solvers/UCTSolver.h"
 #include "../include/solvers/VISolver.h"
 #include "../include/solvers/VPIRTDPSolver.h"
+#include "../include/solvers/CostAdjusted_DeterministicSolver.h"
+#include "../include/solvers/PRM_LAOStarSolver.h"
+
 
 #include "../include/util/flags.h"
 #include "../include/util/general.h"
@@ -40,6 +43,8 @@
 #include "../include/domains/sailing/SailingNoWindHeuristic.h"
 #include "../include/domains/sailing/SailingProblem.h"
 
+#include "../include/domains/EV/EVProblem.h"
+#include "../include/domains/EV/EVDetHeuristic.h"
 
 using namespace mdplib;
 using namespace mlcore;
@@ -53,6 +58,7 @@ bool useUpperBound = false;
 
 int verbosity = 0;
 bool useOnline = false;
+bool print_decisions = false;
 
 ///////////////////////////////////////////////////////////////////////////////
 //                              PROBLEM SETUP                                //
@@ -78,13 +84,33 @@ void setupRacetrack()
     if (!flag_is_registered_with_value("heuristic") ||
             flag_value("heuristic") == "domain")
         heuristic = new RTrackDetHeuristic(trackName.c_str());
-}
+
+    problem->ProblemName("racetrack");
+ }
 
 void setupBorderExitProblem()
 {
     problem = new BorderExitProblem();
 }
 
+
+void setupEV()
+{
+    if (verbosity >= 100)
+        cout << "Setting up EV " << endl;
+
+    int startSOC = atoi(flag_value("start-soc").c_str());
+    int endSOC = atoi(flag_value("end-soc").c_str());
+    double startTime = atof(flag_value("start-time").c_str());
+    double endTime = atof(flag_value("end-time").c_str());
+    int rewardCase =  atoi(flag_value("reward").c_str());
+
+    problem = new EVProblem(startSOC,endSOC,startTime,endTime,rewardCase);
+
+    if (!flag_is_registered_with_value("heuristic") ||
+            flag_value("heuristic") == "domain")
+        heuristic = new EVDetHeuristic(startSOC,endSOC,startTime,endTime,1); //setting reward case = 1 for heursitic calculation
+ }
 
 void setupGridWorld()
 {
@@ -141,6 +167,8 @@ void setupSailingDomain()
             flag_value("heuristic") == "domain")
         heuristic =
             new SailingNoWindHeuristic(static_cast<SailingProblem*>(problem));
+
+     problem->ProblemName("sailing");
 }
 
 
@@ -172,6 +200,8 @@ void setupProblem()
         setupCTP();
     } else if (flag_is_registered("border-problem")) {
         setupBorderExitProblem();
+    } else if (flag_is_registered_with_value("start-soc")) {
+        setupEV();
     } else {
         cerr << "Invalid problem." << endl;
         exit(-1);
@@ -187,6 +217,7 @@ void setupProblem()
 void initSolver(string algorithm, Solver*& solver)
 {
     double tol = 1.0e-3;
+    bool adjustCost = false;
     assert(flag_is_registered_with_value("algorithm"));
 
     if (flag_is_registered("dead-end-cost")) {
@@ -203,6 +234,9 @@ void initSolver(string algorithm, Solver*& solver)
     if (flag_is_registered_with_value("tol"))
         tol = stof(flag_value("tol"));
 
+     if(algorithm == "acarm" || algorithm == "alld")
+        adjustCost = true;
+
     if (algorithm == "wlao") {
         double weight = 1.0;
         if (flag_is_registered_with_value("weight"))
@@ -210,6 +244,8 @@ void initSolver(string algorithm, Solver*& solver)
         solver = new LAOStarSolver(problem, tol, 1000000, weight);
     } else if (algorithm == "lao") {
         solver = new LAOStarSolver(problem, tol, 1000000);
+    }  else if (algorithm == "prm" || algorithm == "acarm") {
+        solver = new PRM_LAOStarSolver(problem, adjustCost, tol, 1000000);
     } else if (algorithm == "lrtdp") {
         solver = new LRTDPSolver(problem, trials, tol);
     } else if (algorithm == "brtdp") {
@@ -328,7 +364,11 @@ void initSolver(string algorithm, Solver*& solver)
         solver = new DeterministicSolver(problem,
                                          mlsolvers::det_most_likely,
                                          heuristic);
-    } else if (algorithm == "uct") {
+    } else if (algorithm == "alld") {
+        solver = new CostAdjusted_DeterministicSolver(problem, adjustCost,
+                                         mlsolvers::det_most_likely,
+                                         heuristic);
+    }else if (algorithm == "uct") {
         int rollouts = 1000;
         int cutoff = 50;
         int delta = 5;
@@ -398,6 +438,9 @@ bool mustReplan(Solver* solver, string algorithm, State* s, int plausTrial) {
     if (algorithm == "uct") {
         return true;
     }
+    if(algorithm == "prm" || algorithm == "det")
+    return true;
+
     return false;
 }
 
@@ -421,6 +464,7 @@ vector<double> simulate(Solver* solver,
     StateSet statesSeen;
     int cnt = 0;
     int numDecisions = 0;
+
     clock_t simulationsStartTime = clock();
     for (int i = 0; i < numSims; i++) {
         if (verbosity >= 100)
@@ -437,6 +481,22 @@ vector<double> simulate(Solver* solver,
                 static_cast<UCTSolver*>(solver)->reset();
             } else if (algorithm != "greedy") {
                 solver->solve(problem->initialState());
+                 if(algorithm == "prm" || algorithm == "acarm"){
+                        double max_hval = 0.0;
+                        double model_size = 0.0;
+                        double num_fullModel = 0.0;
+                        for (State* s : problem->states()){
+                            if(s->hashValue() > max_hval)
+                                max_hval = s->hashValue();
+                            for (Action* a : problem->actions()){
+                                if(problem->applicable(s,a))
+                                        model_size++;
+                            }
+                            }
+                           std::cout << "max h value = " << max_hval << std::endl;
+                          std::cout << "full mode usage count = " << solver->isFullModel_.size() << " % full model use  = "
+                                                                  << (solver->isFullModel_.size()/model_size)*100 << std::endl;
+                    }
             }
             endTime = clock();
             double planTime = (double(endTime - startTime) / CLOCKS_PER_SEC);
@@ -521,6 +581,22 @@ vector<double> simulate(Solver* solver,
                 cout << costTrial << endl;
         }
     }
+    if(print_decisions)
+    {
+        for (State* s : problem->states())
+        {
+            RacetrackState* rts = static_cast<RacetrackState*>(s);
+            RacetrackProblem* rtp = static_cast<RacetrackProblem*>(problem);
+            for (Action* a : problem->actions()) {
+                 for (const mlcore::Successor& su : problem->transition(s,a)){
+                    RacetrackState* rtj = static_cast<RacetrackState*>(su.su_state);
+                    if(rtp->track()[rtj->x()][rtj->y()] == rtrack::wall)
+                        cout << s << a << "value = " << s->cost() <<
+                            " succ = " << rtj << " succ value = " << rtj->cost() << std::endl;
+                 }
+             }
+        }
+    }
 
     if (verbosity >= 1) {
         cout << "Estimated cost " << problem->initialState()->cost() << " ";
@@ -583,6 +659,10 @@ int main(int argc, char* args[])
     }
     problem->setHeuristic(heuristic);
 
+    if(flag_is_registered_with_value("print-decisions")){
+         print_decisions = true;
+    }
+
     if (verbosity > 100)
         cout << problem->states().size() << " states" << endl;
 
@@ -620,11 +700,11 @@ int main(int argc, char* args[])
                 updateStatistics(results[0], i, avgCost, M2Cost);
                 updateStatistics(results[2], i, avgTime, M2Time);
             }
-            cout << t << " "
-                << avgCost << " "
-                << sqrt(M2Cost / (numReps * (numReps - 1))) << " "
-                << avgTime << " "
-                << sqrt(M2Time / (numReps * (numReps - 1))) << endl;
+//            cout << "t = "<< t << " "
+//                << "avg cost= "<< avgCost << " "
+//                << sqrt(M2Cost / (numReps * (numReps - 1))) << " "
+//                << avgTime << " "
+//                << sqrt(M2Time / (numReps * (numReps - 1))) << endl;
             if (maxTime == -1)
                 break;
         }
