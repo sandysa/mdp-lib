@@ -1,8 +1,8 @@
 #!/bin/bash
 
 nsims=100
-verbosity=0
-heur=hmin
+verbosity=1
+heur=hmin-solve-all
 
 # tracks=(known/square-4-error known/square-5-error \
 #         known/ring-5-error known/ring-6-error)
@@ -11,7 +11,7 @@ heur=hmin
 #  tracks=(known/square-4-error) 
 #   tracks=(known/ring-6-error)        
 # ######## Racetrack domain problems # ########
-     for track in ${tracks[@]}; do
+#      for track in ${tracks[@]}; do
 #   echo "${track}|lrtdp"
 #   ../testsolver.out --track=../data/tracks/$track.track \
 #   --algorithm=lrtdp --v=$verbosity --n=1 \
@@ -27,11 +27,11 @@ heur=hmin
   
 
         #DET
-      echo "********************************************************"
-    echo "${track}|DET"
-    ../testsolver.out --track=../data/tracks/$track.track \
-    --algorithm=det --v=$verbosity --n=$nsims \
-       --heuristic=$heur
+#       echo "********************************************************"
+#     echo "${track}|DET"
+#     ../testsolver.out --track=../data/tracks/$track.track \
+#     --algorithm=det --v=$verbosity --n=$nsims \
+#        --heuristic=$heur
        
        #ALLD
 #    echo "********************************************************"
@@ -89,63 +89,64 @@ heur=hmin
 #       --heuristic=$heur
 #     let "t *= 2"
 #   done  
-  done
+#   done
 
 # ######## Sailing domain problems # ########
-# sizes=(20 40 80)
-#   sizes=(20)
-#    for size in ${sizes[@]}; do
-#   let "goal = size - 1"
+sizes=(20 40 80)
+   for size in ${sizes[@]}; do
+  let "goal = size - 1"
 #   let "goal = size/2"
+
 #  # LRTDP
 #  echo "${size}-$goal|lrtdp"
 #  ../testsolver.out --sailing-size=$size --sailing-goal=$goal \
 #  --algorithm=lrtdp --n=1 --v=$verbosity --heuristic=$heur \
 #  --heuristic=$heur
 # #  
-    #LAO
-#    echo "********************************************************"
-#    echo "${size}-$goal|lao"
-#   ../testsolver.out --sailing-size=$size --sailing-goal=$goal \
-#   --algorithm=lao --v=$verbosity --n=$nsims \
-#        --heuristic=$heur
+            #LAO
+            echo "********************************************************"
+            echo "${size}-$goal|lao"
+            ../testsolver.out --sailing-size=$size --sailing-goal=$goal \
+            --algorithm=lao --v=$verbosity --n=$nsims \
+            --heuristic=$heur
        
-    #PRM
-#   echo "********************************************************"
-#   echo "${size}-$goal|prm"
-#   ../testsolver.out --sailing-size=$size --sailing-goal=$goal \
-#   --algorithm=prm --v=$verbosity --n=$nsims \
-#        --heuristic=$heur
+            #PRM
+            echo "********************************************************"
+            echo "${size}-$goal|prm"
+            ../testsolver.out --sailing-size=$size --sailing-goal=$goal \
+            --algorithm=prm --v=$verbosity --n=$nsims \
+            --heuristic=$heur
 
-      #ACARM
-#     echo "********************************************************"
-#   echo "${size}-$goal|acarm"
-#   ../testsolver.out --sailing-size=$size --sailing-goal=$goal \
-#   --algorithm=acarm --v=$verbosity --n=$nsims \
-#        --heuristic=$heur
+            #ACARM
+            echo "********************************************************"
+            echo "${size}-$goal|acarm"
+            ../testsolver.out --sailing-size=$size --sailing-goal=$goal \
+            --algorithm=acarm --v=$verbosity --n=$nsims \
+            --heuristic=$heur
 
-        # DET
-#       echo "********************************************************"
-#     echo "${size}-$goal|DET"
-#     ../testsolver.out --sailing-size=$size --sailing-goal=$goal \
-#   --algorithm=det --v=$verbosity --n=$nsims \
-#        --heuristic=$heur
+            # DET
+            echo "********************************************************"
+            echo "${size}-$goal|DET"
+            ../testsolver.out --sailing-size=$size --sailing-goal=$goal \
+            --algorithm=det --v=$verbosity --n=$nsims \
+            --heuristic=$heur
 
-      # ALLD
-#      echo "********************************************************"
-#     echo "${size}-$goal|alld"
-#     ../testsolver.out --sailing-size=$size --sailing-goal=$goal \
-#   --algorithm=alld --v=$verbosity --n=$nsims \
-#        --heuristic=$heur
+            # ALLD
+            echo "********************************************************"
+            echo "${size}-$goal|alld"
+            ../testsolver.out --sailing-size=$size --sailing-goal=$goal \
+            --algorithm=alld --v=$verbosity --n=$nsims \
+            --heuristic=$heur
 
 
-#  # FLARES
-#  for horizon in `seq 0 1`; do
-#    echo "${size}-$goal|flares(${horizon})"
-#    ../testsolver.out --sailing-size=$size --sailing-goal=$goal \
-#    --algorithm=flares --horizon=$horizon --n=$nsims --v=$verbosity \
-#    --heuristic=$heur
-#  done
+            # FLARES
+            for horizon in `seq 0 1`; do
+            echo "********************************************************"
+                echo "${size}-$goal|flares(${horizon})"
+                ../testsolver.out --sailing-size=$size --sailing-goal=$goal \
+                --algorithm=flares --horizon=$horizon --n=$nsims --v=$verbosity \
+                --heuristic=$heur
+            done
 #  
 #  # FLARES-PROB
 #  echo "${size}-$goal|flares-prob(0.25)"
@@ -172,4 +173,4 @@ heur=hmin
 #      --heuristic=$heur
 #      let "t *= 2"
 #  done
-# done
+ done

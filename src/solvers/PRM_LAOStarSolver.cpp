@@ -27,35 +27,35 @@ bool PRM_LAOStarSolver::useFullModel(mlcore::State* s, mlcore::Action* a, mlcore
    if (((RacetrackProblem*) problem)->goal(s)  || s == ((RacetrackProblem*) problem)->absorbing())
         return true;
 
-//    RacetrackState* rts = static_cast<RacetrackState*>(s);
-//    RacetrackAction* rta = static_cast<RacetrackAction*>(a);
-//    RacetrackState* next = new RacetrackState(rts->x()+ rta->ax(), rts->y() + rta->ay(),  rta->ax(),  rta->ay(), (RacetrackProblem*) problem);
-//    std::vector<std::vector <char> > track = ((RacetrackProblem*) problem)->track();
-//
-//    if (track[next->x()][next->y()] == rtrack::wall || track[next->x()][next->y()] == rtrack::pothole )
-//        return true;
-//
-//    if (track[rts->x()][rts->y()] == rtrack::wall || track[rts->x()][rts->y()] == rtrack::pothole )
-//        return true;
-//
-////     if (track[rts->x()+2][rts->y()] == rtrack::wall || track[rts->x()][rts->y()+2] == rtrack::wall || track[rts->x()+2][rts->y()+2] == rtrack::wall)
-////        return true;
-//
-//     if( s->hValue() < 3 )
-//        return true;
-//
-//
-//    delete next;
-        /** Calling adjusted cost with MLOD . Triggers full model if difference > 10%.
-        ** adding slack to avoid divide by 0 error **/
-        Heuristic* temp_heuristic = nullptr;
-        mlsolvers::CostAdjusted_DeterministicSolver* acarm_solver =  new CostAdjusted_DeterministicSolver(problem, true,
-                                         mlsolvers::det_most_likely,
-                                         temp_heuristic);
-        if((abs(acarm_solver->getAdjustedCost(s,a,problem) -  problem->cost(s,a))/problem->cost(s,a)+ 0.00000001) > 0.10)
-            return true;
+    RacetrackState* rts = static_cast<RacetrackState*>(s);
+    RacetrackAction* rta = static_cast<RacetrackAction*>(a);
+    RacetrackState* next = new RacetrackState(rts->x()+ rta->ax(), rts->y() + rta->ay(),  rta->ax(),  rta->ay(), (RacetrackProblem*) problem);
+    std::vector<std::vector <char> > track = ((RacetrackProblem*) problem)->track();
 
-        delete acarm_solver;
+    if (track[next->x()][next->y()] == rtrack::wall || track[next->x()][next->y()] == rtrack::pothole )
+        return true;
+
+    if (track[rts->x()][rts->y()] == rtrack::wall || track[rts->x()][rts->y()] == rtrack::pothole )
+        return true;
+
+//     if (track[rts->x()+2][rts->y()] == rtrack::wall || track[rts->x()][rts->y()+2] == rtrack::wall || track[rts->x()+2][rts->y()+2] == rtrack::wall)
+//        return true;
+
+     if( s->hValue() < 3 )
+        return true;
+
+
+    delete next;
+//        /** Calling adjusted cost with MLOD . Triggers full model if difference > 10%.
+//        ** adding slack to avoid divide by 0 error **/
+//        Heuristic* temp_heuristic = nullptr;
+//        mlsolvers::CostAdjusted_DeterministicSolver* acarm_solver =  new CostAdjusted_DeterministicSolver(problem, true,
+//                                         mlsolvers::det_most_likely,
+//                                         temp_heuristic);
+//        if((abs(acarm_solver->getAdjustedCost(s,a,problem) -  problem->cost(s,a))/problem->cost(s,a)+ 0.00000001) > 0.10)
+//            return true;
+
+//        delete acarm_solver;
 
         return false;
     }
@@ -71,22 +71,22 @@ bool PRM_LAOStarSolver::useFullModel(mlcore::State* s, mlcore::Action* a, mlcore
         SailingAction* action = static_cast<SailingAction*> (a);
         short nextX = (short) (state->x() + dx[action->dir()]);
         short nextY = (short) (state->y() + dy[action->dir()]);
-//        if (((SailingProblem*) problem)->get_tack(state, action) != 4) //"INTO " in the problem is equal to 4.
-//              return true;
-//
-//        if(!((SailingProblem*) problem)->in_Lake(nextX, nextY))
-//            return true;
+        if (((SailingProblem*) problem)->get_tack(state, action) != 4) //"INTO " in the problem is equal to 4.
+              return true;
 
-         /** Calling adjusted cost with MLOD . Triggers full model if difference > 20%.
-        ** adding slack to avoid divide by 0 error **/
-        Heuristic* temp_heuristic = nullptr;
-        mlsolvers::CostAdjusted_DeterministicSolver* acarm_solver =  new CostAdjusted_DeterministicSolver(problem, true,
-                                         mlsolvers::det_most_likely,
-                                         temp_heuristic);
-        if((abs(acarm_solver->getAdjustedCost(s,a,problem) -  problem->cost(s,a))/problem->cost(s,a)+ 0.00000001) > 0.20)
+        if(!((SailingProblem*) problem)->in_Lake(nextX, nextY))
             return true;
 
-        delete acarm_solver;
+//         /** Calling adjusted cost with MLOD . Triggers full model if difference > 20%.
+//        ** adding slack to avoid divide by 0 error **/
+//        Heuristic* temp_heuristic = nullptr;
+//        mlsolvers::CostAdjusted_DeterministicSolver* acarm_solver =  new CostAdjusted_DeterministicSolver(problem, true,
+//                                         mlsolvers::det_most_likely,
+//                                         temp_heuristic);
+//        if((abs(acarm_solver->getAdjustedCost(s,a,problem) -  problem->cost(s,a))/problem->cost(s,a)+ 0.00000001) > 0.20)
+//            return true;
+//
+//        delete acarm_solver;
 
         return false;
        }

@@ -33,7 +33,7 @@ HMinHeuristic::hminUpdate(State* s)
         costs_[s] = 0.0;
         return;
     }
- //                                                                                           std::cout << " In hmin update" << std::endl;
+//                                                                                            std::cout << " In hmin update" << std::endl;
     double bestQ = mdplib::dead_end_cost;
     bool hasAction = false;
     for (Action* a : problem_->actions()) {

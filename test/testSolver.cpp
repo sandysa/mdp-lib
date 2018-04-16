@@ -493,7 +493,7 @@ vector<double> simulate(Solver* solver,
                                         model_size++;
                             }
                             }
-                           std::cout << "max h value = " << max_hval << std::endl;
+//                            std::cout << "max h value = " << max_hval << std::endl;
                           std::cout << "full mode usage count = " << solver->isFullModel_.size() << " % full model use  = "
                                                                   << (solver->isFullModel_.size()/model_size)*100 << std::endl;
                     }
