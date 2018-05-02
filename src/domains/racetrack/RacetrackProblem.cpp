@@ -94,7 +94,7 @@ RacetrackProblem::transition(mlcore::State* s, mlcore::Action* a)
         std::list<mlcore::Successor> successors;
         for (std::pair<int,int> start : starts_) {
             mlcore::State* next =
-                new RacetrackState(start.first, start.second, 0, 0, this);
+                 this->addState(new RacetrackState(start.first, start.second, 0, 0, this));
             successors.push_back(mlcore::Successor(this->addState(next),
                                  1.0 / starts_.size()));
         }

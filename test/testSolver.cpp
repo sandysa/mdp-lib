@@ -482,20 +482,9 @@ vector<double> simulate(Solver* solver,
             } else if (algorithm != "greedy") {
                 solver->solve(problem->initialState());
                  if(algorithm == "prm" || algorithm == "acarm"){
-                        double max_hval = 0.0;
-                        double model_size = 0.0;
                         double num_fullModel = 0.0;
-                        for (State* s : problem->states()){
-                            if(s->hashValue() > max_hval)
-                                max_hval = s->hashValue();
-                            for (Action* a : problem->actions()){
-                                if(problem->applicable(s,a))
-                                        model_size++;
-                            }
-                            }
-//                            std::cout << "max h value = " << max_hval << std::endl;
-                          std::cout << "full mode usage count = " << solver->isFullModel_.size() << " % full model use  = "
-                                                                  << (solver->isFullModel_.size()/model_size)*100 << std::endl;
+                        std::cout << "full mode usage count = " << solver->isFullModel_.size() << " % full model use  = "
+                                                                  << (solver->isFullModel_.size()/double(problem->states().size()))*100 << std::endl;
                     }
             }
             endTime = clock();
@@ -641,6 +630,9 @@ int main(int argc, char* args[])
     setupProblem();
     if (!flag_is_registered("dont-generate"))
         problem->generateAll();
+    if(verbosity > 100)
+        cout << "problem generation complete..." << endl;
+
     if (flag_is_registered_with_value("heuristic")) {
         if (flag_value("heuristic") == "hmin") {
             clock_t startTime = clock();

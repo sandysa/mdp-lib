@@ -19,12 +19,13 @@ namespace mlsolvers
 {
 bool PRM_LAOStarSolver::useFullModel(mlcore::State* s, mlcore::Action* a, mlcore::Problem* problem){
     //For racetrack:
+   bool fullModel = false;
    if(problem->getProblemName() == "racetrack")
    {
     if (s == problem->initialState())
         return true;
 
-   if (((RacetrackProblem*) problem)->goal(s)  || s == ((RacetrackProblem*) problem)->absorbing())
+   else if (((RacetrackProblem*) problem)->goal(s)  || s == ((RacetrackProblem*) problem)->absorbing())
         return true;
 
     RacetrackState* rts = static_cast<RacetrackState*>(s);
@@ -33,16 +34,16 @@ bool PRM_LAOStarSolver::useFullModel(mlcore::State* s, mlcore::Action* a, mlcore
     std::vector<std::vector <char> > track = ((RacetrackProblem*) problem)->track();
 
     if (track[next->x()][next->y()] == rtrack::wall || track[next->x()][next->y()] == rtrack::pothole )
-        return true;
+        fullModel = true;
 
-    if (track[rts->x()][rts->y()] == rtrack::wall || track[rts->x()][rts->y()] == rtrack::pothole )
-        return true;
+    else if (track[rts->x()][rts->y()] == rtrack::wall || track[rts->x()][rts->y()] == rtrack::pothole )
+        fullModel = true;
 
 //     if (track[rts->x()+2][rts->y()] == rtrack::wall || track[rts->x()][rts->y()+2] == rtrack::wall || track[rts->x()+2][rts->y()+2] == rtrack::wall)
 //        return true;
 
-     if( s->hValue() < 3 )
-        return true;
+    else if( s->hValue() < 3 )
+        fullModel = true;
 
 
     delete next;
@@ -56,8 +57,7 @@ bool PRM_LAOStarSolver::useFullModel(mlcore::State* s, mlcore::Action* a, mlcore
 //            return true;
 
 //        delete acarm_solver;
-
-        return false;
+        return fullModel;
     }
 
     if(problem->getProblemName() == "sailing")
@@ -74,8 +74,8 @@ bool PRM_LAOStarSolver::useFullModel(mlcore::State* s, mlcore::Action* a, mlcore
         if (((SailingProblem*) problem)->get_tack(state, action) != 4) //"INTO " in the problem is equal to 4.
               return true;
 
-        if(!((SailingProblem*) problem)->in_Lake(nextX, nextY))
-            return true;
+//        if(!((SailingProblem*) problem)->in_Lake(nextX, nextY))
+//            return true;
 
 //         /** Calling adjusted cost with MLOD . Triggers full model if difference > 20%.
 //        ** adding slack to avoid divide by 0 error **/
