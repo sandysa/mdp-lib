@@ -394,6 +394,24 @@ void initSolver(string algorithm, Solver*& solver)
     }
 }
 
+/////////////////////////////////////////////////////////////////////////////
+//                  PRINTS FULL MODEL USAGE                                //
+////////////////////////////////////////////////////////////////////////////
+void printfullModelUsage(Solver* solver)
+{
+    double num_fullModel = 0.0;
+//    std::cout << "full mode usage count = " << solver->isFullModel_.size() << " % full model use  = "
+//                    << (solver->isFullModel_.size()/double(problem->states().size()))*100 << std::endl;
+    PRM_LAOStarSolver* prmsolver = static_cast<PRM_LAOStarSolver*>(solver);
+    for ( auto it = prmsolver->FullModelMap_.begin(); it != prmsolver->FullModelMap_.end(); ++it )
+    {
+       std::list<int> actionset = it->second;
+       num_fullModel = num_fullModel + actionset.size();
+    }
+  std::cout << "fullmodel usage count = " << num_fullModel <<
+            " %fullmodel = " << (num_fullModel/double(problem->states().size() * problem->actions().size()))*100 << std::endl;
+
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 //                              SIMULATION CODE                              //
@@ -481,11 +499,6 @@ vector<double> simulate(Solver* solver,
                 static_cast<UCTSolver*>(solver)->reset();
             } else if (algorithm != "greedy") {
                 solver->solve(problem->initialState());
-                 if(algorithm == "prm" || algorithm == "acarm"){
-                        double num_fullModel = 0.0;
-                        std::cout << "full mode usage count = " << solver->isFullModel_.size() << " % full model use  = "
-                                                                  << (solver->isFullModel_.size()/double(problem->states().size()))*100 << std::endl;
-                    }
             }
             endTime = clock();
             double planTime = (double(endTime - startTime) / CLOCKS_PER_SEC);
@@ -586,7 +599,9 @@ vector<double> simulate(Solver* solver,
              }
         }
     }
-
+    if(algorithm == "prm" || algorithm == "acarm"){
+         printfullModelUsage(solver);
+    }
     if (verbosity >= 1) {
         cout << "Estimated cost " << problem->initialState()->cost() << " ";
         cout << "Avg. Exec cost " << expectedCost << " ";

@@ -4,7 +4,7 @@ nsims=1
 verbosity=1
 # heuristic=(zero hmin-solve-all domainGUSSP)
 heur=hmin
-rew=4
+rew=1
 # endrange=(3 4)
 endrange=(14)
 

@@ -72,7 +72,9 @@ public:
      */
     virtual void maxTrials(time_t theTrials) { }
 
+    // the number of states with a full model
     mlcore::StateSet isFullModel_;
+
 };
 
 /**

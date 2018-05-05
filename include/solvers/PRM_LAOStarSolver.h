@@ -3,6 +3,8 @@
 
 
 #include <ctime>
+#include <unordered_map>
+#include <unordered_set>
 
 #include "Solver.h"
 namespace mlsolvers
@@ -43,6 +45,7 @@ private:
     std::list<mlcore::Successor> getTransition(mlcore::State* s, mlcore::Action* a, mlcore::Problem* problem);
 
     bool costAdjusted_ = false;
+
 
 public:
     /**
@@ -89,6 +92,9 @@ public:
 
     bool costAdjusted(){return costAdjusted_;}
 
+      //state action pair with a full model
+    /** to calculate full model usage **/
+    std::unordered_map<mlcore::State*, std::list<int>, mlcore::StateHash, mlcore::StateEqual> FullModelMap_;
 };
 
 }

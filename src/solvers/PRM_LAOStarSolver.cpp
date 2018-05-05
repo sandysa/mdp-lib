@@ -11,12 +11,73 @@
 
 #include <ctime>
 #include <queue>
+#include<algorithm>
 
 using namespace EV;
 using namespace rtrack;
 using namespace mlcore;
 namespace mlsolvers
 {
+double getCostAdjustmentValue(mlcore::State* s, mlcore::Action* a,mlcore::Problem* problem)
+{
+    if(problem->goal(s))
+            return problem->cost(s,a);
+
+    if(problem->getProblemName() == "sailing")
+    {
+         SailingState* state = static_cast<SailingState*> (s);
+         SailingAction* action = static_cast<SailingAction*> (a);
+         if (((SailingProblem*) problem)->get_tack(state, action) <= 1)
+            return problem->cost(s,a) * 1;
+         if (((SailingProblem*) problem)->get_tack(state, action) < 4)
+            return problem->cost(s,a) * 1.2;
+         if (((SailingProblem*) problem)->get_tack(state, action) == 4)
+            return problem->cost(s,a) * 1.3;
+    }
+   else  if(problem->getProblemName() == "racetrack")
+     {
+        RacetrackState* rts = static_cast<RacetrackState*>(s);
+        RacetrackAction* rta = static_cast<RacetrackAction*>(a);
+        RacetrackState* next = new RacetrackState(rts->x()+ rta->ax(), rts->y() + rta->ay(),  rta->ax(),  rta->ay(), (RacetrackProblem*) problem);
+        std::vector<std::vector <char> > track = ((RacetrackProblem*) problem)->track();
+        double newcost = problem->cost(s,a) ;
+        if (track[next->x()][next->y()] == rtrack::wall || track[next->x()][next->y()] == rtrack::pothole )
+            newcost =  problem->cost(s,a)*2;
+
+        else if (track[rts->x()][rts->y()] == rtrack::wall || track[rts->x()][rts->y()] == rtrack::pothole )
+            newcost = problem->cost(s,a)*2;
+
+        delete next;
+        return newcost;
+    }
+
+   else if(problem->getProblemName() == "ev")
+    {
+
+        EVState* evs = static_cast<EVState*>(s);
+        EVAction*eva = static_cast<EVAction*>(a);
+        EVProblem* evp = static_cast<EVProblem*>(problem);
+
+        /** discharging with low charge when about to leave **/
+        if((evs->exit_comm() <= 2 || evs->timestep() >= EV::horizon_-2) && eva->level() > 3 && evs->soc() <= evp->end_soc())
+            return 8;
+
+        /** encourage discharging in peak hour */
+        if(EV::horizon_- evs->timestep() >= 4 && evp->isPeak(evs->timestep()) && eva->level() > 3)
+            return -10;
+        /** enough charge to discharge **/
+        if((evs->exit_comm() <= 2 || evs->timestep() >= EV::horizon_-2) && eva->level() == 5 && evs->soc() - EV::SPEED_L2 >= evp->end_soc())
+            return -12;
+
+        if(evs->soc() - EV::SPEED_L1 >= evp->end_soc() && eva->level() == 4)// have enough charge to discharge at high speed.
+            return -8;
+    }
+
+    return problem->cost(s,a);
+
+}
+
+
 bool PRM_LAOStarSolver::useFullModel(mlcore::State* s, mlcore::Action* a, mlcore::Problem* problem){
     //For racetrack:
    bool fullModel = false;
@@ -25,39 +86,14 @@ bool PRM_LAOStarSolver::useFullModel(mlcore::State* s, mlcore::Action* a, mlcore
     if (s == problem->initialState())
         return true;
 
-   else if (((RacetrackProblem*) problem)->goal(s)  || s == ((RacetrackProblem*) problem)->absorbing())
+    else if (((RacetrackProblem*) problem)->goal(s)  || s == ((RacetrackProblem*) problem)->absorbing())
         return true;
+    else if(s->hValue() < 3 )
+            return true;
+     else if((getCostAdjustmentValue(s,a,problem)/ problem->cost(s,a)) > 1)
+            return true;
 
-    RacetrackState* rts = static_cast<RacetrackState*>(s);
-    RacetrackAction* rta = static_cast<RacetrackAction*>(a);
-    RacetrackState* next = new RacetrackState(rts->x()+ rta->ax(), rts->y() + rta->ay(),  rta->ax(),  rta->ay(), (RacetrackProblem*) problem);
-    std::vector<std::vector <char> > track = ((RacetrackProblem*) problem)->track();
-
-    if (track[next->x()][next->y()] == rtrack::wall || track[next->x()][next->y()] == rtrack::pothole )
-        fullModel = true;
-
-    else if (track[rts->x()][rts->y()] == rtrack::wall || track[rts->x()][rts->y()] == rtrack::pothole )
-        fullModel = true;
-
-//     if (track[rts->x()+2][rts->y()] == rtrack::wall || track[rts->x()][rts->y()+2] == rtrack::wall || track[rts->x()+2][rts->y()+2] == rtrack::wall)
-//        return true;
-
-    else if( s->hValue() < 3 )
-        fullModel = true;
-
-
-    delete next;
-//        /** Calling adjusted cost with MLOD . Triggers full model if difference > 10%.
-//        ** adding slack to avoid divide by 0 error **/
-//        Heuristic* temp_heuristic = nullptr;
-//        mlsolvers::CostAdjusted_DeterministicSolver* acarm_solver =  new CostAdjusted_DeterministicSolver(problem, true,
-//                                         mlsolvers::det_most_likely,
-//                                         temp_heuristic);
-//        if((abs(acarm_solver->getAdjustedCost(s,a,problem) -  problem->cost(s,a))/problem->cost(s,a)+ 0.00000001) > 0.10)
-//            return true;
-
-//        delete acarm_solver;
-        return fullModel;
+    return false;
     }
 
     if(problem->getProblemName() == "sailing")
@@ -65,28 +101,8 @@ bool PRM_LAOStarSolver::useFullModel(mlcore::State* s, mlcore::Action* a, mlcore
          if (s == problem->initialState())
             return true;
 
-        short dx[] = {0, 1, 1,  1,  0, -1, -1, -1};
-        short dy[] = {1, 1, 0, -1, -1, -1,  0,  1};
-        SailingState* state = static_cast<SailingState*> (s);
-        SailingAction* action = static_cast<SailingAction*> (a);
-        short nextX = (short) (state->x() + dx[action->dir()]);
-        short nextY = (short) (state->y() + dy[action->dir()]);
-        if (((SailingProblem*) problem)->get_tack(state, action) != 4) //"INTO " in the problem is equal to 4.
-              return true;
-
-//        if(!((SailingProblem*) problem)->in_Lake(nextX, nextY))
-//            return true;
-
-//         /** Calling adjusted cost with MLOD . Triggers full model if difference > 20%.
-//        ** adding slack to avoid divide by 0 error **/
-//        Heuristic* temp_heuristic = nullptr;
-//        mlsolvers::CostAdjusted_DeterministicSolver* acarm_solver =  new CostAdjusted_DeterministicSolver(problem, true,
-//                                         mlsolvers::det_most_likely,
-//                                         temp_heuristic);
-//        if((abs(acarm_solver->getAdjustedCost(s,a,problem) -  problem->cost(s,a))/problem->cost(s,a)+ 0.00000001) > 0.20)
-//            return true;
-//
-//        delete acarm_solver;
+        if((getCostAdjustmentValue(s,a,problem)/ problem->cost(s,a)) < 1.2)
+            return true;
 
         return false;
        }
@@ -112,6 +128,19 @@ std::list<mlcore::Successor> PRM_LAOStarSolver::getTransition(mlcore::State* s, 
 
        if(PRM_LAOStarSolver::useFullModel(s,a,problem)){
               isFullModel_.insert(s);
+              auto it = FullModelMap_.find(s);
+              if( it != FullModelMap_.end() ) {
+                    std::list<int> actionset = it->second;
+                    if(std::find(actionset.begin(), actionset.end(), a->hashValue()) == actionset.end()){
+                            actionset.push_back(a->hashValue());
+                             it->second = actionset; //update map with new values
+                    }
+                }
+             else {
+                std::list<int> actionset;
+                actionset.push_back(a->hashValue());
+                FullModelMap_.insert(std::make_pair(s,actionset));
+                }
               return successors;
         }
 
@@ -121,52 +150,25 @@ std::list<mlcore::Successor> PRM_LAOStarSolver::getTransition(mlcore::State* s, 
 
      return mostlikelySuccessors;
 }
+
+
 double PRM_LAOStarSolver::getCost(mlcore::State* s, mlcore::Action* a,mlcore::Problem* problem)
 {
     if(!costAdjusted_)
         return problem->cost(s,a);
 
-  if(problem->getProblemName() == "sailing")
-   {
-         SailingState* state = static_cast<SailingState*> (s);
-         SailingAction* action = static_cast<SailingAction*> (a);
-         short dx[] = {0, 1, 1,  1,  0, -1, -1, -1};
-         short dy[] = {1, 1, 0, -1, -1, -1,  0,  1};
-         short nextX = (short) (state->x() + dx[action->dir()]);
-         short nextY = (short) (state->y() + dy[action->dir()]);
-       if (((SailingProblem*) problem)->get_tack(state, action) == 4) //"INTO " in the problem is equal to 4.
-            return 2;
+    //if using full model
+       auto it = FullModelMap_.find(s);
+       if( it != FullModelMap_.end() ) {
+           std::list<int> actionset = it->second;
+           if(std::find(actionset.begin(), actionset.end(), a->hashValue()) != actionset.end()){
+                return problem->cost(s,a);
+           }
+        }
 
-     /*   SailingState* next = static_cast<SailingState*>(mostLikelyOutcome(problem, state, action));
-             if(next->hValue() < s->hValue())
-                    return 0; */
+    //else use adjusted cost
+    return getCostAdjustmentValue(s,a,problem);
 
-    }
-    if(problem->getProblemName() == "ev")
-    {
-        if(isFullModel_.find(s)!= isFullModel_.end() || problem->goal(s)) //already using full model
-            return problem->cost(s,a);
-
-        EVState* evs = static_cast<EVState*>(s);
-        EVAction*eva = static_cast<EVAction*>(a);
-        EVProblem* evp = static_cast<EVProblem*>(problem);
-
-        /** discharging with low charge when about to leave **/
-        if((evs->exit_comm() <= 2 || evs->timestep() >= EV::horizon_-2) && eva->level() > 3 && evs->soc() <= evp->end_soc())
-            return 8;
-
-        /** encourage discharging in peak hour */
-        if(EV::horizon_- evs->timestep() >= 4 && evp->isPeak(evs->timestep()) && eva->level() > 3)
-            return -10;
-        /** enough charge to discharge **/
-        if((evs->exit_comm() <= 2 || evs->timestep() >= EV::horizon_-2) && eva->level() == 5 && evs->soc() - EV::SPEED_L2 >= evp->end_soc())
-            return -12;
-
-        if(evs->soc() - EV::SPEED_L1 >= evp->end_soc() && eva->level() == 4)// have enough charge to discharge at high speed.
-            return -8;
-    }
-
-    return problem->cost(s,a);
 }
 
 double PRM_LAOStarSolver::PRM_qvalue(mlcore::Problem* problem, mlcore::State* s, mlcore::Action* a)
