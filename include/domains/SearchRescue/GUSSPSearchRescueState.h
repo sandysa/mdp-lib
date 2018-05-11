@@ -79,6 +79,7 @@ public:
     int victims() {return victims_;}
 
     std::vector<std::pair<std::pair<int, int>,double>>goalPos() {return goalPos_;}
+
 };
 
 #endif // MPDLIB_GUSSPSEARCHRESCUESTATE_H

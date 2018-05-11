@@ -396,3 +396,5 @@ void GUSSPSearchRescueProblem::addSuccessor(
         allSuccessors->at(idAction).push_back(mlcore::Successor(this->addState(state), prob));
     }
 }
+
+
