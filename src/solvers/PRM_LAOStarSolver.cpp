@@ -28,11 +28,11 @@ double getCostAdjustmentValue(mlcore::State* s, mlcore::Action* a,mlcore::Proble
          SailingState* state = static_cast<SailingState*> (s);
          SailingAction* action = static_cast<SailingAction*> (a);
          if (((SailingProblem*) problem)->get_tack(state, action) <= 1)
-            return problem->cost(s,a) * 1;
+            return problem->cost(s,a) * 1.3; //1
          if (((SailingProblem*) problem)->get_tack(state, action) < 4)
             return problem->cost(s,a) * 1.2;
          if (((SailingProblem*) problem)->get_tack(state, action) == 4)
-            return problem->cost(s,a) * 1.3;
+            return problem->cost(s,a) * 1.1; //1.3
     }
    else  if(problem->getProblemName() == "racetrack")
      {
@@ -60,7 +60,7 @@ double getCostAdjustmentValue(mlcore::State* s, mlcore::Action* a,mlcore::Proble
 
         /** discharging with low charge when about to leave **/
         if((evs->exit_comm() <= 2 || evs->timestep() >= EV::horizon_-2) && eva->level() > 3 && evs->soc() <= evp->end_soc())
-            return 8;
+            return 8; //8
 
         /** encourage discharging in peak hour */
         if(EV::horizon_- evs->timestep() >= 4 && evp->isPeak(evs->timestep()) && eva->level() > 3)
@@ -71,6 +71,9 @@ double getCostAdjustmentValue(mlcore::State* s, mlcore::Action* a,mlcore::Proble
 
         if(evs->soc() - EV::SPEED_L1 >= evp->end_soc() && eva->level() == 4)// have enough charge to discharge at high speed.
             return -8;
+
+//        if(evs->exit_comm() <= 2 || evs->timestep() >=  EV::horizon_-3)
+//            return problem->cost(s,a) * 1.5;
     }
 
     return problem->cost(s,a);
@@ -79,7 +82,7 @@ double getCostAdjustmentValue(mlcore::State* s, mlcore::Action* a,mlcore::Proble
 
 
 bool PRM_LAOStarSolver::useFullModel(mlcore::State* s, mlcore::Action* a, mlcore::Problem* problem){
-    //For racetrack:
+    //For racetrack: (CA:100% in pRM comparison.ods)
    bool fullModel = false;
    if(problem->getProblemName() == "racetrack")
    {
@@ -90,7 +93,7 @@ bool PRM_LAOStarSolver::useFullModel(mlcore::State* s, mlcore::Action* a, mlcore
         return true;
     else if(s->hValue() < 3 )
             return true;
-     else if((getCostAdjustmentValue(s,a,problem)/ problem->cost(s,a)) > 1)
+    else if((getCostAdjustmentValue(s,a,problem)/ problem->cost(s,a)) > 1)
             return true;
 
     return false;
@@ -101,7 +104,7 @@ bool PRM_LAOStarSolver::useFullModel(mlcore::State* s, mlcore::Action* a, mlcore
          if (s == problem->initialState())
             return true;
 
-        if((getCostAdjustmentValue(s,a,problem)/ problem->cost(s,a)) < 1.2)
+        if((getCostAdjustmentValue(s,a,problem)/ problem->cost(s,a)) > 1.2) //< 1.2 (chnage costs)for results in AAMAS/PAL paper%
             return true;
 
         return false;
@@ -112,6 +115,8 @@ bool PRM_LAOStarSolver::useFullModel(mlcore::State* s, mlcore::Action* a, mlcore
     {
         EVState* evs = static_cast<EVState*>(s);
         if(evs->exit_comm() <= 2 || evs->timestep() >=  EV::horizon_-3)
+            return true;
+//    if((abs(getCostAdjustmentValue(s,a,problem))/ problem->cost(s,a)) >= .5)
             return true;
     }
 
