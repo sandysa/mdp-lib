@@ -13,6 +13,7 @@
 #include "../../include/domains/sailing/SailingProblem.h"
 #include "../../include/domains/DummyState.h"
 #include "../../include/domains/WrapperProblem.h"
+#include "../../include/solvers/HMinHeuristic.h"
 
 #include "../include/ppddl/mini-gpt/states.h"
 #include "../include/ppddl/mini-gpt/problems.h"
@@ -225,20 +226,19 @@ void findBestReductionBruteForce(
                                          testReduction);
         reducedModel = new ReducedModel(problem, testReduction, k);
         double result = ReducedModel::evaluateMarkovChain(reducedModel);
-                                                                                dprint1(result);
+//                                                                                dprint1(result);
         if (result < bestResult) {
-                                                                                dprint2("*********", result);
+//                                                                                dprint2("*********", result);
             bestResult = result;
             bestReduction = &reduction;
         }
     }
-                                                                                dprint1("**************************");
     assignPrimaryOutcomesToReduction(*bestReduction,
                                      actionGroups,
                                      bestReductionTemplate);
     reducedModel = new ReducedModel(problem, bestReductionTemplate, k);
     double result = ReducedModel::evaluateMarkovChain(reducedModel);
-                                                                                dprint2("best result", result);
+//                                                                                dprint2("best result", result);
 }
 
 
@@ -257,13 +257,12 @@ void findBestReductionGreedy(mlcore::Problem* problem,
     reducedModel = new ReducedModel(problem, bestReductionTemplate, k);
     double originalResult = ReducedModel::evaluateMarkovChain(reducedModel);
     double previousResult = originalResult;
-                                                                                dprint2("original", previousResult);
+//                                                                                dprint2("original", previousResult);
     int numOutcomes = 0;
     for (size_t i = 0; i < actionGroups.size(); i++)
         numOutcomes +=
             bestReductionTemplate->
                 primaryIndicatorsActions()[actionGroups[i][0]].size();
-                                                                                dprint2("num outcomes", numOutcomes);
     for (int i = 0; i < numOutcomes; i++) {
         double bestResult = mdplib::dead_end_cost + 1;
         int bestGroup = -1;
@@ -336,8 +335,6 @@ void findBestReductionGreedy(mlcore::Problem* problem,
                     primaryIndicatorsActions()[a][bestOutcomeIndex] = false;
             }
         }
-                                                                                dprint2("result ", bestResult);
-
     }
     // Printing best reduction
     if (verbosity > 10) {
@@ -405,7 +402,6 @@ void initRacetrack(string trackName, int mds, double pslip, double perror)
     createRacetrackReductionsTemplate(static_cast<RacetrackProblem*> (problem));
 }
 
-
 void initSailing()
 {
     static vector<double> costs;
@@ -415,7 +411,7 @@ void initSailing()
     costs.push_back(10);
     costs.push_back(mdplib::dead_end_cost + 1);
 
-    static double windTransition[] = {
+   static double windTransition[] = {
         0.20, 0.20, 0.20, 0.00, 0.00, 0.00, 0.20, 0.20,
         0.20, 0.20, 0.20, 0.20, 0.00, 0.00, 0.00, 0.20,
         0.20, 0.20, 0.20, 0.20, 0.20, 0.00, 0.00, 0.00,
@@ -585,7 +581,8 @@ int main(int argc, char* args[])
         assignPrimaryOutcomesToReduction(primaryOutcomes,
                                          actionGroups,
                                          bestReductionTemplate);
-    } else if (flag_is_registered("greedy")) {
+    }
+     else if (flag_is_registered("greedy")) {
         // Finds the best reduction using the greedy approach and then stores
         // it in global variable bestReductionTemplate
         if (l == 1) isDeterminization = true;
@@ -635,6 +632,7 @@ int main(int argc, char* args[])
     double expectedTime = 0.0;
     double maxReplanningTime = 0.0;
     int cntMaxTimeOverKappa = 0;
+    double cost_nsim[nsims];
     for (int i = 0; i < nsims; i++) {
         double planningTime = 0.0;
         // We don't want the simulations to re-use the computed values
@@ -656,6 +654,7 @@ int main(int argc, char* args[])
                 *solver, wrapperProblem, &maxReplanningTimeCurrent);
 
         expectedCost += costAndTime.first;
+        cost_nsim[i] = costAndTime.first;
         maxReplanningTime = max(maxReplanningTime, maxReplanningTimeCurrent);
         planningTime += costAndTime.second;
         expectedTime += planningTime;
@@ -666,8 +665,15 @@ int main(int argc, char* args[])
             cout << "trial ended: cost " << costAndTime.first << " " <<
                 ", time " << planningTime << endl;
     }
+    double mean = expectedCost / nsims;
+    double variance = 0;
+    for (int i = 0; i < nsims; i++) {
+        variance += pow(cost_nsim[i] - mean, 2);
+    }
+
     cout << "expected cost " << expectedCost / nsims << endl;
-    cout << "expected planning time " << expectedTime / nsims << endl;
+    cout << "std deviation =  " << sqrt(variance / (nsims - 1)) << endl;
+    cout << "avg planning time " << expectedTime / nsims << endl;
     cout << "max re-planning time " << maxReplanningTime << endl;
     cout << "cnt max re-planning time over kappa " <<
         cntMaxTimeOverKappa << endl;

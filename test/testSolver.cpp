@@ -22,7 +22,7 @@
 #include "../include/solvers/VPIRTDPSolver.h"
 #include "../include/solvers/CostAdjusted_DeterministicSolver.h"
 #include "../include/solvers/PRM_LAOStarSolver.h"
-
+#include "../include/solvers/m02EVSolver.h"
 
 #include "../include/util/flags.h"
 #include "../include/util/general.h"
@@ -388,10 +388,16 @@ void initSolver(string algorithm, Solver*& solver)
                                rollouts, cutoff, C,
                                use_qvalues_for_c, delta,
                                true);
-    } else if (algorithm != "greedy") {
+    } else if(algorithm == "m02EV"){
+        solver = new m02EVSolver(problem, tol, 1000000);
+    }
+
+
+    else if (algorithm != "greedy") {
         cerr << "Unknown algorithm: " << algorithm << endl;
         exit(-1);
     }
+
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -456,8 +462,8 @@ bool mustReplan(Solver* solver, string algorithm, State* s, int plausTrial) {
     if (algorithm == "uct") {
         return true;
     }
-    if(algorithm == "prm" || algorithm == "det")
-    return true;
+    if(algorithm == "prm" || algorithm == "det" || algorithm == "m02EV")
+        return true;
 
     return false;
 }

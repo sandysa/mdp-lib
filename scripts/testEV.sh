@@ -1,6 +1,6 @@
 #!/bin/bash
 
-nsims=1
+nsims=100
 verbosity=1
 # heuristic=(zero hmin-solve-all domainGUSSP)
 heur=hmin
@@ -10,7 +10,7 @@ endrange=(14)
 
 while IFS='' read -r line || [[ -n "$line" ]]; do
     a=( $line )
-#     echo "***********************************************"
+    echo "***********************************************"
     echo $line
     echo "reward="$rew
 #     for horizon in `seq 0 1`; do
@@ -26,9 +26,13 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
 #         ../testsolver.out --start-soc=${a[0]} --end-soc=${a[1]} --start-time=${a[2]} --end-time=${a[3]} \
 #         --reward=$rew --algorithm=det --n=$nsims --v=$verbosity --heuristic=$heur
 #     
-        echo "******ALG = prm "
+        echo "******ALG = m02 "
         ../testsolver.out --start-soc=${a[0]} --end-soc=${a[1]} --start-time=${a[2]} --end-time=${a[3]} \
-        --reward=$rew --algorithm=prm --n=$nsims --v=$verbosity --heuristic=$heur
+        --reward=$rew --algorithm=m02EV --n=$nsims --v=$verbosity --heuristic=$heur
+        
+#         echo "******ALG = prm "
+#         ../testsolver.out --start-soc=${a[0]} --end-soc=${a[1]} --start-time=${a[2]} --end-time=${a[3]} \
+#         --reward=$rew --algorithm=prm --n=$nsims --v=$verbosity --heuristic=$heur
 
 #         echo "******ALG = ALLD "
 #         ../testsolver.out --start-soc=${a[0]} --end-soc=${a[1]} --start-time=${a[2]} --end-time=${a[3]} \
