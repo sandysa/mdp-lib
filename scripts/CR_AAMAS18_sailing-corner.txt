@@ -1,0 +1,112 @@
+********************************************************
+20-19|lao
+Estimated cost 89.4707 Avg. Exec cost 90.79 Std. Dev. 22.7264 Total time 0.0723179 
+States seen 1342
+Avg. time per decision 7.23179
+Longest planning time 7.23179
+Num. decisions 1
+********************************************************
+20-19|prm
+full mode usage count = 3192 % full model use  = 12.4649
+Estimated cost 89.4707 Avg. Exec cost 86.49 Std. Dev. 24.3151 Total time 3.94402 
+States seen 1267
+Avg. time per decision 0.114286
+Longest planning time 8.90787
+Num. decisions 3451
+********************************************************
+20-19|acarm
+full mode usage count = 3192 % full model use  = 12.4649
+Estimated cost 89.4707 Avg. Exec cost 92.86 Std. Dev. 28.9727 Total time 0.0951752 
+States seen 1320
+Avg. time per decision 9.51751
+Longest planning time 9.51751
+Num. decisions 1
+********************************************************
+20-19|DET
+Estimated cost 0 Avg. Exec cost 500 Std. Dev. 0 Total time 3.41039 
+States seen 615
+Avg. time per decision 0.00682065
+Longest planning time 0.01217
+Num. decisions 50001
+********************************************************
+20-19|alld
+Estimated cost 0 Avg. Exec cost 500 Std. Dev. 0 Total time 0.00017099 
+States seen 508
+Avg. time per decision 0.017099
+Longest planning time 0.017099
+Num. decisions 1
+********************************************************
+20-19|flares(0)
+Estimated cost 10.9133 Avg. Exec cost 348.03 Std. Dev. 141.795 Total time 0.0054777 
+States seen 2896
+Avg. time per decision 0.000423315
+Longest planning time 0.172105
+Num. decisions 1294
+********************************************************
+20-19|flares(1)
+Estimated cost 87.5701 Avg. Exec cost 87.8 Std. Dev. 27.0667 Total time 0.0455777 
+States seen 1401
+Avg. time per decision 0.0379814
+Longest planning time 3.90299
+Num. decisions 120
+********************************************************
+40-39|lao
+Estimated cost 178.208 Avg. Exec cost 184.01 Std. Dev. 46.4298 Total time 0.507461 
+States seen 4095
+Avg. time per decision 50.7461
+Longest planning time 50.7461
+Num. decisions 1
+********************************************************
+40-39|prm
+full mode usage count = 12792 % full model use  = 12.4912
+Estimated cost 178.208 Avg. Exec cost 171.17 Std. Dev. 35.4635 Total time 40.2805 
+States seen 3975
+Avg. time per decision 0.523463
+Longest planning time 61.9685
+Num. decisions 7695
+********************************************************
+40-39|acarm
+full mode usage count = 12792 % full model use  = 12.4912
+Estimated cost 178.208 Avg. Exec cost 180.03 Std. Dev. 40.9497 Total time 0.630995 
+States seen 4007
+Avg. time per decision 63.0995
+Longest planning time 63.0995
+Num. decisions 1
+********************************************************
+40-39|DET
+Estimated cost 0 Avg. Exec cost 500 Std. Dev. 0 Total time 15.3904 
+States seen 353
+Avg. time per decision 0.0307801
+Longest planning time 0.045135
+Num. decisions 50001
+********************************************************
+40-39|alld
+Estimated cost 0 Avg. Exec cost 500 Std. Dev. 0 Total time 0.00075648 
+States seen 602
+Avg. time per decision 0.075648
+Longest planning time 0.075648
+Num. decisions 1
+********************************************************
+40-39|flares(0)
+Estimated cost 5.69493 Avg. Exec cost 487.46 Std. Dev. 48.2942 Total time 0.0226896 
+States seen 9407
+Avg. time per decision 0.000514971
+Longest planning time 0.111569
+Num. decisions 4406
+********************************************************
+40-39|flares(1)
+Estimated cost 176.234 Avg. Exec cost 175.5 Std. Dev. 36.3372 Total time 0.34709 
+States seen 3948
+Avg. time per decision 0.0974971
+Longest planning time 31.2835
+Num. decisions 356
+********************************************************
+80-79|lao
+Estimated cost 351.852 Avg. Exec cost 346.32 Std. Dev. 52.4034 Total time 5.45798 
+States seen 9829
+Avg. time per decision 545.798
+Longest planning time 545.798
+Num. decisions 1
+********************************************************
+80-79|prm
+full mode usage count = 51192 % full model use  = 12.4978
