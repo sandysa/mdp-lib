@@ -10,7 +10,6 @@ def main(argv):
   parser.add_argument('-p', '--problem', required=True)  
   args = parser.parse_args()
   problem = args.problem
-  
   plt.close("all")
   
   ftrack = open(problem)
@@ -67,6 +66,7 @@ def main(argv):
   # plt.plot(Squares[:,0],Squares[:,1],'ws', ms=square_size, mec='0.00')
   ax = plt.axis([-1, X, -1, Y])
   plt.axis("off")
+  #plt.savefig("racetrack.png", bbox_inches='tight')
   plt.show()
 
   ftrack.close()
