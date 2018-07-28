@@ -156,10 +156,12 @@ public:
     /** Returns 1 if the state is a true goal. Returns 0 otherwise.
      **/
     virtual int getobservation(SearchRescueState* s);
+    virtual int getobservation(int x, int y);
 
     /** Returns 1 if the state is a potential goal. Returns 0 otherwise.
      **/
     virtual bool isPotentialGoal(SearchRescueState* s);
+    virtual bool isPotentialGoal(int x, int y);
 
     virtual bool SRGoal(SearchRescueState* s) const;
 

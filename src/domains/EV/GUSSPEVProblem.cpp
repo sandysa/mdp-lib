@@ -66,7 +66,7 @@ void GUSSPEVProblem::setInitBelief(std::vector<int> potential_goals, bool unifor
    if(potential_goals.size() == 1)
         goalPos0_.push_back(std::make_pair(potential_goals.at(0), 1.0));
 
-    /** sets unfirm initial belief to all potential goals **/
+    /** sets uniform initial belief to all potential goals **/
     if(uniform_dist)
     {
      for (int i = 0; i < potential_goals.size(); ++i){
@@ -79,6 +79,16 @@ bool GUSSPEVProblem::isPotentialGoal(GUSSPEVState* evs)
     for(int i = 0; i < potential_goals.size(); i++)
     {
         if(potential_goals.at(i) == evs->timestep())
+            return true;
+    }
+    return false;
+}
+
+bool GUSSPEVProblem::isPotentialGoal(int soc, int t)
+{
+    for(int i = 0; i < potential_goals.size(); i++)
+    {
+        if(potential_goals.at(i) == t)
             return true;
     }
     return false;
@@ -124,6 +134,14 @@ int GUSSPEVProblem::getObservation(GUSSPEVState* evs) const
         return 1;
     return 0;
 }
+
+int GUSSPEVProblem::getObservation(int soc, int t) const
+{
+    if(t == end_time_)
+        return 1;
+    return 0;
+}
+
 
 bool GUSSPEVProblem::isPeak(int timestep)
 {
@@ -201,6 +219,27 @@ std::vector<std::pair<int, double>> GUSSPEVProblem::updateBelief(std::vector<std
     }
     return new_belief;
 }
+std::vector<std::pair<int, double>> GUSSPEVProblem::getGoalPos(int soc, int t, std::vector<std::pair<int,double>> gp){
+    std::vector<std::pair<int, double>> goalPos_new = gp;
+    int obs = getObservation(soc, t);
+
+    /** update belief of potential goal **/
+    if (isPotentialGoal(soc, t))
+    {
+        for (auto i = gp.begin(); i != gp.end(); ++i){
+            std::pair<int, double> pos (*i);
+            if (pos.first == t && pos.second !=obs && obs == 0)
+            {
+                gp.erase(i);
+                gp.push_back(std::make_pair(pos.first, obs));
+                std::vector<std::pair<int, double>> goalPos_new = updateBelief(gp);
+                break;
+               }
+           }
+      }
+    return goalPos_new;
+}
+
 
 std::list<mlcore::Successor>
 GUSSPEVProblem::transition(mlcore::State* s, mlcore::Action* action)
@@ -224,31 +263,33 @@ GUSSPEVProblem::transition(mlcore::State* s, mlcore::Action* action)
         return allSuccessors->at(idAction);
     }
 
-    /** otherwise, get observation **/
-    int obs = getObservation(evs);
-
-    /** update belief of potential goal **/
-    if (isPotentialGoal(evs))
-    {
-        for (auto i = goalPos.begin(); i != goalPos.end(); ++i){
-            std::pair<int, double> pos (*i);
-            if (pos.first == evs->timestep() && pos.second !=obs && obs == 0)
-            {
-                goalPos.erase(i);
-                goalPos.push_back(std::make_pair(pos.first, obs));
-                std::vector<std::pair<int, double>> goalPos_new = updateBelief(goalPos);
-                GUSSPEVState* evj  = new GUSSPEVState(this, evs->soc(), evs->timestep(), goalPos_new);
-                successors.push_back(mlcore::Successor(this->addState(evj), 1.0));
-                return successors;
-               }
-           }
-      }
-
+//    /** otherwise, get observation **/
+//    int obs = getObservation(evs);
+//
+//    /** update belief of potential goal **/
+//    if (isPotentialGoal(evs))
+//    {
+//        for (auto i = goalPos.begin(); i != goalPos.end(); ++i){
+//            std::pair<int, double> pos (*i);
+//            if (pos.first == evs->timestep() && pos.second !=obs && obs == 0)
+//            {
+//                goalPos.erase(i);
+//                goalPos.push_back(std::make_pair(pos.first, obs));
+//                std::vector<std::pair<int, double>> goalPos_new = updateBelief(goalPos);
+//                GUSSPEVState* evj  = new GUSSPEVState(this, evs->soc(), evs->timestep(), goalPos_new);
+//                successors.push_back(mlcore::Successor(this->addState(evj), 1.0));
+//                return successors;
+//               }
+//           }
+//      }
+    std::vector<std::pair<int, double>> gp_new;
     /** SSP transitions **/
     int t = min(EV::horizon_-1 , evs->timestep()+1);
     if(a->level() == 3) //soc unaltered for NOP
     {
-          GUSSPEVState* evj  = new GUSSPEVState(this, evs->soc(), t, goalPos);
+         gp_new  = getGoalPos(evs->soc(), t, goalPos);
+         GUSSPEVState* evj  = new GUSSPEVState(this, evs->soc(), t, gp_new);
+//          GUSSPEVState* evj  = new GUSSPEVState(this, evs->soc(), t, goalPos);
           double trans  = getSOCfactor(evs, a, evj);
           if (trans > 0) {
               allSuccessors->at(idAction).push_back(mlcore::Successor(this->addState(evj), trans));
@@ -261,7 +302,9 @@ GUSSPEVProblem::transition(mlcore::State* s, mlcore::Action* action)
     if(a->level() < 3) //charging
     {
       for(int soc = evs->soc(); soc <= 100; soc++){
-            GUSSPEVState* evj  = new GUSSPEVState(this, soc, t, goalPos);
+        gp_new  = getGoalPos(soc, t, goalPos);
+         GUSSPEVState* evj  = new GUSSPEVState(this, soc, t, gp_new);
+//            GUSSPEVState* evj  = new GUSSPEVState(this, soc, t, goalPos);
              double trans  =  getSOCfactor(evs, a, evj);
              if(trans > 0){
                     allSuccessors->at(idAction).push_back(mlcore::Successor(this->addState(evj), trans));
@@ -273,7 +316,9 @@ GUSSPEVProblem::transition(mlcore::State* s, mlcore::Action* action)
     }
 ///** reaches here only for discharging **/
     for(int soc = 0; soc <= evs->soc(); soc++){
-                 GUSSPEVState* evj  = new GUSSPEVState(this, soc, t, goalPos);
+                    gp_new  = getGoalPos(soc, t, goalPos);
+                    GUSSPEVState* evj  = new GUSSPEVState(this, soc, t, gp_new);
+//                 GUSSPEVState* evj  = new GUSSPEVState(this, soc, t, goalPos);
                     double trans  =  getSOCfactor(evs, a, evj);
                     if(trans > 0){
                         allSuccessors->at(idAction).push_back(mlcore::Successor(this->addState(evj), trans));

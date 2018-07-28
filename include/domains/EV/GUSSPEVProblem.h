@@ -151,13 +151,16 @@ public:
 
     /** Returns if the SSP state of it is a potential goal or not **/
     virtual bool isPotentialGoal(GUSSPEVState* evs);
+    virtual bool isPotentialGoal(int soc, int t);
 
     virtual void setInitBelief(std::vector<int> potential_goals, bool uniform_dist);
 
     /** returns observation if the state is a goal state or not**/
     virtual int getObservation(GUSSPEVState* evs) const;
+     virtual int getObservation(int soc, int t) const;
 
     virtual std::vector<std::pair<int, double>> updateBelief(std::vector<std::pair<int,double>> curr_belief);
+    virtual std::vector<std::pair<int, double>> getGoalPos(int soc, int t, std::vector<std::pair<int,double>> curr_belief);
 
     /** randomly sets one goal to be true goal **/
     virtual void setTrueGoal(std::vector<int> potential_goals);

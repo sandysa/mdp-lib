@@ -292,6 +292,40 @@ bool mustReplan(Solver* solver, string algorithm, State* s, int plausTrial) {
 
   return false;
 }
+void experimentLogs()
+{
+//    std::cout << "Potential goals:" << std::endl;
+//    GUSSPRockSampleProblem* rsp = static_cast<GUSSPRockSampleProblem*> (problem);
+//    std::vector<std::pair<int,int>> pg = rsp->potential_goals;
+//    for(int i = 0; i < pg.size(); i ++){
+//        std::pair<int,int> pgpos = pg.at(i);
+//        std::cout << "(" << pgpos.first << " " << pgpos.second << ")" << std::endl;
+//    }
+    for (State* s : problem->states()){
+            if(s->bestAction() != nullptr)
+             std::cout << s << " -> " <<  s->bestAction() << std::endl;
+//        GUSSPRockSampleState* rss =  static_cast<GUSSPRockSampleState*> (s);
+//        if(s->bestAction() != nullptr){
+//           std::vector<std::pair<std::pair<int, int>,double>> goalpos = rss->goalPos();
+//            std::cout <<  rss->x() << " " << rss->y() << " " << rss->sampledRocks() <<" [" ;
+//
+//             for(int i = 0; i < pg.size(); i ++){
+//                std::pair<int,int> pgpos = pg.at(i);
+//                for(int j = 0; j < goalpos.size(); j++){
+//                   std::pair<std::pair<int,int>,double> pgval = goalpos.at(j);
+//                   std::pair<int,int> pos = pgval.first;
+//                   if(pgpos.first == pos.first && pgpos.second == pos.second){
+//                        int val = (pgval.second > 0)? 1 : 0;
+//                        std::cout << val <<" ";
+//                   }
+//
+//                }
+//            }
+//            std::cout << "] -> " << s->bestAction() <<std::endl;
+//        }
+     }
+
+}
 
 
 // Runs [numSims] of the given solver and and returns the results
@@ -364,6 +398,7 @@ vector<double> simulate(Solver* solver,
             cout << "Estimated cost " <<
                 problem->initialState()->cost() << endl;
         }
+                                                                                            experimentLogs();
 
         double costTrial = 0.0;
         int plausTrial = 0;
@@ -417,7 +452,7 @@ vector<double> simulate(Solver* solver,
             }
 
             costTrial += problem->cost(tmp, a);
-//                                                                               std::cout << tmp << " cost = " << problem->cost(tmp, a) << std::endl;
+
             costTrial = std::min(costTrial, mdplib::dead_end_cost);
             if (costTrial >= mdplib::dead_end_cost) {
                 break;
@@ -501,6 +536,7 @@ int main(int argc, char* args[])
         problem->generateAll();
                                                                                             if(verbosity >= 100)
                                                                                             cerr << "generated all states" << endl;
+    cout << "Start State: " << problem->initialState() << std::endl;
     cout << " states = " << problem->states().size() << "  actions = " <<  problem->actions().size() << endl;
 
      if (flag_is_registered_with_value("heuristic")) {

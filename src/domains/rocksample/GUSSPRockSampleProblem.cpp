@@ -109,15 +109,22 @@ void GUSSPRockSampleProblem::setTrueGoal(std::vector<std::pair<int,int>> potenti
      }
      else {
         int totalSamples = 0;
-        for(int i = 0; i < potential_goals.size(); i++){
-            int index = rand() %2;
-            if (index == 1)
-                goals_->insert(std::make_pair(potential_goals.at(i), 0.0));
+//        for(int i = 0; i < potential_goals.size(); i++){
+//            int index = rand() %2;
+//            if (index == 1)
+//                goals_->insert(std::make_pair(potential_goals.at(i), 0.0));
+//
+//            totalSamples += index;
+//         }
 
-            totalSamples += index;
-         }
+              //Updated for robot experiment:
+            int index  =  rand() % potential_goals.size();
+            goals_->insert(std::make_pair(potential_goals.at(index), 0.0));
+            totalSamples += 1;
+            std::pair<int,int> goalpos =  potential_goals.at(index);
                                                                                            std::cout << "potential goal size = " << potential_goals.size()
                                                                                         << " totalSamples = " << totalSamples << endl;
+                                                                                        std::cout << "True goal:(" << goalpos.first <<"," <<goalpos.second <<")" << std::endl;
           // if no goal set, then set first to be a goal.
         if(goals_->size() == 0)
             goals_->insert(std::make_pair(potential_goals.at(0), 0.0));
@@ -141,6 +148,14 @@ int GUSSPRockSampleProblem::getObservation(GUSSPRockSampleState* rss){
    return 0;
 }
 
+int GUSSPRockSampleProblem::getObservation(int x, int y){
+    std::pair<int,int> pos(x,y);
+     if(goals_->find(pos) != goals_->end())
+        return 1;
+   return 0;
+}
+
+
 bool GUSSPRockSampleProblem::isPotentialGoal(GUSSPRockSampleState* rss){
      std::pair<int,int> pos(rss->x(),rss->y());
      if (std::find(potential_goals.begin(), potential_goals.end(), pos) != potential_goals.end())
@@ -148,6 +163,15 @@ bool GUSSPRockSampleProblem::isPotentialGoal(GUSSPRockSampleState* rss){
 
     return false;
 }
+
+bool GUSSPRockSampleProblem::isPotentialGoal(int x, int y){
+     std::pair<int,int> pos(x,y);
+     if (std::find(potential_goals.begin(), potential_goals.end(), pos) != potential_goals.end())
+        return true;
+
+    return false;
+}
+
 /** normalizes belief based on observation **/
 std::vector<std::pair<std::pair<int,int>, double>> GUSSPRockSampleProblem::updateBelief
                                                  (std::vector<std::pair<std::pair<int,int>, double>> curr_belief)
@@ -187,24 +211,24 @@ GUSSPRockSampleProblem::transition(mlcore::State *s, mlcore::Action *a)
     /** Otherwise check observation to update belief over goal configurations **/
     int obs =  getObservation(state);
 
-    /** If potential goal, update beliefs based on observation **/
-    if (isPotentialGoal(state)){
-        for (auto i = goalPos.begin(); i != goalPos.end(); ++i){
-            std::pair<std::pair<int,int>, double> pos (*i);
-            std::pair<int,int> locs = pos.first;
-            if (locs.first == state->x() && locs.second == state->y() && pos.second !=obs && obs == 0)
-            {
-                goalPos.erase(i);
-                goalPos.push_back(std::make_pair(locs,obs));
-                std::vector<std::pair<std::pair<int,int>, double>> goalPos_new = updateBelief(goalPos);
-                addSuccessor(state, successors, 100, 0,
-                             state->x(), state->y(), state->sampledRocks(), goalPos_new, 1.0);
-//                                                                                            std::cout << "updating potential goal for " << state <<
-//                                                                                            " obs  = " << obs << std::endl;
-              return successors;
-             }
-        }
-    }
+//    /** If potential goal, update beliefs based on observation **/
+//    if (isPotentialGoal(state)){
+//        for (auto i = goalPos.begin(); i != goalPos.end(); ++i){
+//            std::pair<std::pair<int,int>, double> pos (*i);
+//            std::pair<int,int> locs = pos.first;
+//            if (locs.first == state->x() && locs.second == state->y() && pos.second !=obs && obs == 0)
+//            {
+//                goalPos.erase(i);
+//                goalPos.push_back(std::make_pair(locs,obs));
+//                std::vector<std::pair<std::pair<int,int>, double>> goalPos_new = updateBelief(goalPos);
+//                addSuccessor(state, successors, 100, 0,
+//                             state->x(), state->y(), state->sampledRocks(), goalPos_new, 1.0);
+////                                                                                            std::cout << "updating potential goal for " << state <<
+////                                                                                            " obs  = " << obs << std::endl;
+//              return successors;
+//             }
+//        }
+//    }
     /** SAMPLE action: **/
     if (action->dir() == rocksample::SAMPLE && obs == 1 && obs != state->sampledRocks())
     {
@@ -358,6 +382,24 @@ void GUSSPRockSampleProblem::addSuccessor(
     GUSSPRockSampleState* state, std::vector<mlcore::SuccessorsList>* allSuccessors, int idAction,
     int val, int limit, int newx, int newy, int newsamples, std::vector<std::pair<std::pair<int, int>,double>> newgoalPos, double prob)
 {
+       /** Otherwise check observation to update belief over goal configurations **/
+    int obs =  getObservation(newx, newy);
+    std::vector<std::pair<std::pair<int, int>,double>> newgoalPoscp  = newgoalPos;
+    /** If potential goal, update beliefs based on observation **/
+    if (isPotentialGoal(newx, newy)){
+        for (auto i = newgoalPoscp.begin(); i != newgoalPoscp.end(); ++i){
+            std::pair<std::pair<int,int>, double> pos (*i);
+            std::pair<int,int> locs = pos.first;
+            if (locs.first == newx && locs.second == newy && pos.second !=obs && obs == 0)
+            {
+                newgoalPoscp.erase(i);
+                newgoalPoscp.push_back(std::make_pair(locs,obs));
+                newgoalPos = updateBelief(newgoalPoscp);
+                break;
+             }
+        }
+    }
+
     bool isWall = (walls.count(std::pair<int, int> (newx, newy)) != 0);
     if (val > limit && !isWall) {
             GUSSPRockSampleState *next = new GUSSPRockSampleState(this, newx, newy, newsamples, newgoalPos);

@@ -141,6 +141,7 @@ public:
     /** Returns 1 if the state is a true goal. Returns 0 otherwise.
      **/
     virtual int getObservation(GUSSPRockSampleState* s);
+    virtual int getObservation(int x, int y);
 
     virtual std::vector<std::pair<std::pair<int,int>, double>> updateBelief(
                                                 std::vector<std::pair<std::pair<int,int>, double>> curr_belief);
@@ -148,6 +149,7 @@ public:
     /** Returns 1 if the state is a potential goal. Returns 0 otherwise.
      **/
     virtual bool isPotentialGoal(GUSSPRockSampleState* s);
+    virtual bool isPotentialGoal(int x, int y);
 
     virtual bool GUSSPRSGoal(GUSSPRockSampleState* s) const;
 
