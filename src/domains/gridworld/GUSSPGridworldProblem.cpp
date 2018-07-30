@@ -206,7 +206,7 @@ GUSSPGridWorldProblem::transition(mlcore::State *s, mlcore::Action *a)
     int numSuccessors = allDirections_ ? 3 : 2;
     double probSides = 0.2 / numSuccessors;
 
-    if (action->dir() == GUSSPgridworld::UP) {
+    if (action->dir() == GUSSPgridworld::DOWN) {
         addSuccessor(state, successors, height_ - 1, state->y(),
                      state->x(), state->y() + 1, state->goalPos(), probForward);
 
@@ -220,7 +220,7 @@ GUSSPGridWorldProblem::transition(mlcore::State *s, mlcore::Action *a)
             addSuccessor(state, successors, state->y(), 0,
                          state->x(), state->y() - 1, state->goalPos(), probSides);
         }
-    } else if (action->dir() == GUSSPgridworld::DOWN) {
+    } else if (action->dir() == GUSSPgridworld::UP) {
         addSuccessor(state, successors, state->y(), 0,
                      state->x(), state->y() - 1, state->goalPos(), probForward);
 

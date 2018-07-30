@@ -263,7 +263,7 @@ GUSSPSearchRescueProblem::transition(mlcore::State *s, mlcore::Action *a)
     int numSuccessors = allDirections_ ? 3 : 2;
     double probSides = 0.2 / numSuccessors;
 
-    if (action->dir() == searchrescue::UP) {
+    if (action->dir() == searchrescue::DOWN) {
        addSuccessor(state, allSuccessors, idAction, height_ - 1, state->y(),
                      state->x(), state->y() + 1, state->victims(),
                      state->goalPos(), probForward);
@@ -281,7 +281,7 @@ GUSSPSearchRescueProblem::transition(mlcore::State *s, mlcore::Action *a)
                          state->x(), state->y() - 1, state->victims(),
                          state->goalPos(), probSides);
         }
-    } else if (action->dir() == searchrescue::DOWN) {
+    } else if (action->dir() == searchrescue::UP) {
         addSuccessor(state, allSuccessors,idAction, state->y(), 0,
                      state->x(), state->y() - 1, state->victims(),
                      state->goalPos(), probForward);

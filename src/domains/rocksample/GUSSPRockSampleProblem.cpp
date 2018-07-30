@@ -249,7 +249,7 @@ GUSSPRockSampleProblem::transition(mlcore::State *s, mlcore::Action *a)
     double probSides = 0.2 / numSuccessors;
 
 
-    if (action->dir() == rocksample::UP) {
+    if (action->dir() == rocksample::DOWN) {
         addSuccessor(state, allSuccessors, idAction, height_ - 1, state->y(),
                      state->x(), state->y() + 1, state->sampledRocks(),
                      state->goalPos(), probForward);
@@ -267,7 +267,7 @@ GUSSPRockSampleProblem::transition(mlcore::State *s, mlcore::Action *a)
                          state->x(), state->y() - 1, state->sampledRocks(),
                          state->goalPos(), probSides);
         }
-    } else if (action->dir() == rocksample::DOWN) {
+    } else if (action->dir() == rocksample::UP) {
         addSuccessor(state, allSuccessors, idAction, state->y(), 0,
                      state->x(), state->y() - 1, state->sampledRocks(),
                      state->goalPos(), probForward);
