@@ -16,8 +16,10 @@
 namespace mlsolvers
 {
 
-const int det_GUSSP_most_likely = 0;
-const int det_GUSSP_closest = 1;
+const int det_GUSSP_random = 0;
+const int det_GUSSP_most_likely = 1;
+const int det_GUSSP_closest = 2;
+
 
 /**
  * Implements a deterministic solver for the GUSSP. It simplifies the problem

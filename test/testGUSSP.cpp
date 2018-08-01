@@ -167,7 +167,7 @@ void initSolver(string algorithm, Solver*& solver)
         solver = new LAOStarSolver(problem, tol, 1000000);
     }
     else if (algorithm == "detGUSSP"){
-        solver = new DeterministicGUSSPSolver(problem, 0);
+        solver = new DeterministicGUSSPSolver(problem, 1);
     }
      else if (algorithm == "lrtdp") {
         solver = new LRTDPSolver(problem, trials, tol);

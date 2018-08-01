@@ -35,8 +35,15 @@ void DeterministicGUSSPSolver::setTempGoal(mlcore::State* s)
              }
         }
     }
+    else if(choice_ == det_GUSSP_random){
+        int index =  rand() % pg_active_.size();
+        std::pair<std::pair<int,int>, double> gp  = pg_active_.at(index);
+        temp_goal_ =  gp.first;
+    }
     else{
-        std::cerr << " temp goal only works for most likely goal. Does not currently support closest goal" << std::endl;
+        std::cerr << "choice = " << choice_ << std::endl;
+        std::cerr << det_GUSSP_random << ", " << det_GUSSP_most_likely << "," << det_GUSSP_closest <<std::endl;
+        std::cerr << " temp goal only works for most likely goal and random goal. Does not currently support closest goal" << std::endl;
         exit(EXIT_FAILURE);
     }
 
