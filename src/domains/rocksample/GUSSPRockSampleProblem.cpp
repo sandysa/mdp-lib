@@ -221,37 +221,22 @@ GUSSPRockSampleProblem::transition(mlcore::State *s, mlcore::Action *a)
     /** Otherwise check observation to update belief over goal configurations **/
     int obs =  getObservation(state);
 
-//    /** If potential goal, update beliefs based on observation **/
-//    if (isPotentialGoal(state)){
-//        for (auto i = goalPos.begin(); i != goalPos.end(); ++i){
-//            std::pair<std::pair<int,int>, double> pos (*i);
-//            std::pair<int,int> locs = pos.first;
-//            if (locs.first == state->x() && locs.second == state->y() && pos.second !=obs && obs == 0)
-//            {
-//                goalPos.erase(i);
-//                goalPos.push_back(std::make_pair(locs,obs));
-//                std::vector<std::pair<std::pair<int,int>, double>> goalPos_new = updateBelief(goalPos);
-//                addSuccessor(state, successors, 100, 0,
-//                             state->x(), state->y(), state->sampledRocks(), goalPos_new, 1.0);
-////                                                                                            std::cout << "updating potential goal for " << state <<
-////                                                                                            " obs  = " << obs << std::endl;
-//              return successors;
-//             }
-//        }
-//    }
-    /** SAMPLE action: **/
-    if (action->dir() == rocksample::SAMPLE && obs == 1 && obs != state->sampledRocks())
-    {
-        addSuccessor(state, successors, 100, 0,
-                             state->x(), state->y(), obs, goalPos, 1.0);
-        return successors;
-    }
-    /** return if the transition is found in the cache **/
+     /** return if the transition is found in the cache **/
         int idAction = action->hashValue();
         std::vector<mlcore::SuccessorsList>* allSuccessors = state->allSuccessors();
         if (!allSuccessors->at(idAction).empty()) {
             return allSuccessors->at(idAction);
         }
+
+    /** SAMPLE action: **/
+    if (action->dir() == rocksample::SAMPLE && obs > 0 && obs != state->sampledRocks())
+    {
+            addSuccessor(state, allSuccessors, idAction, 100, 0,
+                     state->x(), state->y(), obs, state->goalPos(), 1.0);
+
+        return successors;
+    }
+
 
      /** Otherwise, update successor SSP states only. **/
     double probForward = 0.8;
@@ -369,9 +354,13 @@ bool GUSSPRockSampleProblem::applicable(mlcore::State* s, mlcore::Action* a) con
     std::pair<int,int> pos (rss->x(),rss->y());
     if (sra->dir() == rocksample::SAMPLE) // applicable in potential goals
     {
-       return srp->isPotentialGoal(rss);
+        if(srp->getObservation(rss) > 0)
+            return true;
+
+        return false;
     }
-    // move action is always applicable
+
+      // move action is always applicable
         return true;
 }
 

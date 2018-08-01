@@ -71,7 +71,7 @@ bool DeterministicGUSSPSolver::tempGoal(mlcore::State* s)
 
 mlcore::Action* DeterministicGUSSPSolver::solve(mlcore::State* s0){
     setTempGoal(s0);
-    std::cout << " In detGUSSP solver with s0 = " << s0 << std::endl;
+//    std::cout << " In detGUSSP solver with s0 = " << s0 << std::endl;
     clock_t startTime = clock();
     int totalExpanded = 0;
     int countExpanded = 0;

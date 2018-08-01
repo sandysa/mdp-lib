@@ -420,7 +420,7 @@ vector<double> simulate(Solver* solver,
             cout << "Estimated cost " <<
                 problem->initialState()->cost() << endl;
         }
-//                                                                                            experimentLogs();
+                                                                                            experimentLogs();
        double costTrial = 0.0;
         int plausTrial = 0;
         while (!problem->goal(tmp)) {
