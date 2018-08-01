@@ -32,7 +32,7 @@ GUSSPEVProblem:: GUSSPEVProblem(int start_soc, int end_soc, int start_time,
 {
     problem_name_ = "ev";
     for (int i = 0; i < exit_time_range_; i++){
-        potential_goals.push_back(EV::horizon_ - i);
+        potential_goals.push_back(std::make_pair(EV::horizon_ - i, -1));
      }
      setInitBelief(potential_goals, uniform_dist);
 
@@ -50,7 +50,7 @@ GUSSPEVProblem:: GUSSPEVProblem(int start_soc, int end_soc, int start_time, int 
                         end_time_(end_time), rewardCase_(reward_case)
 {
     problem_name_ = "ev";
-    potential_goals.push_back(end_time_);
+    potential_goals.push_back(std::make_pair(end_time_,-1));
 
     setInitBelief(potential_goals, true); // uniform dist set to true
 
@@ -61,7 +61,7 @@ GUSSPEVProblem:: GUSSPEVProblem(int start_soc, int end_soc, int start_time, int 
      addAllActions();
 }
 
-void GUSSPEVProblem::setInitBelief(std::vector<int> potential_goals, bool uniform_dist)
+void GUSSPEVProblem::setInitBelief(std::vector<std::pair<int,int>> potential_goals, bool uniform_dist)
 {
    if(potential_goals.size() == 1)
         goalPos0_.push_back(std::make_pair(potential_goals.at(0), 1.0));
@@ -78,7 +78,7 @@ bool GUSSPEVProblem::isPotentialGoal(GUSSPEVState* evs)
 {
     for(int i = 0; i < potential_goals.size(); i++)
     {
-        if(potential_goals.at(i) == evs->timestep())
+        if(potential_goals.at(i).first == evs->timestep())
             return true;
     }
     return false;
@@ -88,16 +88,16 @@ bool GUSSPEVProblem::isPotentialGoal(int soc, int t)
 {
     for(int i = 0; i < potential_goals.size(); i++)
     {
-        if(potential_goals.at(i) == t)
+        if(potential_goals.at(i).first == t)
             return true;
     }
     return false;
 }
 
-void GUSSPEVProblem::setTrueGoal(std::vector<int> potential_goals)
+void GUSSPEVProblem::setTrueGoal(std::vector<std::pair<int,int>> potential_goals)
 {
     int rn = rand() % potential_goals.size();
-    end_time_ = potential_goals.at(rn);
+    end_time_ = potential_goals.at(rn).first;
     std::cout << "Departure time = " <<  end_time_ << std::endl;
 }
 
@@ -110,7 +110,6 @@ bool GUSSPEVProblem::GUSSPEVgoal(GUSSPEVState * s) const
 {
        return s->timestep() == end_time_;
 }
-
 
 bool GUSSPEVProblem::applicable(mlcore::State* state, mlcore::Action* action) const
 {
@@ -132,6 +131,7 @@ int GUSSPEVProblem::getObservation(GUSSPEVState* evs) const
 {
     if(evs->timestep() == end_time_)
         return 1;
+
     return 0;
 }
 
@@ -139,9 +139,17 @@ int GUSSPEVProblem::getObservation(int soc, int t) const
 {
     if(t == end_time_)
         return 1;
+
     return 0;
 }
-
+void printVector(std::vector<std::pair<std::pair<int,int>, double>> gp)
+{
+    for(auto it = gp.begin(); it != gp.end(); ++it)
+    {
+        std::pair<std::pair<int,int>,double> val = *it;
+        std::cout << val.first.first << "," << val.first.second << "," << val.second << std::endl;
+    }
+}
 
 bool GUSSPEVProblem::isPeak(int timestep)
 {
@@ -203,40 +211,41 @@ double getSOCfactor(GUSSPEVState* evs, GUSSPEVAction* a, GUSSPEVState* evj)
     return 0.0;
 }
 /** normalizes belief based on observation **/
-std::vector<std::pair<int, double>> GUSSPEVProblem::updateBelief(std::vector<std::pair<int,double>> curr_belief)
+ std::vector<std::pair<std::pair<int,int>, double>> GUSSPEVProblem::updateBelief( std::vector<std::pair<std::pair<int,int>, double>> curr_belief)
 {
     double total = 0;
-    std::vector<std::pair<int,double>> new_belief;
+    std::vector<std::pair<std::pair<int,int>, double>> new_belief;
     for (auto i = curr_belief.begin(); i != curr_belief.end(); ++i)
     {
-        std::pair<int, double> pos (*i);
+        std::pair<std::pair<int,int>, double> pos (*i);
         total+= pos.second;
     }
     for (auto i = curr_belief.begin(); i != curr_belief.end(); ++i)
     {
-        std::pair<int, double> pos (*i);
+        std::pair<std::pair<int,int>, double> pos (*i);
         new_belief.push_back(std::make_pair(pos.first, (pos.second/total)));
     }
-    return new_belief;
+     return new_belief;
 }
-std::vector<std::pair<int, double>> GUSSPEVProblem::getGoalPos(int soc, int t, std::vector<std::pair<int,double>> gp){
-    std::vector<std::pair<int, double>> goalPos_new = gp;
+ std::vector<std::pair<std::pair<int,int>, double>> GUSSPEVProblem::getGoalPos(int soc, int t,  std::vector<std::pair<std::pair<int,int>, double>> gp){
+    std::vector<std::pair<std::pair<int,int>, double>> goalPos_new = gp;
     int obs = getObservation(soc, t);
 
     /** update belief of potential goal **/
     if (isPotentialGoal(soc, t))
     {
         for (auto i = gp.begin(); i != gp.end(); ++i){
-            std::pair<int, double> pos (*i);
-            if (pos.first == t && pos.second !=obs && obs == 0)
+            std::pair<std::pair<int,int>, double> pos (*i);
+            if (pos.first.first == t && pos.second != obs && obs == 0)
             {
                 gp.erase(i);
                 gp.push_back(std::make_pair(pos.first, obs));
-                std::vector<std::pair<int, double>> goalPos_new = updateBelief(gp);
-                break;
+                std::vector<std::pair<std::pair<int,int>, double>> goalPos_new = updateBelief(gp);
+                return goalPos_new;
                }
            }
       }
+//    printVector(goalPos_new);
     return goalPos_new;
 }
 
@@ -249,7 +258,7 @@ GUSSPEVProblem::transition(mlcore::State* s, mlcore::Action* action)
 
     GUSSPEVState* evs = static_cast<GUSSPEVState*>(s);
     GUSSPEVAction* a =  static_cast<GUSSPEVAction*>(action);
-    std::vector<std::pair<int, double>> goalPos = evs->goalPos();
+    std::vector<std::pair<std::pair<int,int>, double>> goalPos = evs->goalPos();
 
     if (goal(s) || GUSSPEVgoal(evs)) {
         successors.push_back(
@@ -282,7 +291,7 @@ GUSSPEVProblem::transition(mlcore::State* s, mlcore::Action* action)
 //               }
 //           }
 //      }
-    std::vector<std::pair<int, double>> gp_new;
+    std::vector<std::pair<std::pair<int,int>, double>> gp_new;
     /** SSP transitions **/
     int t = min(EV::horizon_-1 , evs->timestep()+1);
     if(a->level() == 3) //soc unaltered for NOP
@@ -340,7 +349,7 @@ double GUSSPEVProblem::Meancost(mlcore::State* s , mlcore::Action* a)
     for(mlcore::Successor& su : this->transition(s, a))
         {
             GUSSPEVState* evj = static_cast<GUSSPEVState*>(su.su_state);
-            rate += su.su_prob * reward->getReward(evs, eva, evj, rewardCase_, this);
+            rate += su.su_prob * (reward->getReward(evs, eva, evj, rewardCase_, this));
          }
     delete reward;
     return rate;

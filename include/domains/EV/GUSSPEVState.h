@@ -11,7 +11,7 @@ class GUSSPEVState : public mlcore::State
 private:
     int soc_;
     int timestep_;
-    std::vector<std::pair<int, double>> goalPos_; //belief vector over exit times.
+     std::vector<std::pair<std::pair<int,int>, double>> goalPos_; //belief vector over exit times.
 
   /* A cache of all successors (for all actions) of this state */
     std::vector<mlcore::SuccessorsList> allSuccessors_;
@@ -19,7 +19,7 @@ private:
  virtual std::ostream& print(std::ostream& os) const;
 
 public:
-    GUSSPEVState(mlcore::Problem* problem, int soc, int timestep, std::vector<std::pair<int, double>> goalPos);
+    GUSSPEVState(mlcore::Problem* problem, int soc, int timestep, std::vector<std::pair<std::pair<int,int>, double>> goalPos);
 
     virtual mlcore::State& operator=(const mlcore::State& rhs)
     {
@@ -54,7 +54,7 @@ public:
 
     int timestep() const { return timestep_; }
 
-    std::vector<std::pair<int, double>> goalPos() const {return goalPos_;}
+     std::vector<std::pair<std::pair<int,int>, double>> goalPos() const {return goalPos_;}
 
     };
 

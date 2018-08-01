@@ -6,6 +6,13 @@
 
 #include "Solver.h"
 
+#include <climits>
+#include <cmath>
+#include <ctime>
+#include <iostream>
+#include <sstream>
+#include <unistd.h>
+#include <vector>
 namespace mlsolvers
 {
 
@@ -40,8 +47,30 @@ private:
     /* The problem to solve. */
     mlcore::Problem* problem_ = nullptr;
 
-    mlcore::State* temp_goal;
+     mlcore::StateSet visited;
 
+    std::pair<int,int> temp_goal_ ;
+
+   //denotes active potential goals.
+    std::vector<std::pair<std::pair<int,int>, double>> pg_active_;
+
+    /* Error tolerance */
+    double epsilon_ = 1.0e-6;
+
+    /* Weight for the Bellman backup */
+    double weight_ = 1.0;
+
+    /* Time limit for LAO* in milliseconds */
+    int timeLimit_ = 1000000;
+
+    /*
+     * Expands the BPSG rooted at state s and returns the
+     * number of states expanded.
+     */
+    int expand(mlcore::State* s);
+
+    /* Test if the BPSG rooted at state s has converged */
+    double testConvergence(mlcore::State* s);
 
 
 public:
@@ -58,11 +87,14 @@ public:
      *      - mlsolvers::det_GUSSP_closest (Closest potential goal)
      */
     DeterministicGUSSPSolver(mlcore::Problem* problem, int choice,
-                        mlcore::Heuristic* heuristic = nullptr, )
-        : problem_(problem), choice_(choice), heuristic_(heuristic) {}
+                            mlcore::Heuristic* heuristic = nullptr):
+                            problem_(problem), choice_(choice), heuristic_(heuristic){}
 
     virtual ~DeterministicGUSSPSolver() {}
 
+    virtual void setTempGoal(mlcore::State* s);
+
+    virtual bool tempGoal(mlcore::State* s);
     /**
      * Solves the associated problem using the LAO* algorithm.
      *
@@ -70,12 +102,14 @@ public:
      */
     virtual mlcore::Action* solve(mlcore::State* s0);
 
-    void setgoal(mlcore::State* s){temp_goal  = s;}
+    virtual double GUSSP_qvalue(mlcore::Problem* problem, mlcore::State* s, mlcore::Action* a);
 
-    mlcore::State* getTempGoal(){return temp_goal;}
+    virtual std::pair<double, mlcore::Action*> GUSSP_bellmanBackup(mlcore::Problem* problem,
+                                                 mlcore::State* s);
 
-    mlcore::State* calculateTempGoal(int choice);
+    virtual double GUSSP_bellmanUpdate(mlcore::Problem* problem, mlcore::State* s);
 
+    virtual mlcore::Action* GUSSP_greedyAction(mlcore::Problem* problem, mlcore::State* s);
 
 };
 

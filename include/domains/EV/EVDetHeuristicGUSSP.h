@@ -26,12 +26,12 @@ public:
         if (s == problem_->absorbing_)
             return 0;
         double cost_ = mdplib::dead_end_cost;
-        std::vector<std::pair<int, double>> goalPos = evs->goalPos();
+        std::vector<std::pair<std::pair<int,int>, double>> goalPos = evs->goalPos();
 
         double value = 0.0; // all goals have value 0-- assume it reaches the right charge level always
          for(int i = 0; i < goalPos.size(); ++i){
-            std::pair<int, double> pos = goalPos[i];
-            double md = pos.first - evs->timestep();
+            std::pair<std::pair<int,int>, double> pos = goalPos[i];
+            double md = pos.first.first - evs->timestep();
             if(md > 0) // consider only upcoming potential exit times.
             {
                /** multiply cost by the probability of it not being a goal**/

@@ -7,7 +7,7 @@ GUSSPRockSampleState::GUSSPRockSampleState(
                                                                             x_(x), y_(y), sampledRocks_(sampledRocks), goalPos_(goalPos)
 {
      problem_ = problem;
-
+     goalBelief_ =  goalPos_;
       /* Adding a successor entry for each action */
     for (int i = 0; i < 5; i++) {
         allSuccessors_.push_back(std::list<mlcore::Successor> ());

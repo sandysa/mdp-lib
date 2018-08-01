@@ -10,6 +10,8 @@
 #include "Action.h"
 #include "MDPLib.h"
 
+#include <vector>
+
 #define su_state first
 #define su_prob second
 
@@ -17,6 +19,12 @@ namespace mlcore
 {
 
 class Problem;
+
+//template <typename T>
+//struct goalBeliefPair{
+//    typedef std::pair <T, double> goalbel;
+//};
+
 
 /**
  * Abstract class for states.
@@ -74,6 +82,9 @@ protected:
     */
     bool deadEnd_;
 
+
+    std::vector<std::pair<std::pair<int,int>,double>> goalBelief_;
+      /** added for GUSSP **/
     virtual std::ostream& print(std::ostream& os) const =0;
 
 public:
@@ -94,13 +105,21 @@ public:
 
     virtual ~State() {}
 
+    /** added for GUSSP **/
+    //This is  a hacked version. Works for vector of pairs of the form pair<pair<int,int>,double>
+//    template <typename T>
+//    struct goalBelief{
+//        typedef std::vector<typename goalBeliefPair<T>::goalbel > goalbel;
+//    };
+    std::vector<std::pair<std::pair<int,int>,double>> getGoalBelief(){return goalBelief_;}
+
     virtual State& operator=(const State& rhs) =0;
 
     virtual bool operator==(const State& rhs) const =0;
 
     friend std::ostream& operator<<(std::ostream& os, State* s);
 
-    /**
+     /**
      * Equality function used for unordered sets/maps.
      *
      * @return true if this state equals the given state.

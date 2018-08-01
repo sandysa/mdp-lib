@@ -96,6 +96,7 @@ GUSSPSearchRescueProblem::GUSSPSearchRescueProblem(const char* filename,
     this->addState(absorbing);
     addAllActions();
     setTrueGoal(potential_goals);
+
 }
 
 /** randomly sets victims in potential goals **/
@@ -109,7 +110,8 @@ void GUSSPSearchRescueProblem::setTrueGoal(std::vector<std::pair<int,int>> poten
         int totalVictims = 0;
         for(int i = 0; i < potential_goals.size(); i++){
             int index = rand() %2;
-            victimLocations.push_back(std::make_pair(potential_goals.at(i), index));
+            if(index > 0)
+                victimLocations.push_back(std::make_pair(potential_goals.at(i), index));
             totalVictims += index;
          }
         maxVictims_ = totalVictims;
@@ -120,6 +122,11 @@ void GUSSPSearchRescueProblem::setTrueGoal(std::vector<std::pair<int,int>> poten
             victimLocations.push_back(std::make_pair(potential_goals.at(0), 1));
             maxVictims_ = 1;
         }
+    }
+    std::cout << "Victim locations:" << std::endl;
+    for(auto it = victimLocations.begin(); it != victimLocations.end(); ++it){
+        std::pair<std::pair<int,int>,double> val = *it;
+        std::cout << val.first.first << "," << val.first.second << " : " << val.second << std::endl;
     }
 
 }
@@ -176,21 +183,21 @@ bool GUSSPSearchRescueProblem::isPotentialGoal(int x, int y){
 std::vector<std::pair<std::pair<int,int>, double>> GUSSPSearchRescueProblem::updateBelief
                                                     (std::vector<std::pair<std::pair<int,int>, double>> curr_belief)
 {
-    double total = 0;
+     double total = 0;
+//    int goal_index  = -1; //indicates if the true goal has been observed.
     std::vector<std::pair<std::pair<int,int>, double>> new_belief;
-    for (auto i = curr_belief.begin(); i != curr_belief.end(); ++i)
+    for (int i = 0; i < curr_belief.size(); i++)
     {
-        std::pair<std::pair<int,int>, double> pos (*i);
+        std::pair<std::pair<int,int>, double> pos =  curr_belief.at(i);
         total+= pos.second;
     }
-    for (auto i = curr_belief.begin(); i != curr_belief.end(); ++i)
+    for (int i = 0; i < curr_belief.size(); i++)
     {
-        std::pair<std::pair<int,int>, double> pos (*i);
+        std::pair<std::pair<int,int>, double> pos = curr_belief.at(i);
         new_belief.push_back(std::make_pair(pos.first, (pos.second/total)));
     }
     return new_belief;
 }
-
 
 std::list<mlcore::Successor>
 GUSSPSearchRescueProblem::transition(mlcore::State *s, mlcore::Action *a)
@@ -212,52 +219,35 @@ GUSSPSearchRescueProblem::transition(mlcore::State *s, mlcore::Action *a)
  /** Otherwise check observation to update belief over goal configurations **/
     int obs =  getObservation(state);
 
-//    /** If potential goal, update beliefs based on observation **/
-//    if (isPotentialGoal(state) && obs == 0){
-//        for (auto i = goalPos.begin(); i != goalPos.end(); ++i){
-//            std::pair<std::pair<int,int>, double> pos (*i);
-//            std::pair<int,int> locs = pos.first;
-//            if (locs.first == state->x() && locs.second == state->y() && pos.second !=obs)
-//            {
-//                goalPos.erase(i);
-//                goalPos.push_back(std::make_pair(locs,obs));
-//                std::vector<std::pair<std::pair<int,int>, double>> goalPos_new = updateBelief(goalPos);
-//                addSuccessor(state, successors, 100, 0,
-//                             state->x(), state->y(), state->victims(), goalPos_new, 1.0);
-////                                                                                            std::cout << "updating potential goal" << state <<
-////                                                                                            "obs = " << obs  << std::endl;
-//              return successors;
-//             }
-//        }
-//    }
-
-//    int current_bel = 0;
-//    /** Get current belief value: **/
-//     for (auto i = goalPos.begin(); i != goalPos.end(); ++i){
-//            std::pair<std::pair<int,int>, double> pos (*i);
-//            std::pair<int,int> locs = pos.first;
-//            if (locs.first == state->x() && locs.second == state->y())
-//            {
-//                current_bel = pos.second;
-//                break;
-//            }
-//        }
-  /** SAVE action: **/
-    if (action->dir() == searchrescue::SAVE && obs > 0)
-    {
-//                                                                                        std::cout<< " saving at " << state <<std::endl;
-            addSuccessor(state, successors, 100, 0,
-                             state->x(), state->y(), state->victims() + obs, goalPos, 1.0);
-
-        return successors;
-    }
-
- /** return if the transition is found in the cache **/
+    /** return if the transition is found in the cache **/
         int idAction = action->hashValue();
         std::vector<mlcore::SuccessorsList>* allSuccessors = state->allSuccessors();
         if (!allSuccessors->at(idAction).empty()) {
             return allSuccessors->at(idAction);
         }
+
+     double curr_bel = 0;
+     for(auto it = goalPos.begin(); it != goalPos.end(); ++it){
+        std::pair<std::pair<int,int>,double> val = *it;
+        if(val.first == std::make_pair(state->x(),state->y()))
+            curr_bel = val.second;
+     }
+
+  /** SAVE action: **/
+    if (action->dir() == searchrescue::SAVE && obs > 0)
+    {
+//                                                                                        std::cout<< " saving at " << state <<std::endl;
+       if(curr_bel > 0 ) {
+            addSuccessor(state, allSuccessors, idAction, 100, 0,
+                             state->x(), state->y(), (state->victims() + obs), goalPos, 1.0);
+        }
+        else
+            addSuccessor(state, allSuccessors, idAction, 100, 0,
+                             state->x(), state->y(), state->victims(), goalPos, 1.0);
+        return successors;
+    }
+
+
     /** SSP state transition **/
     double probForward = 0.8;
     int numSuccessors = allDirections_ ? 3 : 2;
@@ -378,13 +368,11 @@ bool GUSSPSearchRescueProblem::applicable(mlcore::State* s, mlcore::Action* a) c
     GUSSPSearchRescueState* srs = static_cast<GUSSPSearchRescueState *> (s);
     GUSSPSearchRescueProblem* srp = const_cast<GUSSPSearchRescueProblem*> (this);
     GUSSPSearchRescueAction* sra = static_cast<GUSSPSearchRescueAction *> (a);
-    std::pair<int,int> pos (srs->x(),srs->y());
     if (sra->dir() == searchrescue::SAVE) // applicable in potential goals
     {
-       if(srp->isPotentialGoal(srs))
-       {
+       if(srp->isPotentialGoal(srs) && srp->getObservation(srs->x(), srs->y()) > 0 )
             return true;
-       }
+
         return false;
     }
     // move action is always applicable
@@ -403,6 +391,23 @@ void GUSSPSearchRescueProblem::addSuccessor(
         successors.push_front(mlcore::Successor(state, prob));
     }
 }
+std::vector<std::pair<std::pair<int,int>,double>> belCollapse(std::vector<std::pair<std::pair<int,int>,double>> curr_bel, std::pair<int,int> comp)
+{
+    std::vector<std::pair<std::pair<int,int>,double>> to_ret;
+    for (int i = 0; i < curr_bel.size(); i++)
+    {
+        std::pair<std::pair<int,int>, double> pos = curr_bel.at(i);
+        if(comp == pos.first)
+                to_ret.push_back(std::make_pair(pos.first, 1.0));
+        else
+                to_ret.push_back(std::make_pair(pos.first, 0.0));
+    }
+
+    return to_ret;
+
+}
+
+
 void GUSSPSearchRescueProblem::addSuccessor(
     GUSSPSearchRescueState* state, std::vector<mlcore::SuccessorsList>* allSuccessors, int idAction,
     int val, int limit, int newx, int newy, int newvictims, std::vector<std::pair<std::pair<int, int>,double>> newgoalPos, double prob)
@@ -410,8 +415,15 @@ void GUSSPSearchRescueProblem::addSuccessor(
     /** check observation to update belief over goal configurations **/
     int obs =  getObservation(newx, newy);
     std::vector<std::pair<std::pair<int, int>,double>> newgoalPoscp  = newgoalPos;
+
+   // if(newvictims > state->victims() && newvictims != maxVictims_ && idAction == searchrescue::SAVE){
+    if(newvictims > state->victims() && newvictims < maxVictims_)
+        obs = 0;
+
+
     /** If potential goal, update beliefs based on observation **/
-    if (isPotentialGoal(newx, newy) && obs == 0){
+    if (isPotentialGoal(newx, newy) && obs == 0)//&&obs == 0
+    {
         for (auto i = newgoalPoscp.begin(); i != newgoalPoscp.end(); ++i){
             std::pair<std::pair<int,int>, double> pos (*i);
             std::pair<int,int> locs = pos.first;
@@ -419,6 +431,15 @@ void GUSSPSearchRescueProblem::addSuccessor(
             {
                 newgoalPoscp.erase(i);
                 newgoalPoscp.push_back(std::make_pair(locs,obs));
+//                for (int k = 0; k < victimLocations.size(); k++)
+//                {
+//                    std::pair<std::pair<int, int>, int> vloc = victimLocations.at(k);
+//                    if (vloc.first.first == newx  && vloc.first.second == newy && state->victims()+vloc.second == maxVictims_ && obs == 1)
+//                    {
+//                        newgoalPos = belCollapse(newgoalPoscp, vloc.first);
+//                        break;
+//                    }
+//                }
                 newgoalPos = updateBelief(newgoalPoscp);
                 break;
              }
@@ -431,8 +452,9 @@ void GUSSPSearchRescueProblem::addSuccessor(
             allSuccessors->at(idAction).push_back(mlcore::Successor(this->addState(next), prob));
 
      } else {
-        allSuccessors->at(idAction).push_back(mlcore::Successor(this->addState(state), prob));
-    }
+        GUSSPSearchRescueState *next = new GUSSPSearchRescueState(this, state->x(), state->y(), state->victims() , newgoalPos);
+        allSuccessors->at(idAction).push_back(mlcore::Successor(this->addState(next), prob)); //remains in same state with updated beliefs
+     }
 }
 
 

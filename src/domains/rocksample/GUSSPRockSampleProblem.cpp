@@ -177,16 +177,26 @@ std::vector<std::pair<std::pair<int,int>, double>> GUSSPRockSampleProblem::updat
                                                  (std::vector<std::pair<std::pair<int,int>, double>> curr_belief)
 {
     double total = 0;
+    int goal_index  = -1; //indicates if the true goal has been observed.
     std::vector<std::pair<std::pair<int,int>, double>> new_belief;
-    for (auto i = curr_belief.begin(); i != curr_belief.end(); ++i)
+    for (int i = 0; i < curr_belief.size(); i++)
     {
-        std::pair<std::pair<int,int>, double> pos (*i);
+        std::pair<std::pair<int,int>, double> pos =  curr_belief.at(i);
         total+= pos.second;
+        if(pos.second == 1) //true goal observed
+            goal_index = i;
     }
-    for (auto i = curr_belief.begin(); i != curr_belief.end(); ++i)
+    for (int i = 0; i < curr_belief.size(); i++)
     {
-        std::pair<std::pair<int,int>, double> pos (*i);
-        new_belief.push_back(std::make_pair(pos.first, (pos.second/total)));
+        std::pair<std::pair<int,int>, double> pos = curr_belief.at(i);
+        if(goal_index > -1){
+            if( i == goal_index)
+                 new_belief.push_back(std::make_pair(pos.first, 1.0));
+            else
+                new_belief.push_back(std::make_pair(pos.first, 0.0));
+        }
+        else
+            new_belief.push_back(std::make_pair(pos.first, (pos.second/total)));
     }
     return new_belief;
 }
@@ -390,14 +400,14 @@ void GUSSPRockSampleProblem::addSuccessor(
         for (auto i = newgoalPoscp.begin(); i != newgoalPoscp.end(); ++i){
             std::pair<std::pair<int,int>, double> pos (*i);
             std::pair<int,int> locs = pos.first;
-            if (locs.first == newx && locs.second == newy && pos.second !=obs && obs == 0)
+            if (locs.first == newx && locs.second == newy && pos.second !=obs)
             {
                 newgoalPoscp.erase(i);
                 newgoalPoscp.push_back(std::make_pair(locs,obs));
                 newgoalPos = updateBelief(newgoalPoscp);
                 break;
              }
-        }
+         }
     }
 
     bool isWall = (walls.count(std::pair<int, int> (newx, newy)) != 0);
@@ -406,6 +416,7 @@ void GUSSPRockSampleProblem::addSuccessor(
             allSuccessors->at(idAction).push_back(mlcore::Successor(this->addState(next), prob));
 
      } else {
-        allSuccessors->at(idAction).push_back(mlcore::Successor(this->addState(state), prob));
+        GUSSPRockSampleState *next = new GUSSPRockSampleState(this, state->x(), state->y(), state->sampledRocks(), newgoalPos);
+        allSuccessors->at(idAction).push_back(mlcore::Successor(this->addState(next), prob)); //remains in same state with updated beliefs
     }
 }

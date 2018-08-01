@@ -18,6 +18,7 @@ private:
     int sampledRocks_; // 0 indicates nothing sampled yet. 1 indicates successfully sampled.
     std::vector<std::pair<std::pair<int, int>,double>> goalPos_;
 
+
     virtual std::ostream& print(std::ostream& os) const;
 
     /* A cache of all successors (for all actions) of this state */
@@ -31,7 +32,7 @@ public:
      * given as a first parameter.
      */
     GUSSPRockSampleState(mlcore::Problem* problem, int x, int y, int sampledRocks,
-                        std::vector<std::pair<std::pair<int, int>,double>> goalPos);
+                        std::vector<std::pair<std::pair<int, int>,double>> goalbel);
 
     /**
      * Copy constructor. The resulting state represents the same position as the
@@ -47,7 +48,8 @@ public:
     {
         return &allSuccessors_;
     }
-
+//    template<>
+//    std::vector<std::pair<std::pair<int, int>,double>>  getGoalPos(){ return goalPos_; }
 
     virtual mlcore::State& operator=(const mlcore::State& rhs)
     {

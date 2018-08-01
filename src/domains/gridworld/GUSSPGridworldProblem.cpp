@@ -125,6 +125,7 @@ bool GUSSPGridWorldProblem::GUSSPgridGoal(GUSSPGridWorldState* gws) const
      return false;
 }
 
+
 /**
 * returns 1 if it is a true goal, 0 otherwise.
 **/

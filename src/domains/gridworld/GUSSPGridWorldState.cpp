@@ -8,9 +8,10 @@
 
 GUSSPGridWorldState::GUSSPGridWorldState(
     mlcore::Problem* GUSSPproblem, int x, int y, std::vector<std::pair<std::pair<int, int>,double>> goalPos) :
-                                                                x_(x), y_(y), goalPos_(goalPos)
+                                                                x_(x), y_(y),goalPos_(goalPos)
 {
      problem_ = GUSSPproblem;
+     goalBelief_ =  goalPos_;
 }
 
 std::ostream& GUSSPGridWorldState::print(std::ostream& os) const

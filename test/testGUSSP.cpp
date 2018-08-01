@@ -21,6 +21,8 @@
 #include "../include/solvers/CostAdjusted_DeterministicSolver.h"
 #include "../include/solvers/BoundedRTDPSolver.h"
 #include "../include/solvers/VPIRTDPSolver.h"
+#include "../include/solvers/DeterministicGUSSPSolver.h"
+
 
 #include "../include/util/flags.h"
 #include "../include/util/general.h"
@@ -70,6 +72,8 @@ void setupGridWorld()
         heuristic = new GWDetHeuristicGUSSP((GUSSPGridWorldProblem*) problem);
     else if (!flag_is_registered("heuristic"))
         heuristic = nullptr;
+
+    problem->ProblemName("GUSSPGridWorld");
 }
 void setupSearchRescue()
 {
@@ -80,6 +84,7 @@ void setupSearchRescue()
 
     if(flag_value("heuristic") == "domainGUSSP")
         heuristic = new SRDetHeuristicGUSSP((GUSSPSearchRescueProblem*) problem);
+    problem->ProblemName("GUSSPSearchRescue");
 }
 void setupEV()
 {
@@ -98,6 +103,8 @@ void setupEV()
 
     if (flag_value("heuristic") == "domainGUSSP")
         heuristic = new EVDetHeuristicGUSSP((GUSSPEVProblem*) problem);
+
+    problem->ProblemName("GUSSPEV");
  }
 
 void setupRockSample()
@@ -109,6 +116,8 @@ void setupRockSample()
 
     if(flag_value("heuristic") == "domainGUSSP")
         heuristic = new RSDetHeuristicGUSSP((GUSSPRockSampleProblem*) problem);
+
+    problem->ProblemName("GUSSPRockSample");
 }
 void setupProblem()
 {
@@ -156,6 +165,9 @@ void initSolver(string algorithm, Solver*& solver)
 
     if (algorithm == "lao") {
         solver = new LAOStarSolver(problem, tol, 1000000);
+    }
+    else if (algorithm == "detGUSSP"){
+        solver = new DeterministicGUSSPSolver(problem, 0);
     }
      else if (algorithm == "lrtdp") {
         solver = new LRTDPSolver(problem, trials, tol);
@@ -290,6 +302,11 @@ bool mustReplan(Solver* solver, string algorithm, State* s, int plausTrial) {
   if(algorithm == "prm" || algorithm == "det")
     return true;
 
+  if(algorithm == "detGUSSP"){
+    if(s->bestAction() == nullptr)
+        return true;
+  }
+
   return false;
 }
 void experimentLogs()
@@ -302,8 +319,12 @@ void experimentLogs()
 //        std::cout << "(" << pgpos.first << " " << pgpos.second << ")" << std::endl;
 //    }
     for (State* s : problem->states()){
-            if(s->bestAction() != nullptr)
-             std::cout << s << " -> " <<  s->bestAction() << std::endl;
+            if(s->bestAction() != nullptr){
+             std::cout << s << " -> " <<  s->bestAction() << " , " << problem->cost(s, s->bestAction()) << std::endl;
+//              for (auto const & sccr : problem->transition(s, s->bestAction()))
+//                   std::cout << "\t " << sccr.su_state << ", " << sccr.su_prob << std::endl;
+            }
+
 //        GUSSPRockSampleState* rss =  static_cast<GUSSPRockSampleState*> (s);
 //        if(s->bestAction() != nullptr){
 //           std::vector<std::pair<std::pair<int, int>,double>> goalpos = rss->goalPos();
@@ -367,6 +388,7 @@ vector<double> simulate(Solver* solver,
                 solver->solve(problem->initialState());
                                                                                         if (verbosity >= 10)
                                                                                             cout << " problem solved " << endl;
+
                 if(algorithm == "prm" || algorithm == "acarm"){
                         double max_hval = 0.0;
                         double model_size = 0.0;
@@ -398,20 +420,20 @@ vector<double> simulate(Solver* solver,
             cout << "Estimated cost " <<
                 problem->initialState()->cost() << endl;
         }
-                                                                                            experimentLogs();
-
-        double costTrial = 0.0;
+//                                                                                            experimentLogs();
+       double costTrial = 0.0;
         int plausTrial = 0;
         while (!problem->goal(tmp)) {
+                                                                                if(verbosity >= 10 && tmp->bestAction() != nullptr)
+                                                                                    std::cout << " tmp = " << tmp << " ba = " << tmp->bestAction() << std::endl;
             statesSeen.insert(tmp);
             Action* a;
-            if (a == nullptr && (algorithm == "prm" || algorithm == "det" || algorithm == "acarm" || algorithm == "alld")) {
+         if (a == nullptr && (algorithm == "prm" || algorithm == "det" || algorithm == "acarm" || algorithm == "alld" )) {
                 startTime = clock();
                 a = solver->solve(tmp);
                 endTime = clock();
                 totalTime += (double(endTime - startTime) / CLOCKS_PER_SEC);
                 }
-
           else {
              if (mustReplan(solver, algorithm, tmp, plausTrial)) {
                 startTime = clock();
@@ -576,6 +598,7 @@ int main(int argc, char* args[])
     while (getline(ss, alg_item, ',')) {
         // cout << setw(10) << alg_item << ": ";
         Solver* solver = nullptr;
+        std::vector<std::pair<std::pair<int,int>,double>> pg;
         initSolver(alg_item, solver);
         // Maximum planning time per simulation in milliseconds
         int maxTime = -1;
