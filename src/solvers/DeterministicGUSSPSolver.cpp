@@ -14,6 +14,25 @@
 
 namespace mlsolvers
 {
+//figure out smarter way of doing this. Using this engineered solution due to lack of time for submission.
+double DeterministicGUSSPSolver::getPGDistance(mlcore::State* s, std::pair<int,int> pg)
+{
+    if(problem_->getProblemName() == "GUSSPEV"){
+        GUSSPEVState* evs  =  static_cast<GUSSPEVState*> (s);
+            return (abs(evs->timestep() -  pg.first));
+     }
+    else if(problem_->getProblemName() == "GUSSPRockSample"){
+        GUSSPRockSampleState* srs  =  static_cast<GUSSPRockSampleState*> (s);
+            return (abs(srs->x() - pg.first) + abs(srs->y() - pg.second));
+    }
+
+    else if(problem_->getProblemName() == "GUSSPSearchRescue"){
+        GUSSPSearchRescueState* srs  =  static_cast<GUSSPSearchRescueState*> (s);
+         return (abs(srs->x() - pg.first) + abs(srs->y() - pg.second));
+    }
+    return 0;
+}
+
 void DeterministicGUSSPSolver::setTempGoal(mlcore::State* s)
 {
     pg_active_.clear();
@@ -40,14 +59,18 @@ void DeterministicGUSSPSolver::setTempGoal(mlcore::State* s)
         std::pair<std::pair<int,int>, double> gp  = pg_active_.at(index);
         temp_goal_ =  gp.first;
     }
-    else{
-        std::cerr << "choice = " << choice_ << std::endl;
-        std::cerr << det_GUSSP_random << ", " << det_GUSSP_most_likely << "," << det_GUSSP_closest <<std::endl;
-        std::cerr << " temp goal only works for most likely goal and random goal. Does not currently support closest goal" << std::endl;
-        exit(EXIT_FAILURE);
+    else if(choice_  == det_GUSSP_closest){
+        double min_dist = 10000000.0;
+         for (int i = 0; i < pg_active_.size(); i++){
+             std::pair<std::pair<int,int>, double> gp  = pg_active_.at(i);
+             double distance_pg  = getPGDistance(s, gp.first);
+             if( distance_pg <  min_dist){
+                min_dist =  distance_pg;
+                temp_goal_ =  gp.first;
+             }
+        }
     }
-
-    std::cout << "Temp goal = " << temp_goal_.first << ", " << temp_goal_.second << std::endl;
+//    std::cout << "Temp goal = " << temp_goal_.first << ", " << temp_goal_.second << std::endl;
 }
 
 bool DeterministicGUSSPSolver::tempGoal(mlcore::State* s)

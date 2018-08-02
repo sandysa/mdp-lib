@@ -150,6 +150,8 @@ void initSolver(string algorithm, Solver*& solver)
 {
     double tol = 1.0e-3;
     bool adjustCost = false;
+    int det_choice = 0;
+
     assert(flag_is_registered_with_value("algorithm"));
     algorithm = flag_value("algorithm");
 
@@ -162,12 +164,14 @@ void initSolver(string algorithm, Solver*& solver)
         trials = stoi(flag_value("trials"));
     if (flag_is_registered_with_value("tol"))
         tol = stof(flag_value("tol"));
+    if (flag_is_registered_with_value("detChoice"))
+        det_choice = stoi(flag_value("detChoice"));
 
     if (algorithm == "lao") {
         solver = new LAOStarSolver(problem, tol, 1000000);
     }
     else if (algorithm == "detGUSSP"){
-        solver = new DeterministicGUSSPSolver(problem, 1);
+        solver = new DeterministicGUSSPSolver(problem, det_choice);
     }
      else if (algorithm == "lrtdp") {
         solver = new LRTDPSolver(problem, trials, tol);
@@ -347,6 +351,12 @@ void experimentLogs()
      }
 
 }
+bool OptimalSolver(string algorithm)
+{
+    if(algorithm == "vi" || algorithm == "lao")
+        return true;
+    return false;
+}
 
 
 // Runs [numSims] of the given solver and and returns the results
@@ -366,6 +376,7 @@ vector<double> simulate(Solver* solver,
     double expectedCost = 0.0;
     double variance = 0.0;
     double totalTime = 0.0;
+    double initPlanTime = 0.0;
     double longestTime = 0.0;
     StateSet statesSeen;
     int cnt = 0;
@@ -386,13 +397,10 @@ vector<double> simulate(Solver* solver,
                 static_cast<UCTSolver*>(solver)->reset();
             } else if (algorithm != "greedy") {
                 solver->solve(problem->initialState());
-                                                                                        if (verbosity >= 10)
-                                                                                            cout << " problem solved " << endl;
 
                 if(algorithm == "prm" || algorithm == "acarm"){
                         double max_hval = 0.0;
                         double model_size = 0.0;
-                        double num_fullModel = 0.0;
                         for (State* s : problem->states()){
                             if(s->hashValue() > max_hval)
                                 max_hval = s->hashValue();
@@ -409,18 +417,20 @@ vector<double> simulate(Solver* solver,
             endTime = clock();
             double planTime = (double(endTime - startTime) / CLOCKS_PER_SEC);
             totalTime += planTime;
+            initPlanTime += planTime;
             longestTime = std::max(longestTime, planTime);
             numDecisions++;
         }
-        if (verbosity >= 10) {
+        if (verbosity >= 10)
             cout << "Starting simulation " << i << endl;
-        }
+
         State* tmp = problem->initialState();
         if (verbosity >= 100) {
             cout << "Estimated cost " <<
                 problem->initialState()->cost() << endl;
-        }
-                                                                                            experimentLogs();
+            }
+                                                                                            if(verbosity >= 10)
+                                                                                                experimentLogs();
        double costTrial = 0.0;
         int plausTrial = 0;
         while (!problem->goal(tmp)) {
@@ -428,7 +438,7 @@ vector<double> simulate(Solver* solver,
                                                                                     std::cout << " tmp = " << tmp << " ba = " << tmp->bestAction() << std::endl;
             statesSeen.insert(tmp);
             Action* a;
-         if (a == nullptr && (algorithm == "prm" || algorithm == "det" || algorithm == "acarm" || algorithm == "alld" )) {
+         if (a == nullptr) {
                 startTime = clock();
                 a = solver->solve(tmp);
                 endTime = clock();
@@ -500,8 +510,6 @@ vector<double> simulate(Solver* solver,
         } else {
             cnt++;
             updateStatistics(costTrial, cnt, expectedCost, variance);
-            if (verbosity >= 10)
-                cout << costTrial << endl;
         }
     }
 
@@ -513,7 +521,11 @@ vector<double> simulate(Solver* solver,
         cout << "Estimated cost " << problem->initialState()->cost() << " ";
         cout << "Avg. Exec cost " << expectedCost << " ";
         cout << "Std. Dev. " << sqrt(variance / (cnt - 1)) << " ";
-        cout << "Total time " << ((totalTime / cnt)+ heuristic_time) << " " << endl; // time in seconds
+        cout << "Plan time(w/o replan) " << (initPlanTime) << " " ; // time in seconds
+        if(!OptimalSolver(algorithm)) //optimal solver computes plan only once.
+            totalTime = totalTime/cnt;
+
+        cout << "Total time " << (totalTime + heuristic_time) << " " << endl; // time in seconds
         cout << "States seen " << statesSeen.size() << endl;
         cout << "Avg. time per decision "
              << totalTime / numDecisions << endl
@@ -598,7 +610,6 @@ int main(int argc, char* args[])
     while (getline(ss, alg_item, ',')) {
         // cout << setw(10) << alg_item << ": ";
         Solver* solver = nullptr;
-        std::vector<std::pair<std::pair<int,int>,double>> pg;
         initSolver(alg_item, solver);
         // Maximum planning time per simulation in milliseconds
         int maxTime = -1;
@@ -619,11 +630,7 @@ int main(int argc, char* args[])
                 updateStatistics(results[0], i, avgCost, M2Cost);
                 updateStatistics(results[2], i, avgTime, M2Time);
                 }
-//            cout << t << " "
-//                << avgCost << " "
-//                << sqrt(M2Cost / (numReps * (numReps - 1))) << " "
-//                << avgTime << " "
-//                << sqrt(M2Time / (numReps * (numReps - 1))) << endl;
+
             if (maxTime == -1)
                 break;
         }

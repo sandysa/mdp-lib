@@ -3,13 +3,12 @@
 nsims=100
 verbosity=1
 heuristic=(zero hmin domainGUSSP)
-# heuristic=(zero domainGUSSP)
 # grids=(map5GUSSP map5GUSSP-dense map6GUSSP map6GUSSP-dense)
-grids=(map5GUSSP map6GUSSP)
-search=(corridor map1GUSSP map2GUSSP map3GUSSP)
-# search=(map3GUSSP)
-rocks=(corridor map1GUSSP map2GUSSP map3GUSSP)
-# rocks=(map3GUSSP)
+search=(map1GUSSP-dense map2GUSSP-dense map3GUSSP-dense largemap)
+rocks=(map1GUSSP map2GUSSP map3GUSSP largemap map3GUSSP-dense)
+
+detChoice=(0 1 2)
+
 ######## Gridworld domain problems # ########
 # for gw in ${grids[@]}; do
 #     #LAO
@@ -51,7 +50,18 @@ for srs in ${search[@]}; do
                 --heuristic=$heur --alpha=0 --labelf=step --min_time=-1 --max_time=-1 \
                 --uniform-goal-dist=true --dist=depth
             done
-	done
+        done
+        
+                 # DETGUSSP
+       for dchoice in ${detChoice[@]};do
+         for heur in ${heuristic[@]};do
+                echo "********************************************************"
+                echo "${srs}|detGUSSP(${dchoice})|${heur}|$ex"
+                ../testGussp.out --searchrescue=../data/searchrescue/$srs.sr \
+                --algorithm=detGUSSP --n=$nsims --v=$verbosity \
+                --heuristic=$heur --uniform-goal-dist=true --det_choice=$dchoice
+             done
+        done
 done
 
 ######## Rock Sample domain problems # ########
@@ -73,4 +83,15 @@ done
 #         --heuristic=$heur --alpha=0 --labelf=step --min_time=-1 --max_time=-1 --uniform-goal-dist=true
 #     done
 #   done
+#  
+#              # DETGUSSP
+#        for dchoice in ${detChoice[@]};do
+#          for heur in ${heuristic[@]};do
+#                 echo "********************************************************"
+#                 echo "${rs}|detGUSSP(${dchoice})|${heur}|$ex"
+#                 ../testGussp.out --rocksample=../data/rocksample/$rs.rs \
+#                 --algorithm=detGUSSP --n=$nsims --v=$verbosity \
+#                 --heuristic=$heur --uniform-goal-dist=true --det_choice=$dchoice
+#              done
+#         done
 # done

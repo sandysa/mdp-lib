@@ -97,6 +97,8 @@ public:
     virtual void setTempGoal(mlcore::State* s);
 
     virtual bool tempGoal(mlcore::State* s);
+
+    virtual double getPGDistance(mlcore::State* s, std::pair<int,int> pg);
     /**
      * Solves the associated problem using the LAO* algorithm.
      *
@@ -112,6 +114,7 @@ public:
     virtual double GUSSP_bellmanUpdate(mlcore::Problem* problem, mlcore::State* s);
 
     virtual mlcore::Action* GUSSP_greedyAction(mlcore::Problem* problem, mlcore::State* s);
+
 
 };
 

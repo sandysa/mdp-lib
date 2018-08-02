@@ -59,6 +59,7 @@ public:
     int x() {return x_;}
     int y() {return y_;}
     std::vector<std::pair<std::pair<int, int>,double>>goalPos() {return goalPos_;}
+
 };
 
 #endif // MPDLIB_GUSSPGRIDWORLDSTATE_H

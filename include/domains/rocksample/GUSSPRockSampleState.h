@@ -81,6 +81,7 @@ public:
     int sampledRocks() {return sampledRocks_;}
 
     std::vector<std::pair<std::pair<int, int>,double>>goalPos() {return goalPos_;}
+
 };
 
 #endif // MPDLIB_GUSSPROCKSAMPLESTATE_H

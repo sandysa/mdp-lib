@@ -106,11 +106,7 @@ public:
     virtual ~State() {}
 
     /** added for GUSSP **/
-    //This is  a hacked version. Works for vector of pairs of the form pair<pair<int,int>,double>
-//    template <typename T>
-//    struct goalBelief{
-//        typedef std::vector<typename goalBeliefPair<T>::goalbel > goalbel;
-//    };
+
     std::vector<std::pair<std::pair<int,int>,double>> getGoalBelief(){return goalBelief_;}
 
     virtual State& operator=(const State& rhs) =0;

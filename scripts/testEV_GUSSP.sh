@@ -4,8 +4,9 @@ nsims=100
 verbosity=1
 heuristic=(zero hmin-solve-all domainGUSSP)
 rew=1
-# endrange=(3 4)
-endrange=(14)
+endrange=(3 4)
+detChoice=(0 1 2)
+# endrange=(14)
 
 while IFS='' read -r line || [[ -n "$line" ]]; do
     a=( $line )
@@ -57,7 +58,18 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
                 --heuristic=$heur --alpha=0 --labelf=step --min_time=-1 --max_time=-1  --uniform-goal-dist=true
              done
         done
-    done
+        
+               # DETGUSSP
+       for dchoice in ${detChoice[@]};do
+         for heur in ${heuristic[@]};do
+                echo "********************************************************"
+                echo "detGUSSP(${dchoice})|${heur}|$ex"
+                ../testGussp.out --start-soc=${a[0]} --end-soc=${a[1]} --start-time=${a[2]} --exit-range=$ex --reward=$rew \
+                --algorithm=detGUSSP --n=$nsims --v=$verbosity \
+                --heuristic=$heur --uniform-goal-dist=true --det_choice=$dchoice
+             done
+        done
+      done
 done < "$1"
 
 
