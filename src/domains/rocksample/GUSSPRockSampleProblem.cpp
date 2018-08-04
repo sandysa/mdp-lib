@@ -143,7 +143,7 @@ bool GUSSPRockSampleProblem::goal(mlcore::State* s) const
 
 int GUSSPRockSampleProblem::getObservation(GUSSPRockSampleState* rss){
     std::pair<int,int> pos(rss->x(),rss->y());
-     if(goals_->find(pos) != goals_->end())
+   if(goals_->find(pos) != goals_->end())
         return 1;
    return 0;
 }
@@ -198,6 +198,8 @@ std::vector<std::pair<std::pair<int,int>, double>> GUSSPRockSampleProblem::updat
         else
             new_belief.push_back(std::make_pair(pos.first, (pos.second/total)));
     }
+    //order them based on locations. otherwise [(A,0), (B,1)] and [(B,1),(A,0)] are treated as different states.
+    std::sort(new_belief.begin(), new_belief.end());
     return new_belief;
 }
 
@@ -219,7 +221,7 @@ GUSSPRockSampleProblem::transition(mlcore::State *s, mlcore::Action *a)
         return successors;
     }
     /** Otherwise check observation to update belief over goal configurations **/
-    int obs =  getObservation(state);
+//    int obs =  getObservation(state);
 
      /** return if the transition is found in the cache **/
         int idAction = action->hashValue();
@@ -229,13 +231,14 @@ GUSSPRockSampleProblem::transition(mlcore::State *s, mlcore::Action *a)
         }
 
     /** SAMPLE action: **/
-    if (action->dir() == rocksample::SAMPLE && obs > 0 && obs != state->sampledRocks())
-    {
+//    if (action->dir() == rocksample::SAMPLE && obs > 0 && obs != state->sampledRocks())
+        if (action->dir() == rocksample::SAMPLE && state->sampledRocks() < 1)
+        {
             addSuccessor(state, allSuccessors, idAction, 100, 0,
-                     state->x(), state->y(), obs, state->goalPos(), 1.0);
+                     state->x(), state->y(), 1 , state->goalPos(), 1.0);
 
-        return successors;
-    }
+            return successors;
+        }
 
 
      /** Otherwise, update successor SSP states only. **/
@@ -332,12 +335,8 @@ double GUSSPRockSampleProblem::cost(mlcore::State* s, mlcore::Action* a) const
         return 0;
 
     if (rsa->dir() == rocksample::SAMPLE)
-    {
-        if (rsp->getObservation(rss) > 0)
             return 2.0 * actionCost_;
-        else
-            return 10.0 * actionCost_;
-    }
+
 
     if (holes.count(std::pair<int, int> (rss->x(), rss->y())) != 0)
         return holeCost_ * actionCost_;
@@ -349,19 +348,23 @@ double GUSSPRockSampleProblem::cost(mlcore::State* s, mlcore::Action* a) const
 bool GUSSPRockSampleProblem::applicable(mlcore::State* s, mlcore::Action* a) const
 {
     GUSSPRockSampleState* rss = static_cast<GUSSPRockSampleState *> (s);
-    GUSSPRockSampleProblem* srp = const_cast<GUSSPRockSampleProblem*> (this);
-    GUSSPRockSampleAction* sra = static_cast<GUSSPRockSampleAction *> (a);
+    GUSSPRockSampleProblem* rsp = const_cast<GUSSPRockSampleProblem*> (this);
+    GUSSPRockSampleAction* rsa = static_cast<GUSSPRockSampleAction *> (a);
     std::pair<int,int> pos (rss->x(),rss->y());
-    if (sra->dir() == rocksample::SAMPLE) // applicable in potential goals
+    if (rsa->dir() == rocksample::SAMPLE)
     {
-        if(srp->getObservation(rss) > 0)
-            return true;
-
+        if(rsp->isPotentialGoal(rss)){
+            std::vector<std::pair<std::pair<int,int>,double>> gp = rss->goalPos();
+            for(auto it = gp.begin(); it != gp.end(); ++it)
+            {
+                std::pair<std::pair<int,int>,double> val = *it;
+                if(std::make_pair(rss->x(), rss->y()) == val.first && val.second == 1)
+                    return true;
+            }
+        }
         return false;
     }
-
-      // move action is always applicable
-        return true;
+    return true; // move action is always applicable
 }
 
 void GUSSPRockSampleProblem::addSuccessor(
@@ -381,31 +384,46 @@ void GUSSPRockSampleProblem::addSuccessor(
     GUSSPRockSampleState* state, std::vector<mlcore::SuccessorsList>* allSuccessors, int idAction,
     int val, int limit, int newx, int newy, int newsamples, std::vector<std::pair<std::pair<int, int>,double>> newgoalPos, double prob)
 {
-       /** Otherwise check observation to update belief over goal configurations **/
-    int obs =  getObservation(newx, newy);
-    std::vector<std::pair<std::pair<int, int>,double>> newgoalPoscp  = newgoalPos;
-    /** If potential goal, update beliefs based on observation **/
-    if (isPotentialGoal(newx, newy)){
-        for (auto i = newgoalPoscp.begin(); i != newgoalPoscp.end(); ++i){
-            std::pair<std::pair<int,int>, double> pos (*i);
-            std::pair<int,int> locs = pos.first;
-            if (locs.first == newx && locs.second == newy && pos.second !=obs)
-            {
-                newgoalPoscp.erase(i);
-                newgoalPoscp.push_back(std::make_pair(locs,obs));
-                newgoalPos = updateBelief(newgoalPoscp);
-                break;
-             }
-         }
-    }
+     bool isWall = (walls.count(std::pair<int, int> (newx, newy)) != 0);
+     if (val > limit && !isWall) {
+        //    int obs =  getObservation(newx, newy);
 
-    bool isWall = (walls.count(std::pair<int, int> (newx, newy)) != 0);
-    if (val > limit && !isWall) {
-            GUSSPRockSampleState *next = new GUSSPRockSampleState(this, newx, newy, newsamples, newgoalPos);
-            allSuccessors->at(idAction).push_back(mlcore::Successor(this->addState(next), prob));
+        /** If potential goal, update beliefs based on observation **/
+        if (isPotentialGoal(newx, newy)){
+            for (auto i = newgoalPos.begin(); i != newgoalPos.end(); ++i){
+                std::pair<std::pair<int,int>, double> pos (*i);
+                std::pair<int,int> locs = pos.first;
+                if (locs.first == newx && locs.second == newy)
+                {
+                  if(pos.second == 0 || pos.second == 1) //already collapsed belief
+                   {
+                        GUSSPRockSampleState *next = new GUSSPRockSampleState(this, newx, newy, newsamples, newgoalPos);
+                        allSuccessors->at(idAction).push_back(mlcore::Successor(this->addState(next), prob));
+                        return;
+                   } else {
+                       for(int obs = 0; obs <= 1; obs ++){
+                             std::vector<std::pair<std::pair<int, int>,double>> newgoalPoscp = newgoalPos;
+                             std::vector<std::pair<std::pair<int,int>, double>>::iterator old_val = std::find(newgoalPoscp.begin(), newgoalPoscp.end(), pos);
+                             if (old_val != newgoalPoscp.end())
+                                newgoalPoscp.erase(old_val);
 
-     } else {
-        GUSSPRockSampleState *next = new GUSSPRockSampleState(this, state->x(), state->y(), state->sampledRocks(), newgoalPos);
-        allSuccessors->at(idAction).push_back(mlcore::Successor(this->addState(next), prob)); //remains in same state with updated beliefs
+                             newgoalPoscp.push_back(std::make_pair(locs,obs));
+                             newgoalPoscp = updateBelief(newgoalPoscp);
+                             GUSSPRockSampleState *next = new GUSSPRockSampleState(this, newx, newy, newsamples, newgoalPoscp);
+                             allSuccessors->at(idAction).push_back(mlcore::Successor(this->addState(next), prob * 0.5));
+                       }
+                    }
+                }
+            }
+        }
+        else{
+             GUSSPRockSampleState *next = new GUSSPRockSampleState(this, newx, newy, newsamples, newgoalPos);
+             allSuccessors->at(idAction).push_back(mlcore::Successor(this->addState(next), prob));
+        }
+      } else {
+//        GUSSPRockSampleState *next = new GUSSPRockSampleState(this, state->x(), state->y(), state->sampledRocks(), newgoalPos);
+//        allSuccessors->at(idAction).push_back(mlcore::Successor(this->addState(next), prob)); //remains in same state with updated beliefs
+
+         allSuccessors->at(idAction).push_back(mlcore::Successor(state, prob));
     }
 }

@@ -325,8 +325,8 @@ void experimentLogs()
     for (State* s : problem->states()){
             if(s->bestAction() != nullptr){
              std::cout << s << " -> " <<  s->bestAction() << " , " << problem->cost(s, s->bestAction()) << std::endl;
-//              for (auto const & sccr : problem->transition(s, s->bestAction()))
-//                   std::cout << "\t " << sccr.su_state << ", " << sccr.su_prob << std::endl;
+////              for (auto const & sccr : problem->transition(s, s->bestAction()))
+////                   std::cout << "\t " << sccr.su_state << ", " << sccr.su_prob << std::endl;
             }
 
 //        GUSSPRockSampleState* rss =  static_cast<GUSSPRockSampleState*> (s);
@@ -346,7 +346,7 @@ void experimentLogs()
 //
 //                }
 //            }
-//            std::cout << "] -> " << s->bestAction() <<std::endl;
+//            std::cout << "] " << s->bestAction() <<std::endl;
 //        }
      }
 
@@ -570,7 +570,8 @@ int main(int argc, char* args[])
         problem->generateAll();
                                                                                             if(verbosity >= 100)
                                                                                             cerr << "generated all states" << endl;
-    cout << "Start State: " << problem->initialState() << std::endl;
+    if(verbosity >= 10)
+        cout << "Start State: " << problem->initialState() << std::endl;
     cout << " states = " << problem->states().size() << "  actions = " <<  problem->actions().size() << endl;
 
      if (flag_is_registered_with_value("heuristic")) {

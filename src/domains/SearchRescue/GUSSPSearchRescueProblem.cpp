@@ -123,11 +123,11 @@ void GUSSPSearchRescueProblem::setTrueGoal(std::vector<std::pair<int,int>> poten
             maxVictims_ = 1;
         }
     }
-    std::cout << "Victim locations:" << std::endl;
-    for(auto it = victimLocations.begin(); it != victimLocations.end(); ++it){
-        std::pair<std::pair<int,int>,double> val = *it;
-        std::cout << val.first.first << "," << val.first.second << " : " << val.second << std::endl;
-    }
+//    std::cout << "Victim locations:" << std::endl;
+//    for(auto it = victimLocations.begin(); it != victimLocations.end(); ++it){
+//        std::pair<std::pair<int,int>,double> val = *it;
+//        std::cout << val.first.first << "," << val.first.second << " : " << val.second << std::endl;
+//    }
 
 }
 
