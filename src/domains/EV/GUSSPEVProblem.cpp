@@ -114,7 +114,7 @@ bool GUSSPEVProblem::GUSSPEVgoal(GUSSPEVState * s) const
         std::vector<std::pair<std::pair<int,int>,double>> pg = s->goalPos();
         for(auto it =  pg.begin(); it!= pg.end(); ++it){
             std::pair<std::pair<int,int>,double> val = *it;
-            if(val.second == 1)
+            if(val.second == 1 && s->timestep() == val.first.first)
                 return true;
         }
         return false;
