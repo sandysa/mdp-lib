@@ -4,7 +4,7 @@ nsims=100
 verbosity=1
 heuristic=(zero hmin-solve-all domainGUSSP)
 rew=1
-endrange=(3 4)
+endrange=(5 6)
 detChoice=(0 1 2)
 # endrange=(14)
 

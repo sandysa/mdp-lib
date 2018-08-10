@@ -11,7 +11,7 @@ class GUSSPEVState : public mlcore::State
 private:
     int soc_;
     int timestep_;
-     std::vector<std::pair<std::pair<int,int>, double>> goalPos_; //belief vector over exit times.
+    std::vector<std::pair<std::pair<int,int>, double>> goalPos_; //belief vector over exit times.
 
   /* A cache of all successors (for all actions) of this state */
     std::vector<mlcore::SuccessorsList> allSuccessors_;
@@ -29,7 +29,7 @@ public:
        GUSSPEVState* evs = (GUSSPEVState *) &rhs;
        soc_ = evs->soc_;
        timestep_ = evs->timestep_;
-       goalPos_ == evs->goalPos_;
+       goalPos_ = evs->goalPos_;
        return *this;
     }
     /**

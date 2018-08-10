@@ -5,7 +5,8 @@ verbosity=1
 heuristic=(zero hmin domainGUSSP)
 # grids=(map5GUSSP map5GUSSP-dense map6GUSSP map6GUSSP-dense)
 search=(map1GUSSP map2GUSSP map3GUSSP map3GUSSP-dense)
-rocks=(map2GUSSP map3GUSSP map1GUSSP-dense)
+# rocks=(map2GUSSP map3GUSSP map1GUSSP-dense)
+rocks=(map2GUSSP-dense)
 detChoice=(0 1 2)
 detheuristic=(zero domainGUSSP)
 ######## Gridworld domain problems # ########

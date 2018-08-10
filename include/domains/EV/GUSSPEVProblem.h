@@ -95,7 +95,13 @@ private:
     std::vector<std::pair<std::pair<int,int>, double>> goalPos0_;
     void addAllActions();
 
-   // bool isGoal(GUSSPEVState* s);
+  void addSuccessor(GUSSPEVState* state,
+                      std::vector<mlcore::SuccessorsList>* allSuccessors,
+                      int idAction,
+                      int newsoc,
+                      int newt,
+                      std::vector<std::pair<std::pair<int, int>,double>> newgoalPos,
+                      double prob);
 
 public:
     /**
@@ -109,6 +115,7 @@ public:
     std::vector<std::pair<int,int>> potential_goals; // depends only on exit time, the other int is a dummy placeholder for consistency across domains.
 
     int timestep_interval(){return EV::time_interval_;}
+
 
      mlcore::State* absorbing_;
     /**

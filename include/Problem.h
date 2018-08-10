@@ -177,7 +177,7 @@ public:
         if ((void *) ret != (void *) s && !check) {
             delete s;
         }
-        return ret;
+         return ret;
     }
 
     /**

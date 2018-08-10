@@ -19,7 +19,8 @@ double DeterministicGUSSPSolver::getPGDistance(mlcore::State* s, std::pair<int,i
 {
     if(problem_->getProblemName() == "GUSSPEV"){
         GUSSPEVState* evs  =  static_cast<GUSSPEVState*> (s);
-            return (abs(evs->timestep() -  pg.first));
+        double val = (evs->timestep() -  pg.first > 0)? (evs->timestep() -  pg.first) : mdplib::dead_end_cost;
+        return val;
      }
     else if(problem_->getProblemName() == "GUSSPRockSample"){
         GUSSPRockSampleState* srs  =  static_cast<GUSSPRockSampleState*> (s);

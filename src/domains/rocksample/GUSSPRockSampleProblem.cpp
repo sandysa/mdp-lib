@@ -421,9 +421,6 @@ void GUSSPRockSampleProblem::addSuccessor(
              allSuccessors->at(idAction).push_back(mlcore::Successor(this->addState(next), prob));
         }
       } else {
-//        GUSSPRockSampleState *next = new GUSSPRockSampleState(this, state->x(), state->y(), state->sampledRocks(), newgoalPos);
-//        allSuccessors->at(idAction).push_back(mlcore::Successor(this->addState(next), prob)); //remains in same state with updated beliefs
-
          allSuccessors->at(idAction).push_back(mlcore::Successor(state, prob));
     }
 }
