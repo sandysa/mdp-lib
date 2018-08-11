@@ -456,7 +456,7 @@ vector<double> simulate(Solver* solver,
                     solver->maxPlanningTime(planningTime);
                 }
                                                                                         if (verbosity >= 10)
-                                                                                            cout << " in mustreplan " << endl;
+                                                                                            cout << " in mustreplan for "<< tmp << endl;
                 if (algorithm != "greedy")
                     solver->solve(tmp);
                 endTime = clock();

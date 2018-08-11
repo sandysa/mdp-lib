@@ -33,8 +33,9 @@ GUSSPEVProblem:: GUSSPEVProblem(int start_soc, int end_soc, int start_time,
                         rewardCase_(reward_case), exit_time_range_(exit_range)
 {
     problem_name_ = "ev";
-    for (int i = 0; i < exit_time_range_; i++){
+    for (int i = 1; i <= exit_time_range_; i++){
         potential_goals.push_back(std::make_pair(EV::horizon_ - i, -1));
+//        std::cout << EV::horizon_ - i << std::endl;
      }
      setInitBelief(potential_goals, uniform_dist);
 
@@ -390,7 +391,10 @@ void GUSSPEVProblem::addSuccessor(
                   if(pos.second == 0 || pos.second == 1) //already collapsed belief
                    {
                         GUSSPEVState *next = new GUSSPEVState(this, newsoc, newt, newgoalPos);
-                        allSuccessors->at(idAction).push_back(mlcore::Successor(this->addState(next), prob));
+                         mlcore::Successor succ (this->addState(next), prob);
+                         allSuccessors->at(idAction).push_back(succ);
+//                         std::cerr << "next  = " << succ.su_state << ", " << succ.su_prob << std::endl;
+//                        std::cerr << "curr = " << state << "a = " << idAction << " succ = " << succ.su_state << std::endl;
                         return;
                    } else {
                        for(int obs = 0; obs <= 1; obs ++){

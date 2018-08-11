@@ -149,8 +149,8 @@ public:
             for (Action* a : actions_) {
                 if (!applicable(cur, a))
                     continue;
-                std::list<Successor> successors = transition(cur, a);
-                for (Successor sccr : successors) {
+             std::list<Successor> successors = transition(cur, a);
+             for (Successor sccr : successors) {
                     queue.push_front(sccr.su_state);
                 }
             }
