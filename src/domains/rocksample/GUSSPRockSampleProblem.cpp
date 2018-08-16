@@ -94,6 +94,23 @@ void GUSSPRockSampleProblem::setGoalProb(std::vector<std::pair<int,int>> potenti
             goalPos0_.push_back(std::make_pair(pos, (1.0/potential_goals.size())));
         }
      }
+     else {
+        if (potential_goals.size() > 2)
+        {
+             for (int i = 0; i < potential_goals.size(); ++i){
+                std::pair<int,int> pos (potential_goals.at(i));
+                if (i == 0)
+                    goalPos0_.push_back(std::make_pair(pos, 0.9));
+                else
+                    goalPos0_.push_back(std::make_pair(pos, (0.1/(potential_goals.size()-1))));
+                }
+        } else{
+            for (int i = 0; i < potential_goals.size(); ++i){
+                std::pair<int,int> pos (potential_goals.at(i));
+                goalPos0_.push_back(std::make_pair(pos, (1.0/potential_goals.size())));
+            }
+        }
+     }
 }
 
 
@@ -380,6 +397,17 @@ void GUSSPRockSampleProblem::addSuccessor(
     }
 }
 
+double getBel_pos(std::pair<int,int> locs, std::vector<std::pair<std::pair<int, int>,double>> newgoalPoscp)
+{
+     for (auto i = newgoalPoscp.begin(); i != newgoalPoscp.end(); ++i){
+        std::pair<std::pair<int,int>, double> pos (*i);
+        if(locs == pos.first)
+            return pos.second;
+     }
+     return 0;
+}
+
+
 void GUSSPRockSampleProblem::addSuccessor(
     GUSSPRockSampleState* state, std::vector<mlcore::SuccessorsList>* allSuccessors, int idAction,
     int val, int limit, int newx, int newy, int newsamples, std::vector<std::pair<std::pair<int, int>,double>> newgoalPos, double prob)
@@ -401,7 +429,8 @@ void GUSSPRockSampleProblem::addSuccessor(
                         allSuccessors->at(idAction).push_back(mlcore::Successor(this->addState(next), prob));
                         return;
                    } else {
-                       for(int obs = 0; obs <= 1; obs ++){
+                         double curr_bel  = getBel_pos(locs, newgoalPos);
+                         for(int obs = 0; obs <= 1; obs ++){
                              std::vector<std::pair<std::pair<int, int>,double>> newgoalPoscp = newgoalPos;
                              std::vector<std::pair<std::pair<int,int>, double>>::iterator old_val = std::find(newgoalPoscp.begin(), newgoalPoscp.end(), pos);
                              if (old_val != newgoalPoscp.end())
@@ -410,7 +439,11 @@ void GUSSPRockSampleProblem::addSuccessor(
                              newgoalPoscp.push_back(std::make_pair(locs,obs));
                              newgoalPoscp = updateBelief(newgoalPoscp);
                              GUSSPRockSampleState *next = new GUSSPRockSampleState(this, newx, newy, newsamples, newgoalPoscp);
-                             allSuccessors->at(idAction).push_back(mlcore::Successor(this->addState(next), prob * 0.5));
+                           //  allSuccessors->at(idAction).push_back(mlcore::Successor(this->addState(next), prob * 0.5));
+                             if (obs == 1)
+                                    allSuccessors->at(idAction).push_back(mlcore::Successor(this->addState(next), prob * curr_bel));
+                            else if (obs == 0)
+                                    allSuccessors->at(idAction).push_back(mlcore::Successor(this->addState(next), prob * (1- curr_bel)));
                        }
                     }
                 }
