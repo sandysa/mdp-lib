@@ -3,7 +3,7 @@
 
 std::ostream& GUSSPRockSampleAction::print(std::ostream& os) const
 {
-    os << "action ";
+
     if (dir_ == rocksample::UP)
         os << "up";
     if (dir_ == rocksample::DOWN)

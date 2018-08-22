@@ -71,7 +71,7 @@ for rs in ${rocks[@]}; do
        echo "${rs}|lao|zero"
        ../testGussp.out --rocksample=../data/rocksample/$rs.rs \
        --algorithm=lao --v=$verbosity --n=$nsims \
-      --heuristic=zero --uniform-goal-dist=true
+      --heuristic=zero --goal-dist=uniform
 
     #FLARES
  
@@ -82,7 +82,7 @@ for rs in ${rocks[@]}; do
         echo "${rs}|flares(${horizon})|${heur}"
         ../testGussp.out --rocksample=../data/rocksample/$rs.rs \
         --algorithm=soft-flares --horizon=$horizon --n=$nsims --v=$verbosity \
-        --heuristic=$heur --alpha=0 --labelf=step --min_time=-1 --max_time=-1 --uniform-goal-dist=true
+        --heuristic=$heur --alpha=0 --labelf=step --min_time=-1 --max_time=-1 --goal-dist=uniform
     done
 #   done
  
@@ -93,7 +93,7 @@ for rs in ${rocks[@]}; do
                 echo "${rs}|detGUSSP(${dchoice})|${heur}"
                 ../testGussp.out --rocksample=../data/rocksample/$rs.rs \
                 --algorithm=detGUSSP --n=$nsims --v=$verbosity \
-                --heuristic=$heur --uniform-goal-dist=true --det_choice=$dchoice
+                --heuristic=$heur --goal-dist=uniform --det_choice=$dchoice
              done
         done
 done

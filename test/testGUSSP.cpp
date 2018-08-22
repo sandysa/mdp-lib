@@ -110,9 +110,10 @@ void setupEV()
 void setupRockSample()
 {
     string rocksample = flag_value("rocksample");
-    bool uniform_goal_dist = flag_is_registered("uniform-goal-dist");
+    string goal_dist = flag_value("goal-dist");
+//    bool uniform_goal_dist = flag_is_registered("uniform-goal-dist");
     bool all_directions = flag_is_registered("sr-all-dir");
-    problem = new GUSSPRockSampleProblem(rocksample.c_str(), 1.0, 100.0, all_directions, uniform_goal_dist);
+    problem = new GUSSPRockSampleProblem(rocksample.c_str(), 1.0, 100.0, all_directions, goal_dist);
 
     if(flag_value("heuristic") == "domainGUSSP")
         heuristic = new RSDetHeuristicGUSSP((GUSSPRockSampleProblem*) problem);
@@ -313,44 +314,7 @@ bool mustReplan(Solver* solver, string algorithm, State* s, int plausTrial) {
 
   return false;
 }
-void experimentLogs()
-{
-//    std::cout << "Potential goals:" << std::endl;
-//    GUSSPRockSampleProblem* rsp = static_cast<GUSSPRockSampleProblem*> (problem);
-//    std::vector<std::pair<int,int>> pg = rsp->potential_goals;
-//    for(int i = 0; i < pg.size(); i ++){
-//        std::pair<int,int> pgpos = pg.at(i);
-//        std::cout << "(" << pgpos.first << " " << pgpos.second << ")" << std::endl;
-//    }
-    for (State* s : problem->states()){
-            if(s->bestAction() != nullptr){
-             std::cout << s << " -> " <<  s->bestAction() << " , " << problem->cost(s, s->bestAction()) << std::endl;
-////              for (auto const & sccr : problem->transition(s, s->bestAction()))
-////                   std::cout << "\t " << sccr.su_state << ", " << sccr.su_prob << std::endl;
-            }
 
-//        GUSSPRockSampleState* rss =  static_cast<GUSSPRockSampleState*> (s);
-//        if(s->bestAction() != nullptr){
-//           std::vector<std::pair<std::pair<int, int>,double>> goalpos = rss->goalPos();
-//            std::cout <<  rss->x() << " " << rss->y() << " " << rss->sampledRocks() <<" [" ;
-//
-//             for(int i = 0; i < pg.size(); i ++){
-//                std::pair<int,int> pgpos = pg.at(i);
-//                for(int j = 0; j < goalpos.size(); j++){
-//                   std::pair<std::pair<int,int>,double> pgval = goalpos.at(j);
-//                   std::pair<int,int> pos = pgval.first;
-//                   if(pgpos.first == pos.first && pgpos.second == pos.second){
-//                        int val = (pgval.second > 0)? 1 : 0;
-//                        std::cout << val <<" ";
-//                   }
-//
-//                }
-//            }
-//            std::cout << "] " << s->bestAction() <<std::endl;
-//        }
-     }
-
-}
 bool OptimalSolver(string algorithm)
 {
     if(algorithm == "vi" || algorithm == "lao")
@@ -429,8 +393,7 @@ vector<double> simulate(Solver* solver,
             cout << "Estimated cost " <<
                 problem->initialState()->cost() << endl;
             }
-                                                                                            if(verbosity >= 10)
-                                                                                                experimentLogs();
+
        double costTrial = 0.0;
         int plausTrial = 0;
         while (!problem->goal(tmp)) {
@@ -455,8 +418,7 @@ vector<double> simulate(Solver* solver,
                         maxTime : std::max(0, maxTime - simulationsElapsedTime);
                     solver->maxPlanningTime(planningTime);
                 }
-                                                                                        if (verbosity >= 10)
-                                                                                            cout << " in mustreplan for "<< tmp << endl;
+
                 if (algorithm != "greedy")
                     solver->solve(tmp);
                 endTime = clock();

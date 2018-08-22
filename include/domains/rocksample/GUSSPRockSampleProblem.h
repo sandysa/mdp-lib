@@ -100,7 +100,7 @@ public:
                      double actionCost = 1.0,
                      double holeCost = 100.0,
                      bool allDirections = false,
-                     bool uniform_goal_dist = true);
+                     std::string goal_dist = "uniform");
 
 
    ~GUSSPRockSampleProblem()
@@ -135,7 +135,7 @@ public:
     virtual void setTrueGoal(std::vector<std::pair<int,int>> potential_goals);
 
       /** sets initial belief **/
-    virtual void setGoalProb(std::vector<std::pair<int,int>> potential_goals, bool uniform_goal_dist);
+    virtual void setGoalProb(std::vector<std::pair<int,int>> potential_goals, std::string goal_dist);
 
     /** Returns 1 if the state is a true goal. Returns 0 otherwise.
      **/

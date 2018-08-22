@@ -40,7 +40,7 @@ GUSSPRockSampleProblem::GUSSPRockSampleProblem(const char* filename,
                                    double actionCost,
                                    double holeCost,
                                    bool allDirections,
-                                   bool uniform_dist)
+                                   string goal_dist)
 {
     std::ifstream myfile (filename);
     // Once the file is finished parsing, these will have correct values
@@ -76,7 +76,7 @@ GUSSPRockSampleProblem::GUSSPRockSampleProblem(const char* filename,
     actionCost_ = actionCost;
     holeCost_ = holeCost;
     allDirections_ = allDirections;
-    setGoalProb(potential_goals, uniform_dist);
+    setGoalProb(potential_goals, goal_dist);
     s0 = new GUSSPRockSampleState(this, x0_, y0_, 0, goalPos0_); //no rocks at start state
     absorbing = new GUSSPRockSampleState(this, -1, -1, -1, goalPos0_);
     this->addState(s0);
@@ -86,15 +86,32 @@ GUSSPRockSampleProblem::GUSSPRockSampleProblem(const char* filename,
 }
 
 void GUSSPRockSampleProblem::setGoalProb(std::vector<std::pair<int,int>> potential_goals,
-                                bool uniform_dist)
+                                string goal_dist)
 {
-    if (uniform_dist){
+    if (goal_dist == "uniform"){
      for (int i = 0; i < potential_goals.size(); ++i){
             std::pair<int,int> pos (potential_goals.at(i));
             goalPos0_.push_back(std::make_pair(pos, (1.0/potential_goals.size())));
         }
      }
-     else {
+     else if (goal_dist == "pessemistic"){
+        if (potential_goals.size() > 2)
+        {
+             for (int i = 0; i < potential_goals.size(); ++i){
+                std::pair<int,int> pos (potential_goals.at(i));
+                if (i == 0)
+                    goalPos0_.push_back(std::make_pair(pos, 0.1));
+                else
+                    goalPos0_.push_back(std::make_pair(pos, (0.9/(potential_goals.size()-1))));
+                }
+        } else{
+            for (int i = 0; i < potential_goals.size(); ++i){
+                std::pair<int,int> pos (potential_goals.at(i));
+                goalPos0_.push_back(std::make_pair(pos, (1.0/potential_goals.size())));
+            }
+        }
+     }
+    else if (goal_dist == "optimistic"){
         if (potential_goals.size() > 2)
         {
              for (int i = 0; i < potential_goals.size(); ++i){
@@ -237,10 +254,7 @@ GUSSPRockSampleProblem::transition(mlcore::State *s, mlcore::Action *a)
         successors.push_front(mlcore::Successor(s, 1.0));
         return successors;
     }
-    /** Otherwise check observation to update belief over goal configurations **/
-//    int obs =  getObservation(state);
-
-     /** return if the transition is found in the cache **/
+        /** return if the transition is found in the cache **/
         int idAction = action->hashValue();
         std::vector<mlcore::SuccessorsList>* allSuccessors = state->allSuccessors();
         if (!allSuccessors->at(idAction).empty()) {
