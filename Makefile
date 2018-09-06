@@ -257,6 +257,10 @@ testvpi.out: lib/libmdp.a domains
 testGussp.out: lib/libmdp.a domains
 	$(CC) $(CFLAGS) $(INCLUDE) -o testGussp.out $(TD)/testGUSSP.cpp $(LIBS)
 	
+# Compiles the GUSSPROS test program
+testGusspROS.out: lib/libmdp.a domains
+	$(CC) $(CFLAGS) $(INCLUDE) -o testGusspROS.out $(TD)/testGUSSPRos.cpp $(LIBS)
+	
 # Compiles the mini-gpt library
 minigpt: lib/libminigpt.a
 lib/libminigpt.a: include/ppddl/mini-gpt/*

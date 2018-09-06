@@ -1,0 +1,115 @@
+Index: lex-ops_pddl.l
+===================================================================
+--- lex-ops_pddl.l	(revision 1521)
++++ lex-ops_pddl.l	(revision 1522)
+@@ -92,10 +92,16 @@
+ \?[a-zA-Z][a-zA-Z0-9\-_\[\]]* { strupcase(yytext); strcpy(yylval.string, yytext);
+  return(VARIABLE); }
+ 
+-"-"[ \t]*[a-zA-Z][a-zA-Z0-9\-_\[\]]*  {
+-  strupcase(yytext); strcpy(yylval.string, rmdash(yytext)); return(TYPE); }
++"-"[ \t\r\n]*[a-zA-Z][a-zA-Z0-9\-_\[\]]*  {
++  strupcase(yytext);
++  lineno += line_incr(yytext);
++  strcpy(yylval.string, rmdash(yytext));
++#if LEXDEBUG
++  fprintf(stderr, "\tFound type %s\n", yylval.string);
++#endif 
++  return(TYPE); }
+ 
+-"-"[ \t]*"("[ \t]*{e}{i}{t}{h}{e}{r} { return(EITHER_TOK); }
++"-"[ \t\r\n]*"("[ \t]*{e}{i}{t}{h}{e}{r} { lineno += line_incr(yytext); return(EITHER_TOK); }
+ 
+ \;(.)*\n  {  lineno++; }
+ \;(.)*  {  /* this will hold only in files that end with
+Index: parse.c
+===================================================================
+--- parse.c	(revision 1521)
++++ parse.c	(revision 1522)
+@@ -119,12 +119,32 @@
+ 
+   s++;
+ 
+-  for( ; (*s == ' ') || (*s == '\t'); s++ );
++  for( ; (*s == ' ') || (*s == '\t') || (*s == '\n'); s++ );
+ 
+   return s;
+ 
+ }
+ 
++/* count the newline characters in s.
++   Used to increment the line number in token patterns that
++   might cover newlines. */
++int line_incr( char *s )
++{
++  int num_lines = 0;
++#if LEXDEBUG
++  fprintf(stderr, "Finding newlines in %s\n", s);
++#endif
++  for ( ; *s != '\0'; s++) {
++    if (*s == '\n') {
++      num_lines++;
++    }
++  }
++#if LEXDEBUG
++  fprintf(stderr, "\tFound %d newlines\n", num_lines);
++#endif
++  return num_lines;
++}
++  
+ 
+ 
+ 
+@@ -134,6 +154,7 @@
+ 
+ 
+ 
++
+ /* typed-list-of   preprocessing
+  */
+ 
+Index: lex-fct_pddl.l
+===================================================================
+--- lex-fct_pddl.l	(revision 1521)
++++ lex-fct_pddl.l	(revision 1522)
+@@ -93,10 +93,15 @@
+ \?[a-zA-Z][a-zA-Z0-9\-_\[\]]* {strupcase( yytext );
+  strcpy(yylval.string, yytext); return(VARIABLE); }
+ 
+-"-"[ \t]*[a-zA-Z][a-zA-Z0-9\-_\[\]]*  {strupcase(yytext);
+- strcpy(yylval.string, rmdash(yytext)); return(TYPE); }
++"-"[ \r\t\n]*[a-zA-Z][a-zA-Z0-9\-_\[\]]*  {strupcase(yytext);
++ lineno += line_incr(yytext);
++ strcpy(yylval.string, rmdash(yytext));
++#if LEXDEBUG
++ fprintf(stderr, "\tFound type %s\n", yylval.string);
++#endif 
++ return(TYPE); }
+ 
+-"-"[ \t]*"("[ \t]*{e}{i}{t}{h}{e}{r} { return(EITHER_TOK); }
++"-"[ \t\r\n]*"("[ \t]*{e}{i}{t}{h}{e}{r} { lineno += line_incr(yytext); return(EITHER_TOK); }
+ 
+ \;(.)*\n  {  lineno++; }
+ \;(.)*  {  /* this will hold only in files that end with
+Index: parse.h
+===================================================================
+--- parse.h	(revision 1521)
++++ parse.h	(revision 1522)
+@@ -36,8 +36,8 @@
+ #ifndef _PARSE_H
+ #define _PARSE_H
+ 
++#define LEXDEBUG 0
+ 
+-
+ char *copy_Token( char *s );
+ TokenList *copy_TokenList( TokenList *source );
+ void strupcase( char *from );
+@@ -61,6 +61,6 @@
+ Bool is_eff_literal( PlNode *n );
+ Bool make_conjunction_of_literals( PlNode **n );
+ 
++int line_incr( char *s ); /* count newlines in s, to track current line */
+ 
+-
+ #endif /* PARSE */

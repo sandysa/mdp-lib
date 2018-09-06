@@ -92,9 +92,10 @@ void GUSSPRockSampleProblem::setGoalProb(std::vector<std::pair<int,int>> potenti
      for (int i = 0; i < potential_goals.size(); ++i){
             std::pair<int,int> pos (potential_goals.at(i));
             goalPos0_.push_back(std::make_pair(pos, (1.0/potential_goals.size())));
+            std::cout << "init bel value = " << 1.0/potential_goals.size() << std::endl;
         }
      }
-     else if (goal_dist == "pessemistic"){
+     else if (goal_dist == "pessimistic"){
         if (potential_goals.size() > 2)
         {
              for (int i = 0; i < potential_goals.size(); ++i){
@@ -143,21 +144,13 @@ void GUSSPRockSampleProblem::setTrueGoal(std::vector<std::pair<int,int>> potenti
      }
      else {
         int totalSamples = 0;
-//        for(int i = 0; i < potential_goals.size(); i++){
-//            int index = rand() %2;
-//            if (index == 1)
-//                goals_->insert(std::make_pair(potential_goals.at(i), 0.0));
-//
-//            totalSamples += index;
-//         }
-
               //Updated for robot experiment:
-            int index  =  rand() % potential_goals.size();
+//            int index  =  rand() % potential_goals.size();
+            int index = 0;
             goals_->insert(std::make_pair(potential_goals.at(index), 0.0));
             totalSamples += 1;
             std::pair<int,int> goalpos =  potential_goals.at(index);
-                                                                                           std::cout << "potential goal size = " << potential_goals.size()
-                                                                                        << " totalSamples = " << totalSamples << endl;
+                                                                                           std::cout << "potential goal size = " << potential_goals.size() << endl;
                                                                                         std::cout << "True goal:(" << goalpos.first <<"," <<goalpos.second <<")" << std::endl;
           // if no goal set, then set first to be a goal.
         if(goals_->size() == 0)
@@ -453,7 +446,7 @@ void GUSSPRockSampleProblem::addSuccessor(
                              newgoalPoscp.push_back(std::make_pair(locs,obs));
                              newgoalPoscp = updateBelief(newgoalPoscp);
                              GUSSPRockSampleState *next = new GUSSPRockSampleState(this, newx, newy, newsamples, newgoalPoscp);
-                           //  allSuccessors->at(idAction).push_back(mlcore::Successor(this->addState(next), prob * 0.5));
+
                              if (obs == 1)
                                     allSuccessors->at(idAction).push_back(mlcore::Successor(this->addState(next), prob * curr_bel));
                             else if (obs == 0)

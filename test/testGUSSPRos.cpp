@@ -119,7 +119,9 @@ void experimentLogs()
                    std::pair<int,int> pos = pgval.first;
                    if(pgpos.first == pos.first && pgpos.second == pos.second){
                         int val = (pgval.second > 0)? 1 : 0;
-                        std::cout << val <<",";
+                        std::cout << val ;
+                        if(j != goalpos.size())
+                            std::cout < ",";
                    }
 
                 }
@@ -128,6 +130,59 @@ void experimentLogs()
         }
      }
 
+}
+mlcore::State* getSSPState(std::pair<int,int> loc, std::pair<int,int> pg)
+{
+    for (State* s : problem->states()){
+        GUSSPRockSampleState* rss =  static_cast<GUSSPRockSampleState*> (s);
+        std::pair<int,int> pos (rss->x(), rss->y());
+        if(pos == loc){
+             std::vector<std::pair<std::pair<int, int>,double>> goalPos = rss->getGoalBelief();
+             for (int j = 0; j < goalPos.size(); j++){
+                std::pair<std::pair<int,int>,double> pgbel = goalPos.at(j);
+                if(pgbel.first == pg)
+                    return s;
+             }
+
+        }
+    }
+}
+double getCost(std::pair<std::pair<int,int>,std::pair<int,int>> loc1, Action *a, Problem* problem){
+    State* s = getSSPState(loc1.first, loc1.second);
+    return problem->cost(s,a);
+}
+
+double getTransition(std::pair<std::pair<int,int>,std::pair<int,int>> loc1,
+                    std::pair<std::pair<int,int>,std::pair<int,int>> loc2, Action* a, Problem* problem){
+
+     State* s = getSSPState(loc1.first, loc1.second);
+     double trans = 0;
+     if(loc1.second != loc2.second)  // g!=g'; trans = 0
+        return 0;
+    if(problem->applicable(s,a)){
+     for (auto const & sccr : problem->transition(s, a)){
+        GUSSPRockSampleState* rsj = static_cast<GUSSPRockSampleState*> (sccr.su_state);
+        if(std::make_pair(rsj->x(),rsj->y()) == loc2.first)
+            trans += sccr.su_prob;
+        }
+    }
+    return trans;
+}
+int getGoalId(Problem* problem, std::vector<std::pair<std::pair<int,int>,std::pair<int,int>>> pomdp_states)
+{
+    GUSSPRockSampleProblem* rsp = static_cast<GUSSPRockSampleProblem*> (problem);
+    PairDoubleMap* goalmap = rsp->getGoals();
+    for (auto it = goalmap->begin(); it!= goalmap->end(); ++it)
+    {
+        std::pair<int,int> TrueGoalpos =  it->first;
+        for (int j = 0; j < pomdp_states.size(); j++)
+        {
+            std::pair<std::pair<int,int>,std::pair<int,int>> loc  = pomdp_states.at(j);
+            if(loc.first == loc.second && loc.second == TrueGoalpos)
+                return j;
+        }
+    }
+    return -1;
 }
 
 void generateRawPOMDP(Problem* problem)
@@ -146,35 +201,85 @@ void generateRawPOMDP(Problem* problem)
         bool found = (std::find(map_coord.begin(), map_coord.end(), pos) != map_coord.end());
         if(!found && pos.first!= -1){
             map_coord.push_back(pos);
-            for(int i = 0; i < pg.size(); i ++){
-                std::pair<int,int> pgpos = pg.at(i);
-                pomdp_states.push_back(std::make_pair(pos,pgpos));
-                for (int j = 0; j < goalPos.size(); j++){
-                    std::pair<std::pair<int,int>,double> pgbel = goalPos.at(j);
-                    if(pgbel.first == pgpos)
-                        std::cout << pos.first <<","<< pos.second << " (" << pgpos.first << "," << pgpos.second << ") bel = " << pgbel.second << std::endl;
+            }
+        }
+
+      //gathering pomdp states
+      int numbel = 0;
+      for (int m = 0; m <  map_coord.size(); m++){
+        std::pair<int,int> pos = map_coord.at(m);
+        for(int i = 0; i < pg.size(); i ++){
+            std::pair<int,int> pgpos = pg.at(i);
+            pomdp_states.push_back(std::make_pair(pos,pgpos));
+            for (State* s : problem->states()){
+                GUSSPRockSampleState* rss =  static_cast<GUSSPRockSampleState*> (s);
+                std::vector<std::pair<std::pair<int, int>,double>> goalPos = rss->getGoalBelief();
+                if(std::make_pair(rss->x(),rss->y()) == pos){
+                    for(int pt = 0; pt < goalPos.size(); pt++){
+                        std::pair<std::pair<int,int>,double> belval = goalPos.at(pt);
+                        if(belval.first == pgpos && rss->sampledRocks() == 0){
+                            if (belval.second >  0.0)
+                                numbel++;
+                            std::cout << pos.first << "," << pos.second << ",(" << pgpos.first
+                                    << ","<< pgpos.second  << ")" << belval.second << std::endl;
+                        }
+                    }
                 }
+              }
+               std::cout << "*******************************" << std::endl;
             }
         }
-     }
-    std::cout << "Total pomdp states = " << pomdp_states.size() << std::endl;
+
+    int n = pomdp_states.size(); //number of states
+    int ns = 0; //max num of successors for any (s,a)
+    int m = problem->actions().size(); //number of actions
+    int z = 2; //number of observations - yes and no.
+    int rz = pg.size(); // max number of non-zero beliefs.
+    int r = pow(2,pg.size())-1;// max number of unique beliefs
+    double gamma = 1;
+    int horizon = 100;
+    int s0;
+
     //generating transitions:
-    for (State* s : problem->states()){
-        GUSSPRockSampleState* rss =  static_cast<GUSSPRockSampleState*> (s);
+    double T[pomdp_states.size()][problem->actions().size()][pomdp_states.size()];
+    double C[pomdp_states.size()][problem->actions().size()];
+    for (int i = 0; i < pomdp_states.size(); i++)
+    {
+        std::pair<std::pair<int,int>,std::pair<int,int>> loc1  = pomdp_states.at(i);
         for(Action* a: problem->actions()){
-            if(problem->applicable(s,a)){
-                 for (auto const & sccr : problem->transition(s, a)){
-                    GUSSPRockSampleState* rsj =  static_cast<GUSSPRockSampleState*> (sccr.su_state);
-
-//                   double maxProb = std::max(maxProb, sccr.su_prob);
-                 }
-
+            double cost = getCost(loc1,a,problem);
+            if(cost > 0)
+                C[i][a->hashValue()] = -1 * cost;
+            else
+                C[i][a->hashValue()] = cost;
+            for (int j = 0; j < pomdp_states.size(); j++){
+                std::pair<std::pair<int,int>,std::pair<int,int>> loc2  = pomdp_states.at(j);
+                double trans = getTransition(loc1, loc2, a, problem);
+                T[i][a->hashValue()][j] = trans;
             }
         }
-
-
     }
+    int ns = 0;
+    for (int i = 0; i < pomdp_states.size(); i++)
+    {
+      for (int a = 0 ; a < problem->actions().size(); a++)
+       {
+          int check = 0;
+          for( int j = 0; j < pomdp_states.size(); j++)
+          {
+            if(T[i][a][j] > 0)
+                check++;
+          }
+          if(check > ns_check)
+            ns = check;
+        }
+    }
+    std::cout << ns_check << std::endl;
 
+    int trueGoalId = getGoalId(problem, pomdp_states);
+    std::cout << "Total pomdp states = " << pomdp_states.size() << std::endl;
+    std::cout << "num bel = " << numbel << std::endl;
+    std::cout << " true goal at: " << trueGoalId << std::endl;
 }
 
 // Runs [numSims] of the given solver and and returns the results
@@ -320,6 +425,7 @@ int main(int argc, char* args[])
         cout << "Start State: " << problem->initialState() << std::endl;
     cout << " states = " << problem->states().size() << "  actions = " <<  problem->actions().size() << endl;
 
+    cout << "****************Trans:" << endl;
 
                                                                                                         generateRawPOMDP(problem);
 

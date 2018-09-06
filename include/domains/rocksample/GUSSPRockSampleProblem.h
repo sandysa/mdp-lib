@@ -153,6 +153,8 @@ public:
     virtual bool GUSSPRSGoal(GUSSPRockSampleState* s) const;
 
     double getactioncost(){return actionCost_;}
+
+    PairDoubleMap* getGoals(){return goals_;}
 };
 
 #endif // MPDLIB_GUSSPROCKSAMPLEPROBLEM_H
