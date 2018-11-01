@@ -5,6 +5,7 @@
 
 #include "../../include/domains/racetrack/RacetrackProblem.h"
 #include "../../include/domains/sailing/SailingProblem.h"
+#include "../../include/domains/corridor/CorridorProblem.h"
 #include "../../include/domains/EV/EVProblem.h"
 
 #include "../../include/util/general.h"
@@ -12,10 +13,14 @@
 #include <ctime>
 #include <queue>
 #include<algorithm>
+#include <vector>
 
 using namespace EV;
 using namespace rtrack;
 using namespace mlcore;
+static  int maxfm  = 0;
+std::vector<std::pair<std::pair<State*, Action*>,double>> allowed_fm;
+
 namespace mlsolvers
 {
 double getCostAdjustmentValue(mlcore::State* s, mlcore::Action* a,mlcore::Problem* problem)
@@ -84,6 +89,22 @@ double getCostAdjustmentValue(mlcore::State* s, mlcore::Action* a,mlcore::Proble
 bool PRM_LAOStarSolver::useFullModel(mlcore::State* s, mlcore::Action* a, mlcore::Problem* problem){
     //For racetrack: (CA:100% in pRM comparison.ods)
    bool fullModel = false;
+   if(optimal_sac_.size() > 0){
+        for(auto it = allowed_fm.begin(); it != allowed_fm.end(); ++it){
+            std::pair<std::pair<mlcore::State*, mlcore::Action*>, double> sac = *it;
+            std::pair<mlcore::State*, mlcore::Action*> sa = sac.first;
+            if(s == sa.first && a == sa.second){
+                return true;
+            }
+        }
+        return false;
+   }
+   if(problem->getProblemName() == "corridor"){
+    CorridorState* state = static_cast<CorridorState*>(s);
+    if(!state->alive())
+        return true;
+   }
+
    if(problem->getProblemName() == "racetrack")
    {
     if (s == problem->initialState())
@@ -148,11 +169,9 @@ std::list<mlcore::Successor> PRM_LAOStarSolver::getTransition(mlcore::State* s, 
                 }
               return successors;
         }
-
      mlcore::State* mostlikely = mostLikelyOutcome(problem, s,a, true);
      std::list<mlcore::Successor> mostlikelySuccessors ;
      mostlikelySuccessors.push_back(mlcore::Successor(mostlikely, 1.0));
-
      return mostlikelySuccessors;
 }
 
@@ -203,7 +222,6 @@ std::pair<double, mlcore::Action*> PRM_LAOStarSolver::PRM_bellmanBackup(mlcore::
             bestAction = a;
         }
     }
-
     if (!hasAction && bestQ >= mdplib::dead_end_cost)
         s->markDeadEnd();
 
@@ -226,6 +244,13 @@ mlcore::Action* PRM_LAOStarSolver::solve(mlcore::State* s0)
     clock_t startTime = clock();
     int totalExpanded = 0;
     int countExpanded = 0;
+    if(optimal_sac_.size() > 0){
+        maxfm = std::abs((budget_/100.0) * optimal_sac_.size());
+        for(int i  = 0; i < maxfm; i++){
+            allowed_fm.push_back(optimal_sac_.at(i));
+        }
+    }
+
     double error = mdplib::dead_end_cost;
     while (true) {
         do {

@@ -10,17 +10,13 @@
 
 #include "../include/solvers/BoundedRTDPSolver.h"
 #include "../include/solvers/DeterministicSolver.h"
-#include "../include/solvers/HDPSolver.h"
 #include "../include/solvers/HMinHeuristic.h"
 #include "../include/solvers/LAOStarSolver.h"
 #include "../include/solvers/LRTDPSolver.h"
 #include "../include/solvers/FLARESSolver.h"
 #include "../include/solvers/SoftFLARESSolver.h"
 #include "../include/solvers/Solver.h"
-#include "../include/solvers/SSiPPSolver.h"
-#include "../include/solvers/UCTSolver.h"
 #include "../include/solvers/VISolver.h"
-#include "../include/solvers/VPIRTDPSolver.h"
 #include "../include/solvers/CostAdjusted_DeterministicSolver.h"
 #include "../include/solvers/PRM_LAOStarSolver.h"
 #include "../include/solvers/m02EVSolver.h"
@@ -47,6 +43,8 @@
 #include "../include/domains/EV/EVProblem.h"
 #include "../include/domains/EV/EVDetHeuristic.h"
 
+#include "../include/domains/corridor/CorridorProblem.h"
+
 using namespace mdplib;
 using namespace mlcore;
 using namespace mlsolvers;
@@ -60,7 +58,9 @@ bool useUpperBound = false;
 int verbosity = 0;
 bool useOnline = false;
 bool print_decisions = false;
+double tol = 1.0e-3;
 
+std::vector<std::pair<std::pair<State*, Action*>,double>> state_ca;
 
 bool sortCosts(std::pair<std::pair<State*, Action*>,double> s1, std::pair<std::pair<State*, Action*>,double> s2) { return (s1.second > s2.second); }
 
@@ -91,6 +91,16 @@ void setupRacetrack()
 
     problem->ProblemName("racetrack");
  }
+
+void setupCorridor()
+{
+    string trackName = flag_value("corridor");
+    if (verbosity > 100)
+        cout << "Setting up corridor " << trackName << endl;
+    problem = new CorridorProblem(trackName.c_str());
+     problem->ProblemName("corridor");
+ }
+
 
 void setupBorderExitProblem()
 {
@@ -206,7 +216,9 @@ void setupProblem()
         setupBorderExitProblem();
     } else if (flag_is_registered_with_value("start-soc")) {
         setupEV();
-    } else {
+    } else if (flag_is_registered_with_value("corridor")){
+        setupCorridor();
+    }else {
         cerr << "Invalid problem." << endl;
         exit(-1);
     }
@@ -220,7 +232,6 @@ void setupProblem()
 // Initializes the given solver according to the given algorithm.
 void initSolver(string algorithm, Solver*& solver)
 {
-    double tol = 1.0e-3;
     bool adjustCost = false;
     assert(flag_is_registered_with_value("algorithm"));
 
@@ -252,38 +263,6 @@ void initSolver(string algorithm, Solver*& solver)
         solver = new PRM_LAOStarSolver(problem, adjustCost, tol, 1000000);
     } else if (algorithm == "lrtdp") {
         solver = new LRTDPSolver(problem, trials, tol);
-    } else if (algorithm == "brtdp") {
-        // BRTDP is just VPI-RTDP with beta = 0
-        double tau = 100;
-        solver = new VPIRTDPSolver(problem, tol, trials,
-                                   -1.0, 0.0, tau,
-                                   mdplib::dead_end_cost + 10.0);
-        useUpperBound = true;
-    } else if (algorithm == "rtdp-ub") {
-        // RTDP with upper bound action selection
-        // is just VPI-RTDP with vanillaSample set to true
-        solver = new VPIRTDPSolver(problem, tol, trials,
-                                   0.0, 0.0, 0.0,
-                                   mdplib::dead_end_cost + 10.0,
-                                   true);
-        useUpperBound = true;
-    } else if (algorithm == "vpi-rtdp") {
-        double alpha = 1.0;
-        double beta = 0.95 * mdplib::dead_end_cost;
-        double tau = 100;
-        if (flag_is_registered_with_value("beta"))
-            beta = stof(flag_value("beta"));
-        if (flag_is_registered_with_value("alpha"))
-            alpha = stof(flag_value("alpha"));
-        solver = new VPIRTDPSolver(problem,
-                                   tol, trials,
-                                   alpha, beta, tau,
-                                   mdplib::dead_end_cost);
-        if (flag_is_registered("vpi-delta"))
-            static_cast<VPIRTDPSolver*>(solver)->sampleVPIDelta();
-        else if (flag_is_registered("vpi-old"))
-            static_cast<VPIRTDPSolver*>(solver)->sampleVPIOld();
-        useUpperBound = true;
     } else if (algorithm == "flares") {
         bool optimal = flag_is_registered("optimal");
         bool useProbsDepth = flag_is_registered("use-prob-depth");
@@ -333,37 +312,8 @@ void initSolver(string algorithm, Solver*& solver)
         solver = new SoftFLARESSolver(
             problem, trials, tol, depth, mod_func, dist_func,
             alpha, false, optimal);
-    } else if (algorithm == "hdp") {
-        int plaus;
-        if (flag_is_registered_with_value("i"))
-            solver = new HDPSolver(problem, tol, stoi(flag_value("i")));
-        else
-            solver = new HDPSolver(problem, tol);
     } else if (algorithm == "vi") {
         solver = new VISolver(problem, 1000000000, tol);
-    } else if (algorithm == "ssipp") {
-        double rho = -1.0;
-        bool useTrajProb = false;
-        if (flag_is_registered_with_value("rho")) {
-            rho = stof(flag_value("rho"));
-            useTrajProb = true;
-        }
-        solver = new SSiPPSolver(problem, tol, horizon, SSiPPAlgo::Original);
-        SSiPPSolver* ssipp = static_cast<SSiPPSolver*> (solver);
-        ssipp->maxTrials(1);
-        ssipp->useTrajProbabilities(useTrajProb);
-        ssipp->rho(rho);
-    } else if (algorithm == "labeled-ssipp") {
-        double rho = -1.0;
-        bool useTrajProb = false;
-        if (flag_is_registered_with_value("rho")) {
-            rho = stof(flag_value("rho"));
-            useTrajProb = true;
-        }
-        solver = new SSiPPSolver(problem, tol, horizon, SSiPPAlgo::Labeled);
-        SSiPPSolver* ssipp = static_cast<SSiPPSolver*> (solver);
-        ssipp->useTrajProbabilities(useTrajProb);
-        ssipp->rho(rho);
     } else if (algorithm == "det") {
         solver = new DeterministicSolver(problem,
                                          mlsolvers::det_most_likely,
@@ -372,32 +322,11 @@ void initSolver(string algorithm, Solver*& solver)
         solver = new CostAdjusted_DeterministicSolver(problem, adjustCost,
                                          mlsolvers::det_most_likely,
                                          heuristic);
-    }else if (algorithm == "uct") {
-        int rollouts = 1000;
-        int cutoff = 50;
-        int delta = 5;
-        double C = 0.0;
-        bool use_qvalues_for_c = true;
-        if (flag_is_registered_with_value("rollouts"))
-            rollouts = stoi(flag_value("rollouts"));
-        if (flag_is_registered_with_value("cutoff"))
-            cutoff = stoi(flag_value("cutoff"));
-        if (flag_is_registered_with_value("delta"))
-            delta = stoi(flag_value("delta"));
-        if (flag_is_registered("cexp")) {
-            C = stod(flag_value("cexp"));
-            use_qvalues_for_c = false;
-        }
-        solver = new UCTSolver(problem,
-                               rollouts, cutoff, C,
-                               use_qvalues_for_c, delta,
-                               true);
-    } else if(algorithm == "m02EV"){
+    }else if(algorithm == "m02EV"){
         solver = new m02EVSolver(problem, tol, 1000000);
     }
 
-
-    else if (algorithm != "greedy") {
+   else if (algorithm != "greedy") {
         cerr << "Unknown algorithm: " << algorithm << endl;
         exit(-1);
     }
@@ -448,63 +377,31 @@ bool mustReplan(Solver* solver, string algorithm, State* s, int plausTrial) {
       SoftFLARESSolver* flares = static_cast<SoftFLARESSolver*>(solver);
       return !flares->labeledSolved(s);
     }
-    if (algorithm == "hdp") {
-      if (flag_is_registered("i")) {
-          int j = INT_MAX;
-          if (flag_is_registered_with_value("j")) {
-              j = stoi(flag_value("j"));
-          }
-          if (plausTrial >= j) {
-              static_cast<HDPSolver*>(solver)->clearLabels();
-              return true;
-          }
-      }
-    }
-    if (algorithm == "ssipp") {
-        return !s->checkBits(mdplib::SOLVED_SSiPP);
-    }
-    if (algorithm == "uct") {
-        return true;
-    }
     if(algorithm == "prm" || algorithm == "det" || algorithm == "m02EV")
         return true;
 
     return false;
 }
+
 /***********Calculates optimal cost adjustment in hindsight **********/
 void calculateOptCostAdjust(Problem* problem, Solver* solver){
     int count_percent = 0;
     int total_sa = 0;
-    std::vector<std::pair<std::pair<State*, Action*>,double>> state_ca;
     for(State* s : problem->states()){
-        Action * a  = s->bestAction();
-        if (a!= nullptr){
-            total_sa++;
-            State* mlo = mostLikelyOutcome(problem, s,a);
-            double cost_adjustment = qvalue(problem,s,a) -  mlo->cost();
-            double percent_ca_difference  = std::abs(cost_adjustment - problem->cost(s,a))/ (problem->cost(s,a)) * 100.0;
-//            cout << "Q -  V = " << cost_adjustment << " cost  =" << problem->cost(s,a) << endl;
-//            cout <<" % difference  = " << percent_ca_difference << endl;
-//            if(percent_ca_difference >= 50){
-//                cout << s << "," << a << endl;
-//                count_percent++;
-//            }
-            state_ca.push_back(std::make_pair(std::make_pair(s,a), percent_ca_difference));
+        for(Action* a : problem->actions()){
+            if(problem->applicable(s,a)){
+                total_sa++;
+                State* mlo = mostLikelyOutcome(problem, s,a);
+                double cost_adjustment = qvalue(problem,s,a) -  mlo->cost();
+
+                double percent_ca_difference  = (problem->cost(s,a) > 0)? std::abs(cost_adjustment - problem->cost(s,a))/ (problem->cost(s,a)) * 100.0 : 0.0;
+                state_ca.push_back(std::make_pair(std::make_pair(s,a), percent_ca_difference));
+            }
         }
     }
     if(state_ca.size() > 0 ){
        std::sort (state_ca.begin(), state_ca.end()-1, sortCosts);
     }
-    int index =  int(0.1 * state_ca.size());
-    cout << "index range = " << index << endl;
-    for(int i = 0 ; i < index; i++)
-    {
-        std::pair<std::pair<State*, Action*>, double> sac = state_ca.at(i);
-        std::pair<State*, Action*> sa =  sac.first;
-        cout << sa.first << "," << sa.second << ", %= " << sac.second << endl;
-        count_percent++;
-    }
-    cout << "fraction = " << (count_percent/(double)total_sa) << endl;
 }
 
 
@@ -541,9 +438,7 @@ vector<double> simulate(Solver* solver,
                 solver->maxPlanningTime(maxTime);
             }
             startTime = clock();
-            if (algorithm == "uct") {
-                static_cast<UCTSolver*>(solver)->reset();
-            } else if (algorithm != "greedy") {
+            if (algorithm != "greedy") {
                 solver->solve(problem->initialState());
             }
             endTime = clock();
@@ -554,16 +449,12 @@ vector<double> simulate(Solver* solver,
         }
         if (verbosity >= 10) {
             cout << "Starting simulation " << i << endl;
-        }
+          }
         State* tmp = problem->initialState();
         if (verbosity >= 100) {
             cout << "Estimated cost " <<
                 problem->initialState()->cost() << endl;
         }
-                                                                                        if (algorithm == "lao"){
-                                                                                            calculateOptCostAdjust(problem,solver);
-
-                                                                                        }
 
         double costTrial = 0.0;
         int plausTrial = 0;
@@ -612,13 +503,6 @@ vector<double> simulate(Solver* solver,
             }
             double prob = 0.0;
             State* aux = randomSuccessor(problem, tmp, a, &prob);
-            if (algorithm == "hdp") {
-                double maxProb = 0.0;
-                for (auto const & sccr : problem->transition(tmp, a))
-                    maxProb = std::max(maxProb, sccr.su_prob);
-                plausTrial +=
-                    static_cast<HDPSolver*>(solver)->kappa(prob, maxProb);
-            }
             tmp = aux;
         }
         if (flag_is_registered("ctp")) {
@@ -636,19 +520,10 @@ vector<double> simulate(Solver* solver,
     }
     if(print_decisions)
     {
-        for (State* s : problem->states())
-        {
-            RacetrackState* rts = static_cast<RacetrackState*>(s);
-            RacetrackProblem* rtp = static_cast<RacetrackProblem*>(problem);
-            for (Action* a : problem->actions()) {
-                 for (const mlcore::Successor& su : problem->transition(s,a)){
-                    RacetrackState* rtj = static_cast<RacetrackState*>(su.su_state);
-                    if(rtp->track()[rtj->x()][rtj->y()] == rtrack::wall)
-                        cout << s << a << "value = " << s->cost() <<
-                            " succ = " << rtj << " succ value = " << rtj->cost() << std::endl;
-                 }
-             }
-        }
+         for (State* s : problem->states()){
+                if(s->bestAction() != nullptr)
+                    cout << s << " , bestaction = " << s->bestAction() << endl;
+            }
     }
     if(algorithm == "prm" || algorithm == "acarm"){
          printfullModelUsage(solver);
@@ -685,7 +560,7 @@ vector<double> simulate(Solver* solver,
 int main(int argc, char* args[])
 {
     register_flags(argc, args);
-
+    int budget = 10;
     verbosity = 0;
     if (flag_is_registered_with_value("v"))
         verbosity = stoi(flag_value("v"));
@@ -698,6 +573,9 @@ int main(int argc, char* args[])
         problem->generateAll();
     if(verbosity > 100)
         cout << "problem generation complete..." << endl;
+
+   if (flag_is_registered_with_value("budget"))
+        budget = stoi(flag_value("budget"));
 
     if (flag_is_registered_with_value("heuristic")) {
         if (flag_value("heuristic") == "hmin") {
@@ -735,35 +613,89 @@ int main(int argc, char* args[])
     string algorithm = flag_value("algorithm");
     stringstream ss(algorithm);
     string alg_item;
-    while (getline(ss, alg_item, ',')) {
-        // cout << setw(10) << alg_item << ": ";
+    int maxTime = -1;
+    if (algorithm == "demo")
+    {
         Solver* solver = nullptr;
-        initSolver(alg_item, solver);
-        // Maximum planning time per simulation in milliseconds
-        int maxTime = -1;
-        if (flag_is_registered_with_value("max_time")) {
-            maxTime = stoi(flag_value("max_time"));
-        }
+        bool adjustCost = false;
+        bool perReplan = false;
         int minTime = maxTime;
-        if (maxTime != -1 && flag_is_registered_with_value("min_time")) {
-            minTime = stoi(flag_value("min_time"));
-        }
-        bool perReplan = flag_is_registered("per_replan");
+        state_ca.clear();
+        // Learning from demo is just have the optimal values.
+        solver = new LAOStarSolver(problem, tol, 1000000);
         for (int t = minTime; t <= maxTime; t *= 2) {
             double avgCost = 0.0, avgTime = 0.0;
             double M2Cost = 0.0, M2Time = 0.0;
+            int trials = 1;
             for (int i = 1; i <= numReps; i++) {
                 std::vector<double> results =
-                    simulate(solver, alg_item, numSims, t, perReplan);
+                    simulate(solver, alg_item, trials, t, perReplan);
                 updateStatistics(results[0], i, avgCost, M2Cost);
                 updateStatistics(results[2], i, avgTime, M2Time);
             }
             if (maxTime == -1)
                 break;
         }
+        calculateOptCostAdjust(problem,solver);
+        cout << "state_ca size = " << state_ca.size() << endl;
         delete solver;
+
+//        int budget_allowed[] = {0,1,5,10,15,20,25,30,40,50};
+        int budget_allowed[] = {0,5,10,15,20};
+
+        for(int k = 0; k < (sizeof(budget_allowed)/sizeof(*budget_allowed)); k++ ){
+        // call PRM with optimal values
+            int budget = budget_allowed[k];
+            cout << "******************Init PRM solver with budget = " << budget << endl;
+            Solver* solver = new PRM_LAOStarSolver(problem, adjustCost, budget, state_ca, tol, 1000000);
+
+            for (int t = minTime; t <= maxTime; t *= 2) {
+                double avgCost = 0.0, avgTime = 0.0;
+                double M2Cost = 0.0, M2Time = 0.0;
+                for (int i = 1; i <= numReps; i++) {
+                    std::vector<double> results =
+                        simulate(solver, alg_item, numSims, t, perReplan);
+                    updateStatistics(results[0], i, avgCost, M2Cost);
+                    updateStatistics(results[2], i, avgTime, M2Time);
+                }
+                if (maxTime == -1)
+                    break;
+            }
+            printfullModelUsage(solver);
+            delete solver;
+        }
     }
 
+
+    else{
+        while (getline(ss, alg_item, ',')) {
+            // cout << setw(10) << alg_item << ": ";
+            Solver* solver = nullptr;
+            initSolver(alg_item, solver);
+            // Maximum planning time per simulation in milliseconds
+            if (flag_is_registered_with_value("max_time")) {
+                maxTime = stoi(flag_value("max_time"));
+            }
+            int minTime = maxTime;
+            if (maxTime != -1 && flag_is_registered_with_value("min_time")) {
+                minTime = stoi(flag_value("min_time"));
+            }
+            bool perReplan = flag_is_registered("per_replan");
+            for (int t = minTime; t <= maxTime; t *= 2) {
+                double avgCost = 0.0, avgTime = 0.0;
+                double M2Cost = 0.0, M2Time = 0.0;
+                for (int i = 1; i <= numReps; i++) {
+                    std::vector<double> results =
+                        simulate(solver, alg_item, numSims, t, perReplan);
+                    updateStatistics(results[0], i, avgCost, M2Cost);
+                    updateStatistics(results[2], i, avgTime, M2Time);
+                }
+                if (maxTime == -1)
+                    break;
+            }
+            delete solver;
+        }
+    }
     delete problem;
     delete heuristic;
 }

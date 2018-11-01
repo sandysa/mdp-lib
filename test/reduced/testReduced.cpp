@@ -33,6 +33,7 @@
 #include "../../include/reduced/ReducedTransition.h"
 
 #include "../../include/solvers/LAOStarSolver.h"
+#include "../include/solvers/PRM_LAOStarSolver.h"
 #include "../../include/solvers/Solver.h"
 #include "../../include/solvers/VISolver.h"
 
@@ -390,6 +391,7 @@ void createSailingReductionsTemplate(SailingProblem* sp)
 void initRacetrack(string trackName, int mds, double pslip, double perror)
 {
     problem = new RacetrackProblem(trackName.c_str());
+    problem->ProblemName("racetrack");
     static_cast<RacetrackProblem*>(problem)->pError(perror);
     static_cast<RacetrackProblem*>(problem)->pSlip(pslip);
     static_cast<RacetrackProblem*>(problem)->mds(mds);
@@ -444,6 +446,7 @@ void initSailing()
                                  costs,
                                  windTransition,
                                  true);
+    problem->ProblemName("sailing");
     static_cast<SailingProblem*>(problem)->useFlatTransition(true);
     problem->generateAll();
 
@@ -452,6 +455,22 @@ void initSailing()
         heuristic =
             new SailingNoWindHeuristic(static_cast<SailingProblem*>(problem));
     createSailingReductionsTemplate(static_cast<SailingProblem*> (problem));
+}
+
+void printfullModelUsage(Solver* solver)
+{
+    double num_fullModel = 0.0;
+//    std::cout << "full mode usage count = " << solver->isFullModel_.size() << " % full model use  = "
+//                    << (solver->isFullModel_.size()/double(problem->states().size()))*100 << std::endl;
+    PRM_LAOStarSolver* prmsolver = static_cast<PRM_LAOStarSolver*>(solver);
+    for ( auto it = prmsolver->FullModelMap_.begin(); it != prmsolver->FullModelMap_.end(); ++it )
+    {
+       std::list<int> actionset = it->second;
+       num_fullModel = num_fullModel + actionset.size();
+    }
+  std::cout << "fullmodel usage count = " << num_fullModel <<
+            " %fullmodel = " << (num_fullModel/double(problem->states().size() * problem->actions().size()))*100 << std::endl;
+
 }
 
 
@@ -609,14 +628,21 @@ int main(int argc, char* args[])
     // state-action
     wrapperProblem->clearOverrideGoals();
     wrapperProblem->setNewProblem(reducedModel);
+    wrapperProblem->ProblemName(problem->getProblemName());
 
     // Solving off-line using full models
+    string algorithm = flag_value("algorithm");
     Solver* solver;
     startTime = clock();
     if (flag_is_registered("use-vi")) {
         reducedModel->generateAll();
         solver = new VISolver(wrapperProblem);
-    } else {
+    } else if(algorithm == "prm"){
+        std::cout << "creating PRM solver" << std::endl;
+        solver = new PRM_LAOStarSolver(wrapperProblem, false, 1.0e-3, 1000000);
+    }
+
+    else {
         solver = new LAOStarSolver(wrapperProblem);
     }
     if (useFullTransition)
@@ -670,7 +696,8 @@ int main(int argc, char* args[])
     for (int i = 0; i < nsims; i++) {
         variance += pow(cost_nsim[i] - mean, 2);
     }
-
+    if(algorithm == "prm")
+        printfullModelUsage(solver);
     cout << "expected cost " << expectedCost / nsims << endl;
     cout << "std deviation =  " << sqrt(variance / (nsims - 1)) << endl;
     cout << "avg planning time " << expectedTime / nsims << endl;

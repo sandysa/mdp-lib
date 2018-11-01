@@ -178,6 +178,9 @@ mlcore::State* mostLikelyOutcome(mlcore::Problem* problem, mlcore::State* s,
     double eps = 1.0e-6;
     std::vector<mlcore::State*> outcomes;
     for (mlcore::Successor sccr : problem->transition(s, a)) {
+        if(problem->transition(s, a).size() ==  1)
+            return sccr.su_state;
+
         if (sccr.su_prob > prob + eps) {
             prob = sccr.su_prob;
             outcomes.clear();
