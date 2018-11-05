@@ -51,6 +51,10 @@ SD_SR = $(SD_DOMAINS)/SearchRescue
 ID_SR = $(ID_DOMAINS)/SearchRescue
 SD_EV = $(SD_DOMAINS)/EV
 ID_EV = $(ID_DOMAINS)/EV
+SD_CR = $(SD_DOMAINS)/corridor
+ID_CR = $(ID_DOMAINS)/corridor
+
+
 
 # Variables for include directives
 INCLUDE_DOM = -I$(ID_GW) -I$(ID_CTP) -I$(ID_SAIL) -I$(ID_DOMAINS) -I$(ID_RACE)
@@ -87,9 +91,12 @@ RS_CPP = $(SD_RS)/*.cpp
 RS_H = $(ID_RS)/*.h
 EV_CPP = $(SD_EV)/*.cpp
 EV_H = $(ID_EV)/*.h
+CR_CPP = $(SD_CR)/*.cpp
+CR_H = $(ID_CR)/*.h
 
-DOM_CPP = $(GW_CPP) $(CTP_CPP) $(SAIL_CPP) $(RACE_CPP) $(BORDER_CPP) $(SR_CPP) $(RS_CPP) $(EV_CPP) $(SD_DOMAINS)/*.cpp
-DOM_H = $(GW_H) $(CTP_H) $(SAIL_H) $(RACE_H) $(BORDER_H) $(SR_H) $(RS_H) $(EV_H)
+
+DOM_CPP = $(GW_CPP) $(CTP_CPP) $(SAIL_CPP) $(RACE_CPP) $(BORDER_CPP) $(SR_CPP) $(RS_CPP) $(EV_CPP) $(CR_CPP) $(SD_DOMAINS)/*.cpp
+DOM_H = $(GW_H) $(CTP_H) $(SAIL_H) $(RACE_H) $(BORDER_H) $(SR_H) $(RS_H) $(EV_H) $(CR_H)
 
 ALL_H = $(I_H) $(SOLV_H) $(MOSOLV_H) $(DOM_H) $(UTIL_H)
 ALL_CPP = $(DOM_CPP) $(SOLV_CPP) $(MOSOLV_CPP) $(UTIL_CPP)
@@ -249,6 +256,9 @@ lib/libmdp_domains.a: lib/libmdp.a $(DOM_H) $(DOM_CPP)
 testsolver.out: lib/libmdp.a domains
 	$(CC) $(CFLAGS) $(INCLUDE) -o testsolver.out $(TD)/testSolver.cpp $(LIBS)
 
+testreducedmodel.out: lib/libmdp.a domains
+	$(CC) $(CFLAGS) $(INCLUDE) -o testreducedmodel.out $(TD)/testReducedModel.cpp $(LIBS)
+	
 testvpi.out: lib/libmdp.a domains
 	$(CC) $(CFLAGS) $(INCLUDE) -o testvpi.out $(TD)/testVPISolver.cpp $(LIBS) \
 		src/solvers/VISolver.cpp

@@ -23,6 +23,46 @@ std::vector<std::pair<std::pair<State*, Action*>,double>> allowed_fm;
 
 namespace mlsolvers
 {
+//top 2 successors for EV problem's (s,a). Used for testing mlod+ m02 reduction.
+std::list<mlcore::Successor> getM02_EVTransition(mlcore::State* s, mlcore::Action* a, mlcore::Problem* problem)
+{
+   std::list<mlcore::Successor> successors;
+   if (!problem->applicable(s, a))
+         return successors;
+
+    successors = problem->transition(s,a);
+    double maxprob = 0.0;
+    int first_hash  = -1;
+    int second_hash = -1;
+
+
+    std::list<mlcore::Successor> primarysuccessors;
+    for (const mlcore::Successor& su : successors ) {
+        if(su.su_prob > maxprob)
+        {
+            maxprob = su.su_prob;
+            first_hash = su.su_state->hashValue();
+            primarysuccessors.clear();
+            primarysuccessors.push_back(mlcore::Successor(su.su_state, 0.5));
+        }
+    }
+    if(successors.size() < 2)
+        return primarysuccessors;
+
+    maxprob = 0.0;
+    mlcore::State* secondarystate;
+    for (const mlcore::Successor& su : successors) {
+        if(su.su_prob > maxprob && su.su_state->hashValue() != first_hash)
+        {
+            maxprob = su.su_prob;
+            second_hash = su.su_state->hashValue();
+            secondarystate = su.su_state;
+        }
+    }
+     primarysuccessors.push_back(mlcore::Successor(secondarystate, 0.5));
+    return primarysuccessors;
+}
+
 double getCostAdjustmentValue(mlcore::State* s, mlcore::Action* a,mlcore::Problem* problem)
 {
     if(problem->goal(s))
@@ -151,6 +191,9 @@ std::list<mlcore::Successor> PRM_LAOStarSolver::getTransition(mlcore::State* s, 
         successors = problem->transition(s,a);
     else
         return successors;
+        //For testing det + m02 reduction
+//    if(problem->getProblemName() == "ev")
+//        successors = getM02_EVTransition(s,a,problem);
 
        if(PRM_LAOStarSolver::useFullModel(s,a,problem)){
               isFullModel_.insert(s);

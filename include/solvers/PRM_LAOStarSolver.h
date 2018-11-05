@@ -28,7 +28,8 @@ private:
 
     /* Time limit for LAO* in milliseconds */
     int timeLimit_ = 1000000;
-
+    /* Budget for using full model */
+    int budget_ ;
     /*
      * Expands the BPSG rooted at state s and returns the
      * number of states expanded.
@@ -43,6 +44,9 @@ private:
 
     /* returns the full model or deterministic transitions */
     std::list<mlcore::Successor> getTransition(mlcore::State* s, mlcore::Action* a, mlcore::Problem* problem);
+
+    /*Optimal (s,a) where full model should be used **/
+    std::vector<std::pair<std::pair<mlcore::State*, mlcore::Action*>,double>> optimal_sac_;
 
     bool costAdjusted_ = false;
 
@@ -62,6 +66,13 @@ public:
         : problem_(problem), costAdjusted_(costAdjusted), epsilon_(epsilon),
           timeLimit_(timeLimit), weight_(weight) { }
 
+    PRM_LAOStarSolver(mlcore::Problem* problem, bool costAdjusted,
+                  int budget,
+                  std::vector<std::pair<std::pair<mlcore::State*, mlcore::Action*>,double>> ca,
+                  double epsilon = 1.0e-6,
+                  int timeLimit = 1000000, double weight = 1.0)
+        : problem_(problem), costAdjusted_(costAdjusted), epsilon_(epsilon),
+          timeLimit_(timeLimit), budget_(budget), optimal_sac_(ca),weight_(weight) { }
     /**
      * Solves the associated problem using the LAO* algorithm.
      *
