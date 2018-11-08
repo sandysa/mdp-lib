@@ -86,6 +86,11 @@ double getCostAdjustmentValue(mlcore::State* s, mlcore::Action* a,mlcore::Proble
         RacetrackState* next = new RacetrackState(rts->x()+ rta->ax(), rts->y() + rta->ay(),  rta->ax(),  rta->ay(), (RacetrackProblem*) problem);
         std::vector<std::vector <char> > track = ((RacetrackProblem*) problem)->track();
         double newcost = problem->cost(s,a) ;
+
+        if (next->x() < 0 || next->x() >= track.size() || next->y() < 0 || next->y() >= track[next->x()].size())
+            return  problem->cost(s,a);
+
+
         if (track[next->x()][next->y()] == rtrack::wall || track[next->x()][next->y()] == rtrack::pothole )
             newcost =  problem->cost(s,a)*2;
 

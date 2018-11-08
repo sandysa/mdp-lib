@@ -60,7 +60,7 @@ bool useUpperBound = false;
 int verbosity = 0;
 bool useOnline = false;
 bool print_decisions = false;
-
+int risk_replan = 0;
 
 bool sortCosts(std::pair<std::pair<State*, Action*>,double> s1, std::pair<std::pair<State*, Action*>,double> s2) { return (s1.second > s2.second); }
 
@@ -467,10 +467,52 @@ bool mustReplan(Solver* solver, string algorithm, State* s, int plausTrial) {
         return true;
     }
     if(algorithm == "prm" || algorithm == "det" || algorithm == "m02EV")
-        return true;
+    {
+        if(s->bestAction() == nullptr)
+            return true;
+    }
 
     return false;
 }
+
+bool replanatRisky(mlcore::State* s, mlcore::Problem* problem)
+{
+    if(problem->goal(s) || s == problem->initialState())
+        return false;
+
+    if(problem->getProblemName() == "racetrack")
+    {
+        RacetrackState* rts = static_cast<RacetrackState*>(s);
+        std::vector<std::vector <char> > track = ((RacetrackProblem*) problem)->track();
+        if(s == ((RacetrackProblem*) problem)->absorbing())
+            return false;
+        if(track[rts->x()][rts->y()] == rtrack::wall )
+            return true;
+        if(s->hValue() < 3 )
+            return true;
+    }
+
+    else if(problem->getProblemName() == "sailing")
+    {
+        SailingState* ss = static_cast<SailingState*>(s);
+        SailingProblem* sp = static_cast<SailingProblem*> (problem);
+        if(!sp->in_Lake(ss->x(),ss->y()))
+            return true;
+        if(ss->wind() == 5)
+            return true;
+    }
+    else if (problem->getProblemName() == "ev")
+    {
+        EVState* evs = static_cast<EVState*> (s);
+        EVProblem* evp = static_cast<EVProblem*> (problem);
+        if((evs->exit_comm() <= 2 || evs->timestep() >=  EV::horizon_-3) && evs->soc() < evp->end_soc())
+            return true;
+    }
+
+    return false;
+}
+
+
 /***********Calculates optimal cost adjustment in hindsight **********/
 void calculateOptCostAdjust(Problem* problem, Solver* solver){
     int count_percent = 0;
@@ -571,6 +613,9 @@ vector<double> simulate(Solver* solver,
             statesSeen.insert(tmp);
             Action* a;
             if (mustReplan(solver, algorithm, tmp, plausTrial)) {
+                                                                                            if(replanatRisky(tmp,problem))
+                                                                                                risk_replan++;
+
                 startTime = clock();
                 int simulationsElapsedTime =
                     std::ceil(1000 * (double(startTime - simulationsStartTime)
@@ -663,6 +708,7 @@ vector<double> simulate(Solver* solver,
              << totalTime / numDecisions << endl
              << "Longest planning time " << longestTime << endl;
         cout << "Num. decisions " << numDecisions << endl;
+        cout << "Replan at Risky = " << risk_replan << endl;
     } else if (verbosity >= 0) {
         cout << problem->initialState()->cost() << " ";
         cout << expectedCost << " " << sqrt(variance / (cnt - 1)) << " " <<

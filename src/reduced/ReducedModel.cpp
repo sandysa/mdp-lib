@@ -8,9 +8,12 @@
 #include "../../include/reduced/ReducedHeuristicWrapper.h"
 #include "../../include/reduced/ReducedModel.h"
 
+#include "../../include/domains/racetrack/RacetrackProblem.h"
+#include "../../include/domains/sailing/SailingProblem.h"
 
 using namespace mlcore;
 
+int risk_replan = 0;
 
 namespace mlreduced
 {
@@ -182,6 +185,37 @@ double ReducedModel::evaluateMonteCarlo(int numTrials)
     return expectedCost /= numTrials;
 }
 
+bool replanatRisky(mlcore::State* s, WrapperProblem* problem)
+{
+    if(problem->goal(s) || s == problem->initialState())
+        return false;
+    if(problem->getProblemName() == "racetrack")
+    {
+        RacetrackState* rts = static_cast<RacetrackState*>(s);
+        std::vector<std::vector <char> > track = ((RacetrackProblem*) problem)->track();
+        if(s == ((RacetrackProblem*) problem)->absorbing())
+            return false;
+
+     if (rts->x() < 0 || rts->x() >= track.size() || rts->y() < 0 || rts->y() >= track[rts->x()].size())
+            return false;
+
+       if(track[rts->x()][rts->y()] == rtrack::wall )
+            return true;
+        if(s->hValue() < 3 )
+            return true;
+    }
+
+    else if(problem->getProblemName() == "sailing")
+    {
+        SailingState* ss = static_cast<SailingState*>(s);
+        if(!((SailingProblem*) problem)->in_Lake(ss->x(),ss->y()))
+            return true;
+        if(ss->wind() == 5)
+            return true;
+    }
+    return false;
+}
+
 
 std::pair<double, double> ReducedModel::trial(mlsolvers::Solver & solver,
                                               WrapperProblem* wrapperProblem,
@@ -262,6 +296,9 @@ std::pair<double, double> ReducedModel::trial(mlsolvers::Solver & solver,
             auxState->exceptionCount(0);
             nextState = static_cast<ReducedState*>(
                 this->addState(new ReducedState(*auxState)));
+                                                                                                                                                                                        if(replanatRisky(nextState,wrapperProblem))
+                                                                                                if(replanatRisky(nextState,wrapperProblem))
+                                                                                                    risk_replan++;
             double planningTime =
                 triggerReplan(solver, nextState, false, wrapperProblem);
             totalPlanningTime += planningTime;
@@ -287,6 +324,8 @@ std::pair<double, double> ReducedModel::trial(mlsolvers::Solver & solver,
     }
     if (auxState != nullptr)
         delete auxState;
+
+                                                                                        std::cout << "risk_replan  = " << risk_replan << std::endl;
     return std::make_pair(cost, totalPlanningTime);
 }
 
