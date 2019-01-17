@@ -1,0 +1,100 @@
+********************************************************
+map2GUSSP-dense|lao|zero
+potential goal size = 9 totalSamples = 1
+True goal:(8,1)
+ states = 326799  actions = 5
+Estimated cost 34.7245 Avg. Exec cost 33.85 Std. Dev. 14.2937 Plan time(w/o replan) 832.561 Total time 832.561 
+States seen 165
+Avg. time per decision 832.561
+Longest planning time 832.561
+Num. decisions 1
+********************************************************
+map2GUSSP-dense|flares(1)|zero
+potential goal size = 9 totalSamples = 1
+True goal:(8,1)
+ states = 326799  actions = 5
+Estimated cost 25.713 Avg. Exec cost 35.11 Std. Dev. 20.1624 Plan time(w/o replan) 0.100123 Total time 0.0664855 
+States seen 316
+Avg. time per decision 0.00100736
+Longest planning time 0.102865
+Num. decisions 66
+********************************************************
+map2GUSSP-dense|flares(1)|hmin
+potential goal size = 9 totalSamples = 1
+True goal:(8,1)
+ states = 326799  actions = 5
+Estimated cost 32.411 Avg. Exec cost 38.21 Std. Dev. 25.357 Plan time(w/o replan) 3.40292 Total time 7.56279 
+States seen 530
+Avg. time per decision 0.0138007
+Longest planning time 16.2032
+Num. decisions 548
+********************************************************
+map2GUSSP-dense|flares(1)|domainGUSSP
+potential goal size = 9 totalSamples = 1
+True goal:(8,1)
+ states = 326799  actions = 5
+Estimated cost 30.9571 Avg. Exec cost 31.37 Std. Dev. 13.5182 Plan time(w/o replan) 0.102724 Total time 0.037184 
+States seen 205
+Avg. time per decision 0.00100497
+Longest planning time 0.102724
+Num. decisions 37
+********************************************************
+map2GUSSP-dense|detGUSSP(0)|zero
+potential goal size = 9 totalSamples = 1
+True goal:(8,1)
+ states = 326799  actions = 5
+Estimated cost 28.9556 Avg. Exec cost 51.32 Std. Dev. 25.5141 Plan time(w/o replan) 29.8266 Total time 0.452711 
+States seen 395
+Avg. time per decision 0.064673
+Longest planning time 29.8266
+Num. decisions 7
+********************************************************
+map2GUSSP-dense|detGUSSP(0)|domainGUSSP
+potential goal size = 9 totalSamples = 1
+True goal:(8,1)
+ states = 326799  actions = 5
+Estimated cost 28.9556 Avg. Exec cost 48.54 Std. Dev. 23.12 Plan time(w/o replan) 23.2383 Total time 0.357304 
+States seen 367
+Avg. time per decision 0.0893259
+Longest planning time 23.2383
+Num. decisions 4
+********************************************************
+map2GUSSP-dense|detGUSSP(1)|zero
+potential goal size = 9 totalSamples = 1
+True goal:(8,1)
+ states = 326799  actions = 5
+Estimated cost 28.9556 Avg. Exec cost 53.4 Std. Dev. 29.5792 Plan time(w/o replan) 29.8322 Total time 0.889029 
+States seen 365
+Avg. time per decision 0.177806
+Longest planning time 42.7539
+Num. decisions 5
+********************************************************
+map2GUSSP-dense|detGUSSP(1)|domainGUSSP
+potential goal size = 9 totalSamples = 1
+True goal:(8,1)
+ states = 326799  actions = 5
+Estimated cost 28.9556 Avg. Exec cost 50.27 Std. Dev. 25.8781 Plan time(w/o replan) 26.3092 Total time 0.745796 
+States seen 373
+Avg. time per decision 0.149159
+Longest planning time 33.4492
+Num. decisions 5
+********************************************************
+map2GUSSP-dense|detGUSSP(2)|zero
+potential goal size = 9 totalSamples = 1
+True goal:(8,1)
+ states = 326799  actions = 5
+Estimated cost 28.9556 Avg. Exec cost 50.33 Std. Dev. 21.9324 Plan time(w/o replan) 34.3254 Total time 0.56744 
+States seen 332
+Avg. time per decision 0.113488
+Longest planning time 34.3254
+Num. decisions 5
+********************************************************
+map2GUSSP-dense|detGUSSP(2)|domainGUSSP
+potential goal size = 9 totalSamples = 1
+True goal:(8,1)
+ states = 326799  actions = 5
+Estimated cost 28.9556 Avg. Exec cost 49.09 Std. Dev. 19.7909 Plan time(w/o replan) 26.682 Total time 0.404546 
+States seen 272
+Avg. time per decision 0.101137
+Longest planning time 26.682
+Num. decisions 4
