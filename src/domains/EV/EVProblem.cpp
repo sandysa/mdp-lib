@@ -325,6 +325,9 @@ double getSOCfactor(EVState* evs, EVAction* a, EVState* evj)
 std::list<mlcore::Successor>
 EVProblem::transition(mlcore::State* s, mlcore::Action* action)
 {
+    if (useFlatTransition_)
+        return flatTransition(s, action);
+
     std::list<mlcore::Successor> successors;
     assert(applicable(s, action));
 
@@ -417,6 +420,140 @@ EVProblem::transition(mlcore::State* s, mlcore::Action* action)
      // return successors;
         return allSuccessors->at(idAction);
 }
+
+//Returns the same numbre of successors
+std::list<mlcore::Successor>
+EVProblem::flatTransition(mlcore::State* s, mlcore::Action* action)
+{
+    std::list<mlcore::Successor> successors;
+    assert(applicable(s, action));
+    EVState* evs = static_cast<EVState*>(s);
+    EVAction* a =  static_cast<EVAction*>(action);
+
+    int numsucc = numSuccessorsAction(a);
+
+      if (goal(s) || s == absorbing_ ) {
+        for(int i = 0 ; i < numsucc; i++){
+            successors.push_back(
+                mlcore::Successor(this->addState(absorbing_), 1.0/numsucc));
+        }
+        return successors;
+        }
+
+
+    if(evs->soc() < end_soc_ && ((evs->exit_comm() == 0)) || (evs->timestep() == EV::horizon_-1)){
+        for(int i = 0 ; i < numsucc; i++){
+            successors.push_back(
+                mlcore::Successor(this->addState(absorbing_), 1.0/numsucc));
+        }
+     return successors;
+    }
+
+    if(evs->soc() >= end_soc_ && ((evs->exit_comm() == 0)) || (evs->timestep() == EV::horizon_-1)){
+         for(int i = 0 ; i < numsucc; i++){
+            successors.push_back(
+                mlcore::Successor(this->addState(absorbing_), 1.0/numsucc));
+        }
+        return successors;
+      }
+
+    int idAction = a->hashValue();
+    std::vector<mlcore::SuccessorsList>* allSuccessors = evs->allSuccessors();
+     if (!allSuccessors->at(idAction).empty()) {
+        return allSuccessors->at(idAction);
+    }
+
+    int t = min(EV::horizon_-1 , evs->timestep()+1);
+    if(a->level() == 3)
+    {
+         for(int demand = 0; demand <= 3; demand++){
+            for(int price = 0; price < 2; price++){
+                for(int depart_comm = 0; depart_comm <= 3; depart_comm++){
+                    EVState* evj  = new EVState(this, evs->soc(), t, demand, price, depart_comm);
+                    double trans  = get_comm_factor(evs, evj) * get_factor(evs, evj) * getSOCfactor(evs, a, evj);
+                    if (trans > 0) {
+                      successors.push_back(mlcore::Successor(this->addState(evj), trans));
+//                       allSuccessors->at(idAction).push_back(mlcore::Successor(this->addState(evj), trans));
+                    } else {
+                        delete evj;
+                    }
+               }
+           }
+        }
+    }
+
+    else if(a->level() < 3) //charging
+    {
+      for(int soc = evs->soc(); soc <= 100; soc++){
+        for(int demand = 0; demand <= 3; demand++){
+            for(int price = 0; price < 2; price++){
+                for(int depart_comm = 0; depart_comm <= 3; depart_comm++){
+                    EVState* evj  = new EVState(this, soc, t, demand, price, depart_comm);
+                    double trans  = get_comm_factor(evs, evj) * get_factor(evs, evj) * getSOCfactor(evs, a, evj);
+                    if(trans > 0){
+                        successors.push_back(mlcore::Successor(this->addState(evj), trans));
+//                        allSuccessors->at(idAction).push_back(mlcore::Successor(this->addState(evj), trans));
+                    } else {
+                        delete evj;
+                        }
+                    }
+            }
+            }
+        }
+    }
+/** reaches here only for discharging **/
+ else{
+  for(int soc = 0; soc <= evs->soc(); soc++){
+        for(int demand = 0; demand <= 3; demand++){
+            for(int price = 0; price < 2; price++){
+                for(int depart_comm = 0; depart_comm <= 3; depart_comm++){
+                    EVState* evj  = new EVState(this, soc, t, demand, price, depart_comm);
+                    double trans  = get_comm_factor(evs, evj) * get_factor(evs, evj) * getSOCfactor(evs, a, evj);
+                    if(trans > 0){
+                         successors.push_back(mlcore::Successor(this->addState(evj), trans));
+//                             allSuccessors->at(idAction).push_back(mlcore::Successor(this->addState(evj), trans));
+                    } else {
+                        delete evj;
+                        }
+                    }
+            }
+        }
+    }
+   }
+     int diff = numsucc - successors.size();
+        if(diff == 0)
+            return successors;
+        else{
+            std::list<mlcore::Successor> temp_successors;
+            if(diff == 2){
+                for(int i = 0; i < diff; i++){
+                    for(const mlcore::Successor& su : successors){
+                        allSuccessors->at(idAction).push_back(mlcore::Successor(this->addState(su.su_state), su.su_prob/2.0));
+                        }
+                }
+             }
+            else if(successors.size() == 1 && numsucc > 2){
+                for(int i = 0; i < numsucc; i++){
+                    for(const mlcore::Successor& su : successors)
+                        allSuccessors->at(idAction).push_back(mlcore::Successor(this->addState(su.su_state), 1.0/numsucc));
+                }
+            }
+            else if (numsucc == 2 && successors.size() == 1){
+                for(int i = 0; i < numsucc; i++){
+                    for(const mlcore::Successor& su : successors)
+                        allSuccessors->at(idAction).push_back(mlcore::Successor(this->addState(su.su_state), 1.0/numsucc));
+                }
+            }
+            if(allSuccessors->at(idAction).size() != numsucc){
+                std::cout << "mismatch!! numsucc = " <<  numsucc << " tran size=" << allSuccessors->at(idAction).size() <<
+                "allsucc size = " << successors.size() << ", " << s << a << endl;
+                std::exit(EXIT_FAILURE);
+            }
+            return allSuccessors->at(idAction);
+        }
+}
+
+
 double EVProblem::Meancost(mlcore::State* s , mlcore::Action* a)
 {
     EVReward* reward = new EVReward();
@@ -449,3 +586,12 @@ double EVProblem::cost (mlcore::State* s , mlcore::Action* a) const
 
        return evp->Meancost(s,a);
     }
+
+int EVProblem::numSuccessorsAction(EVAction* eva)
+{
+    int eva_level = eva->hashValue();
+    if(eva_level == 3)//NOP
+        return 2;
+
+    return 4;
+}

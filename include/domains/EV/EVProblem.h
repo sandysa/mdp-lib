@@ -93,6 +93,16 @@ private:
 
    // bool isGoal(EVState* s);
 
+    /* If true, the flat transition function will be used */
+    bool useFlatTransition_ = false;
+
+     /*
+     * A flat transition function where every action has the same number
+     * of successors in all states.
+     */
+    virtual std::list<mlcore::Successor> flatTransition(mlcore::State* s,
+                                                        mlcore::Action* a);
+
 public:
     /**
      * Constructs Ev Problem with specified parameters.
@@ -102,6 +112,14 @@ public:
     ~EVProblem(){}
 
     int timestep_interval(){return EV::time_interval_;}
+
+     /*
+     * Returns the number of successors of the action, under the flat
+     * transition, which is the same for every state but the initial state.
+     */
+    int numSuccessorsAction(EVAction* a);
+
+    void useFlatTransition(bool value) { useFlatTransition_ = value; }
 
      mlcore::State* absorbing_;
     /**

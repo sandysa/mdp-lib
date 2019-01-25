@@ -11,6 +11,10 @@
 #include "../../include/domains/racetrack/RacetrackProblem.h"
 #include "../../include/domains/racetrack/RTrackDetHeuristic.h"
 #include "../../include/domains/sailing/SailingProblem.h"
+#include "../../include/domains/EV/EVProblem.h"
+#include "../../include/domains/EV/EVDetHeuristic.h"
+
+
 #include "../../include/domains/DummyState.h"
 #include "../../include/domains/WrapperProblem.h"
 #include "../../include/solvers/HMinHeuristic.h"
@@ -387,6 +391,21 @@ void createSailingReductionsTemplate(SailingProblem* sp)
     bestReductionTemplate = reductionsTemplate;
 }
 
+void createEVReductionsTemplate(EVProblem* evp)
+{
+    CustomReduction* reductionsTemplate = new CustomReduction(evp);
+    vector<bool> primaryIndicators;
+    for (mlcore::Action* a : evp->actions()) {
+        primaryIndicators.clear();
+        EVAction* eva = static_cast<EVAction*> (a);
+        int numSuccessors = evp->numSuccessorsAction(eva);
+        for (int i = 0; i < numSuccessors; i++)
+            primaryIndicators.push_back(true);
+        reductionsTemplate->setPrimaryForAction(a, primaryIndicators);
+    }
+    reductions.push_back(reductionsTemplate);
+    bestReductionTemplate = reductionsTemplate;
+}
 
 void initRacetrack(string trackName, int mds, double pslip, double perror)
 {
@@ -403,6 +422,31 @@ void initRacetrack(string trackName, int mds, double pslip, double perror)
     reductions.push_back(new LeastLikelyOutcomeReduction(problem));
     createRacetrackReductionsTemplate(static_cast<RacetrackProblem*> (problem));
 }
+
+void setupEV()
+{
+    if (verbosity >= 100)
+        cout << "Setting up EV " << endl;
+
+    int startSOC = atoi(flag_value("start-soc").c_str());
+    int endSOC = atoi(flag_value("end-soc").c_str());
+    double startTime = atof(flag_value("start-time").c_str());
+    double endTime = atof(flag_value("end-time").c_str());
+    int rewardCase =  atoi(flag_value("reward").c_str());
+
+    problem = new EVProblem(startSOC,endSOC,startTime,endTime,rewardCase);
+    problem->ProblemName("ev");
+    if (!flag_is_registered_with_value("heuristic") ||
+            flag_value("heuristic") == "domain")
+        heuristic = new EVDetHeuristic(startSOC,endSOC,startTime,endTime,1); //setting reward case = 1 for heursitic calculation
+
+    static_cast<EVProblem*>(problem)->useFlatTransition(true);
+    problem->generateAll();
+
+   if (verbosity > 100)
+        cout << "Generated " << problem->states().size() << " states." << endl;
+    createEVReductionsTemplate(static_cast<EVProblem*> (problem));
+ }
 
 void initSailing()
 {
@@ -530,6 +574,24 @@ int main(int argc, char* args[])
             actionGroups.back().push_back(a);
         }
     }
+    else if (domainName == "ev") {
+        setupEV();
+//        for (mlcore::State* s: problem->states()){
+//            for (mlcore::Action* a : problem->actions()){
+//                EVAction* eva = static_cast<EVAction*>(a);
+//                if( eva->hashValue() == 3){
+//                     std::cout << s << "," << a << "," << problem->transition(s,a).size() << endl;
+//                     for (const mlcore::Successor& su : problem->transition(s, a)) {
+//                        cout << su.su_state << ", prob= " << su.su_prob << endl;
+//                        }
+//                    }
+//            }
+//          }
+        for (mlcore::Action* a : problem->actions()) {
+            actionGroups.push_back(vector<mlcore::Action*> ());
+            actionGroups.back().push_back(a);
+        }
+    }
 
     bool useFullTransition = flag_is_registered("use-full");
 
@@ -602,6 +664,34 @@ int main(int argc, char* args[])
                                          actionGroups,
                                          bestReductionTemplate);
     }
+   else if (flag_is_registered("best-det-ev-greedy")) {
+        isDeterminization = true;
+        vector<vector<int> > primaryOutcomes;
+        primaryOutcomes.push_back(vector<int>{0});
+        primaryOutcomes.push_back(vector<int>{0});
+        primaryOutcomes.push_back(vector<int>{0});
+        primaryOutcomes.push_back(vector<int>{0});
+        primaryOutcomes.push_back(vector<int>{0});
+        primaryOutcomes.push_back(vector<int>{0});
+        primaryOutcomes.push_back(vector<int>{0});
+        assignPrimaryOutcomesToReduction(primaryOutcomes,
+                                         actionGroups,
+                                         bestReductionTemplate);
+    }
+    else if (flag_is_registered("best-m02-ev-greedy")) {
+        vector<vector<int> > primaryOutcomes;
+       primaryOutcomes.push_back(vector<int>{0});
+        primaryOutcomes.push_back(vector<int>{0});
+        primaryOutcomes.push_back(vector<int>{0,1});
+        primaryOutcomes.push_back(vector<int>{0});
+        primaryOutcomes.push_back(vector<int>{0});
+        primaryOutcomes.push_back(vector<int>{0});
+        primaryOutcomes.push_back(vector<int>{0,1});
+        assignPrimaryOutcomesToReduction(primaryOutcomes,
+                                         actionGroups,
+                                         bestReductionTemplate);
+    }
+
      else if (flag_is_registered("greedy")) {
         // Finds the best reduction using the greedy approach and then stores
         // it in global variable bestReductionTemplate
