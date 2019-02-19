@@ -532,21 +532,25 @@ EVProblem::flatTransition(mlcore::State* s, mlcore::Action* action)
                         }
                 }
              }
-            else if(successors.size() == 1 && numsucc > 2){
+            else if(successors.size() == 1 && numsucc >= 2){
                 for(int i = 0; i < numsucc; i++){
                     for(const mlcore::Successor& su : successors)
                         allSuccessors->at(idAction).push_back(mlcore::Successor(this->addState(su.su_state), 1.0/numsucc));
                 }
             }
-            else if (numsucc == 2 && successors.size() == 1){
-                for(int i = 0; i < numsucc; i++){
+            else if ((numsucc/ successors.size()) == 2){
+                for(int i = 0; i < 2; i++){
                     for(const mlcore::Successor& su : successors)
-                        allSuccessors->at(idAction).push_back(mlcore::Successor(this->addState(su.su_state), 1.0/numsucc));
-                }
+                        allSuccessors->at(idAction).push_back(mlcore::Successor(this->addState(su.su_state), su.su_prob/2.0));
+                 }
             }
             if(allSuccessors->at(idAction).size() != numsucc){
                 std::cout << "mismatch!! numsucc = " <<  numsucc << " tran size=" << allSuccessors->at(idAction).size() <<
-                "allsucc size = " << successors.size() << ", " << s << a << endl;
+                " allsucc size = " << successors.size() << ", " << s << a << endl;
+
+                for(const mlcore::Successor& su : successors){
+                    std::cout << su.su_state << " prob = " << su.su_prob << endl;
+                    }
                 std::exit(EXIT_FAILURE);
             }
             return allSuccessors->at(idAction);
@@ -590,8 +594,24 @@ double EVProblem::cost (mlcore::State* s , mlcore::Action* a) const
 int EVProblem::numSuccessorsAction(EVAction* eva)
 {
     int eva_level = eva->hashValue();
-    if(eva_level == 3)//NOP
-        return 2;
+    if(rewardCase_ < 3){
+        if(eva_level == 3)//NOP
+            return 2;
 
-    return 4;
+        return 4;
+    }
+    else if(rewardCase_ == 3){
+        if(eva_level == 3) // NOP
+            return 8;
+
+         return 16;
+     }
+    else if(rewardCase_ == 4){
+         if(eva_level == 3) // NOP
+            return 16;
+
+         return 32;
+
+    }
+
 }

@@ -49,6 +49,7 @@ GridWorldProblem::GridWorldProblem(const char* filename,
                     walls.insert(std::pair<int, int>(width_, height_));
                 } else if (line.at(width_) == '@') {
                     holes.insert(std::pair<int, int>(width_, height_));
+                    std::cout << " hole at:" << width_ << " " << height_ << std::endl;
                 } else if (line.at(width_) == 'G') {
                     goals_->insert(
                         std::make_pair(
@@ -149,7 +150,19 @@ GridWorldProblem::transition(mlcore::State *s, mlcore::Action *a)
     double probForward = 0.8;
     int numSuccessors = allDirections_ ? 3 : 2;
     double probSides = 0.2 / numSuccessors;
-    if (action->dir() == gridworld::UP) {
+//    double probfwd_holes = 0.6;
+//    double probsides_holes = 0.4 / numSuccessors;
+
+     if(holes.count(std::pair<int, int> (state->x(), state->y())) != 0){
+            probForward = 0.6;
+            probSides  = 0.4 / numSuccessors;
+        }
+
+
+
+
+
+    if (action->dir() == gridworld::DOWN) {
         addSuccessor(state, successors, height_ - 1, state->y(),
                      state->x(), state->y() + 1, probForward);
 
@@ -163,7 +176,7 @@ GridWorldProblem::transition(mlcore::State *s, mlcore::Action *a)
             addSuccessor(state, successors, state->y(), 0,
                          state->x(), state->y() - 1, probSides);
         }
-    } else if (action->dir() == gridworld::DOWN) {
+    } else if (action->dir() == gridworld::UP) {
         addSuccessor(state, successors, state->y(), 0,
                      state->x(), state->y() - 1, probForward);
 
@@ -219,8 +232,8 @@ double GridWorldProblem::cost(mlcore::State* s, mlcore::Action* a) const
         std::pair<int,int> pos(gws->x(),gws->y());
         return (*goals_)[pos];
     }
-    if (holes.count(std::pair<int, int> (gws->x(), gws->y())) != 0)
-        return holeCost_ * actionCost_;
+//    if (holes.count(std::pair<int, int> (gws->x(), gws->y())) != 0)
+//        return holeCost_ * actionCost_;
     return actionCost_;
 }
 

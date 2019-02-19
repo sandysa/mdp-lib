@@ -1,6 +1,6 @@
 #!/bin/bash
 
-nsims=100
+nsims=20
 verbosity=1
 # heuristic=(zero hmin-solve-all domainGUSSP)
 heur=hmin
@@ -26,9 +26,13 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
 #         ../testsolver.out --start-soc=${a[0]} --end-soc=${a[1]} --start-time=${a[2]} --end-time=${a[3]} \
 #         --reward=$rew --algorithm=det --n=$nsims --v=$verbosity --heuristic=$heur
 #     
-        echo "******ALG = m02 "
-        ../testsolver.out --start-soc=${a[0]} --end-soc=${a[1]} --start-time=${a[2]} --end-time=${a[3]} \
-        --reward=$rew --algorithm=m02EV --n=$nsims --v=$verbosity --heuristic=$heur
+#         echo "******ALG = m02 "
+#         ../testsolver.out --start-soc=${a[0]} --end-soc=${a[1]} --start-time=${a[2]} --end-time=${a[3]} \
+#         --reward=$rew --algorithm=m02EV --n=$nsims --v=$verbosity --heuristic=$heur
+
+        echo "******ALG = m11 "
+        ../testreduced.out --domain=ev --start-soc=${a[0]} --end-soc=${a[1]} --start-time=${a[2]} --end-time=${a[3]} \
+        --reward=$rew --k=1 --best-det-ev-greedy --n=$nsims --v=0  --heuristic=$heur
         
 #         echo "******ALG = prm "
 #         ../testsolver.out --start-soc=${a[0]} --end-soc=${a[1]} --start-time=${a[2]} --end-time=${a[3]} \

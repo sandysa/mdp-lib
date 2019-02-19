@@ -126,6 +126,8 @@ void setupGridWorld()
     if (!flag_is_registered_with_value("heuristic") ||
             flag_value("heuristic") == "domain")
         heuristic = new GWManhattanHeuristic((GridWorldProblem*) problem);
+
+    problem->ProblemName("gws");
 }
 
 
@@ -602,10 +604,20 @@ vector<double> simulate(Solver* solver,
             cout << "Estimated cost " <<
                 problem->initialState()->cost() << endl;
         }
-                                                                                        if (algorithm == "lao"){
-                                                                                            calculateOptCostAdjust(problem,solver);
 
-                                                                                        }
+                                                                                           if(verbosity >=100) {
+                                                                                           cout <<"start =" << problem->initialState() << endl;
+                                                                                            for(State* s: problem->states()){
+                                                                                                if(s->bestAction() != nullptr)
+                                                                                                    cout << s << ", ba= " << s->bestAction() << endl;
+                                                                                                }
+                                                                                           }
+
+
+//                                                                                        if (algorithm == "lao"){
+//                                                                                            calculateOptCostAdjust(problem,solver);
+//
+//                                                                                        }
 
         double costTrial = 0.0;
         int plausTrial = 0;
@@ -647,7 +659,7 @@ vector<double> simulate(Solver* solver,
             }
 
             if (verbosity >= 1000) {
-                cout << "State/Action: " << tmp << " " << a << " " << endl;
+                cout << "State/Action: " << tmp << " " << a << " " <<  " cost of action = " << problem->cost(tmp,a) << endl;
             }
 
             costTrial += problem->cost(tmp, a);

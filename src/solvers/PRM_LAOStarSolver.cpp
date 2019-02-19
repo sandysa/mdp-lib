@@ -7,6 +7,7 @@
 #include "../../include/domains/sailing/SailingProblem.h"
 #include "../../include/domains/corridor/CorridorProblem.h"
 #include "../../include/domains/EV/EVProblem.h"
+#include "../../include/domains/gridworld/GridWorldProblem.h"
 
 #include "../../include/util/general.h"
 
@@ -186,6 +187,17 @@ bool PRM_LAOStarSolver::useFullModel(mlcore::State* s, mlcore::Action* a, mlcore
             return true;
     }
 
+    if(problem->getProblemName() == "gws"){
+
+        GridWorldProblem* gwp =  static_cast<GridWorldProblem*>(problem);
+        for (const mlcore::Successor& su : problem->transition(s, a)) {
+             GridWorldState* gws =  static_cast<GridWorldState*>(su.su_state);
+             if (gwp->getholes().count(std::pair<int, int> (gws->x(), gws->y())) != 0){
+                    return true;
+                }
+        }
+          return false;
+    }
     return false;
 }
 

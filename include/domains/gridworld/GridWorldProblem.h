@@ -101,6 +101,8 @@ public:
         delete goals_;
     }
 
+    IntPairSet getholes(){return holes;}
+
     /**
      * Overrides method from Problem.
      */
